@@ -38,7 +38,7 @@ jobs:
         run: npm run build
 
       - name: Verify build folder
-        run: ls -la ./dist
+        run: ls -la ./public/build
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -46,9 +46,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist'  # <- asegúrate de que aquí vaya la carpeta correcta
+          path: './public/build'  # <- carpeta correcta según tu build
           
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
 
