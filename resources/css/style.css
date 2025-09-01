@@ -13,3 +13,26 @@
 
 .animate-delay-1000 { animation-delay: 1s; }
 .animate-delay-2000 { animation-delay: 2s; }
+
+/* Personalización de flechas */
+
+.swiper {
+z-index: 0;
+}
+.swiper-button-next-custom,
+.swiper-button-prev-custom {
+  color: #1D4ED8; /* Azul personalizado */
+  background-color: #E0F2FE; /* Fondo suave */
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.swiper-button-prev-custom {
+  left: -10px; /* Ajusta según el diseño */
+}
+
+.swiper-button-next-custom {
+  right: -10px; /* Ajusta según el diseño */
+}

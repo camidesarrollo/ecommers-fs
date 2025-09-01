@@ -23,6 +23,12 @@
         "@fortawesome/free-brands-svg-icons": "^7.0.0",
         "@fortawesome/free-regular-svg-icons": "^7.0.0",
         "@fortawesome/free-solid-svg-icons": "^7.0.0",
-        "@fortawesome/vue-fontawesome": "^3.1.1"
+        "@fortawesome/vue-fontawesome": "^3.1.1",
+        "@headlessui/vue": "^1.7.23",
+        "@heroicons/vue": "^2.2.0",
+        "@vueuse/core": "^13.8.0",
+        "pinia": "^3.0.3",
+        "swiper": "^11.2.10",
+        "vue-router": "^4.5.1"
     }
 }

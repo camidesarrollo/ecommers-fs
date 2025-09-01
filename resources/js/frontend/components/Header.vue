@@ -1,6 +1,6 @@
 <template>
   <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm z-50">
-    <div class="container mx-auto flex justify-between items-center p-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center p-4">
       
       <!-- Logo -->
       <div class="flex items-center gap-3">
