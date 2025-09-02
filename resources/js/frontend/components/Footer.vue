@@ -18,10 +18,11 @@
                     <h3 class="text-lg font-semibold mb-4">ENLACES</h3>
                     <ul class="space-y-2 text-sm">
                         <li v-for="(enlace, index) in enlaces" :key="index">
-                            <a :href="enlace.url" class="hover:text-blue-500 transition">
+                            <router-link :to="enlace.url" class="hover:text-blue-500 transition">
                                 {{ enlace.text }}
-                            </a>
+                            </router-link>
                         </li>
+
                     </ul>
                 </div>
 
@@ -86,11 +87,11 @@ const sucursales = ref([
 ])
 
 const enlaces = ref([
-    { text: "Frutos secos por mayor", url: "#" },
-    { text: "Preguntas Frecuentes", url: "#" },
-    { text: "Política de devoluciones y reembolsos", url: "#" },
-    { text: "Quiénes Somos", url: "#" },
-    { text: "Contacto", url: "#" }
+    // { text: "Frutos secos por mayor", url: "#" },
+    { text: "Preguntas Frecuentes", url: "/preguntasFrecuentes" },
+    // { text: "Política de devoluciones y reembolsos", url: "#" },
+    { text: "Quiénes Somos", url: "/about" },
+    { text: "Contacto", url: "/contact" }
 ])
 
 // Redes sociales con FontAwesome

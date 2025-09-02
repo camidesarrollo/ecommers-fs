@@ -4,7 +4,7 @@
       <!-- Encabezado -->
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Productos Destacados</h2>
-        <button class="text-blue-500 font-semibold">Ver todos</button>
+        <a class="text-blue-500 font-semibold" href="/productoList">Ver todos</a>
       </div>
 
       <!-- Carrusel -->
@@ -52,9 +52,9 @@ const productos = [
   {
     title: "Almendras Tostadas Premium",
     subtitle: "500g - Origen California",
-    price: "12.99",
-    oldPrice: "15.99",
-    discount: "20",
+    price: 12.99,
+    oldPrice: 15.99,
+    discount: 20,
     emoji: "🥜",
     bgClass: "bg-yellow-100",
     buttonType: "success"
@@ -62,7 +62,7 @@ const productos = [
   {
     title: "Mix de Nueces Deluxe",
     subtitle: "300g - Selección especial",
-    price: "18.50",
+    price: 18.50,
     emoji: "🌰",
     bgClass: "bg-yellow-50",
     buttonType: "purple"
@@ -70,7 +70,7 @@ const productos = [
   {
     title: "Pistachos Salados",
     subtitle: "250g - Origen Turquía",
-    price: "22.00",
+    price: 22.00,
     emoji: "🥨",
     bgClass: "bg-green-100",
     buttonType: "blue"
@@ -78,7 +78,7 @@ const productos = [
   {
     title: "Nueces de Brasil",
     subtitle: "400g - Selección premium",
-    price: "25.00",
+    price: 25.00,
     emoji: "🌰",
     bgClass: "bg-pink-100",
     buttonType: "red"
@@ -86,7 +86,7 @@ const productos = [
   {
     title: "Castañas de Cajú",
     subtitle: "350g - Orgánico",
-    price: "20.00",
+    price: 20.00,
     emoji: "🌰",
     bgClass: "bg-orange-100",
     buttonType: "green"
