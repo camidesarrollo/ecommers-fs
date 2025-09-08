@@ -6,7 +6,7 @@ class ProductFilterDTO
 {
     public function __construct(
         public readonly ?string $search,
-        public readonly ?int $categoryId,
+        public readonly ?int $category_id,
         public readonly ?bool $isActive,
         public readonly ?bool $isFeatured,
         public readonly ?float $minPrice,
@@ -15,6 +15,7 @@ class ProductFilterDTO
         public readonly ?string $orderBy,
         public readonly ?string $orderDirection,
         public readonly int $perPage = 15,
+        
     ) {}
 
     public static function fromArray(array $data): self
