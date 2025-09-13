@@ -21,7 +21,10 @@ class ProductVariantPriceHistoryService
             ->select([
                 'product_variant_price_history.*',
                 'product_variants.sku',
-                'lista_productos.product_name',
+                'lista_productos.imagen',
+                'lista_productos.typeProduct',
+                'lista_productos.variant',
+                'lista_productos.name',
                 'lista_productos.slug'
             ]);
 

@@ -60,4 +60,21 @@ abstract class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->all();
     }
+
+    /**
+     * Paginar modelo
+     */
+    public function paginate($modelo): LengthAwarePaginator
+    {
+        // Si es un Query Builder
+        if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
+            $query = $modelo;
+        }
+        // Si es un string que representa un modelo
+        elseif (is_string($modelo) && class_exists($modelo)) {
+            $query = $modelo::query();
+        }
+
+        return $query->paginate(15);
+    }
 }

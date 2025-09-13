@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Products\Repositories;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Models\Product;
+use App\Domain\Models\ListaProducto;
 use App\Domain\RepositoriesInterface\ProductRepositoryInterface;
 use App\Application\DTOs\ProductDTO;
 use App\Application\DTOs\ProductFilterDTO;
@@ -17,22 +18,27 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function list(array|ProductFilterDTO $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = Product::query();
-        
-        // Si los filtros vienen como DTO, usar sus propiedades directamente
-        if ($filters instanceof ProductFilterDTO) {
-            $this->applyDTOFilters($query, $filters);
-            $perPage = $filters->perPage;
-        } else {
-            $this->applyFilters($query, $filters);
+        $query = ListaProducto::query();
+
+        if ($filters->search) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('product_name', 'like', '%' . $filters->search . '%')
+                    ->orWhere('slug', 'like', '%' . $filters->search . '%')
+                    ->orWhere('sku', 'like', '%' . $filters->search . '%');
+            });
         }
-        
-        // Incluir relaciones por defecto
-        $query->with(['category', 'variants']);
-        
+
+        // Si los filtros vienen como DTO, convertir a array
+        if ($filters instanceof ProductFilterDTO) {
+            $filtersArray = $filters->toArray();
+        } else {
+            $filtersArray = $filters;
+        }
+
+        $this->applyFilters($query, $filtersArray);
+
         return $query->paginate($perPage);
     }
-    
     /**
      * Buscar por ID
      */
@@ -40,7 +46,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Product::with(['category', 'variants'])->find($id);
     }
-    
+
     /**
      * Crear producto
      */
@@ -52,24 +58,24 @@ class ProductRepository implements ProductRepositoryInterface
         } else {
             $dataArray = $data;
         }
-        
+
         // Separar las variantes para crear después
         $variants = $dataArray['variants'] ?? [];
         unset($dataArray['variants']);
-        
+
         // Crear el producto
         $product = Product::create($dataArray);
-        
+
         // Crear las variantes si existen
         if (!empty($variants)) {
             foreach ($variants as $variantData) {
                 $product->variants()->create($variantData);
             }
         }
-        
+
         return $product->load(['category', 'variants']);
     }
-    
+
     /**
      * Actualizar producto
      */
@@ -81,35 +87,35 @@ class ProductRepository implements ProductRepositoryInterface
         } else {
             $product = $id;
         }
-        
+
         // Si los datos vienen como DTO, convertir a array
         if ($data instanceof ProductDTO) {
             $dataArray = $data->toArray();
         } else {
             $dataArray = $data;
         }
-        
+
         // Separar las variantes para actualizar después
         $variants = $dataArray['variants'] ?? [];
         unset($dataArray['variants']);
-        
+
         // Actualizar el producto
         $product->update($dataArray);
-        
+
         // Actualizar las variantes si se proporcionan
         if (!empty($variants)) {
             // Eliminar variantes existentes
             $product->variants()->delete();
-            
+
             // Crear nuevas variantes
             foreach ($variants as $variantData) {
                 $product->variants()->create($variantData);
             }
         }
-        
+
         return $product->fresh(['category', 'variants']);
     }
-    
+
     /**
      * Eliminar producto (soft delete)
      */
@@ -118,89 +124,89 @@ class ProductRepository implements ProductRepositoryInterface
         $product = Product::findOrFail($id);
         return $product->delete();
     }
-    
+
     /**
      * Restaurar producto eliminado
      */
     public function restore(int $id): ?Product
     {
         $product = Product::withTrashed()->find($id);
-        
+
         if ($product && $product->trashed()) {
             $product->restore();
             return $product->load(['category', 'variants']);
         }
-        
+
         return null;
     }
-    
+
     /**
      * Buscar por slug
      */
     public function findBySlug(string $slug): ?Product
     {
         return Product::with(['category', 'variants'])
-                      ->where('slug', $slug)
-                      ->first();
+            ->where('slug', $slug)
+            ->first();
     }
-    
+
     /**
      * Obtener productos por categoría
      */
     public function findByCategory(int $categoryId, bool $activeOnly = true): Collection
     {
         $query = Product::with(['category', 'variants'])
-                        ->where('category_id', $categoryId);
-        
+            ->where('category_id', $categoryId);
+
         if ($activeOnly) {
             $query->where('is_active', true);
         }
-        
+
         return $query->get();
     }
-    
+
     /**
      * Obtener productos destacados
      */
     public function getFeatured(int $limit = null): Collection
     {
         $query = Product::with(['category', 'variants'])
-                        ->where('is_featured', true)
-                        ->where('is_active', true)
-                        ->orderBy('created_at', 'desc');
-        
+            ->where('is_featured', true)
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc');
+
         if ($limit) {
             $query->limit($limit);
         }
-        
+
         return $query->get();
     }
-    
+
     /**
      * Buscar productos por SKU
      */
     public function findBySku(string $sku): ?Product
     {
         return Product::with(['category', 'variants'])
-                      ->whereHas('variants', function ($query) use ($sku) {
-                          $query->where('sku', $sku);
-                      })
-                      ->first();
+            ->whereHas('variants', function ($query) use ($sku) {
+                $query->where('sku', $sku);
+            })
+            ->first();
     }
-    
+
     /**
      * Obtener productos con stock bajo
      */
     public function getLowStock(int $threshold = 10): Collection
     {
         return Product::with(['category', 'variants'])
-                      ->whereHas('variants', function ($query) use ($threshold) {
-                          $query->where('stock', '<=', $threshold);
-                      })
-                      ->where('is_active', true)
-                      ->get();
+            ->whereHas('variants', function ($query) use ($threshold) {
+                $query->where('stock', '<=', $threshold);
+            })
+            ->where('is_active', true)
+            ->get();
     }
-    
+
     /**
      * Obtener todos los registros activos
      */
@@ -208,32 +214,39 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Product::with(['category', 'variants'])->get();
     }
-    
+
     /**
      * Obtener solo productos activos
      */
     public function allActive(): Collection
     {
         return Product::with(['category', 'variants'])
-                      ->where('is_active', true)
-                      ->orderBy('name')
-                      ->get();
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
     }
-    
     /**
      * Paginar modelo
      */
     public function paginate($modelo): LengthAwarePaginator
     {
-        if (is_string($modelo)) {
-            $query = Product::with(['category', 'variants']);
-        } else {
+        // Si es un Query Builder
+        if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
             $query = $modelo;
         }
-        
+        // Si es un string que representa un modelo
+        elseif (is_string($modelo) && class_exists($modelo)) {
+            $query = $modelo::query();
+        }
+        // Por defecto usamos Category::query()
+        else {
+            $query = Product::with(['category', 'variants']);
+        }
+
         return $query->paginate(15);
     }
-    
+
+
     /**
      * Aplicar filtros desde DTO
      */
@@ -242,26 +255,26 @@ class ProductRepository implements ProductRepositoryInterface
         if ($filters->search) {
             $query->where(function ($q) use ($filters) {
                 $q->where('name', 'like', '%' . $filters->search . '%')
-                  ->orWhere('slug', 'like', '%' . $filters->search . '%')
-                  ->orWhere('description', 'like', '%' . $filters->search . '%')
-                  ->orWhereHas('variants', function ($variantQuery) use ($filters) {
-                      $variantQuery->where('sku', 'like', '%' . $filters->search . '%');
-                  });
+                    ->orWhere('slug', 'like', '%' . $filters->search . '%')
+                    ->orWhere('description', 'like', '%' . $filters->search . '%')
+                    ->orWhereHas('variants', function ($variantQuery) use ($filters) {
+                        $variantQuery->where('sku', 'like', '%' . $filters->search . '%');
+                    });
             });
         }
-        
+
         if ($filters->category_id) {
             $query->where('category_id', $filters->category_id);
         }
-        
+
         if ($filters->isActive !== null) {
             $query->where('is_active', $filters->isActive);
         }
-        
+
         if ($filters->isFeatured !== null) {
             $query->where('is_featured', $filters->isFeatured);
         }
-        
+
         if ($filters->minPrice !== null || $filters->maxPrice !== null) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
                 if ($filters->minPrice !== null) {
@@ -272,7 +285,7 @@ class ProductRepository implements ProductRepositoryInterface
                 }
             });
         }
-        
+
         if ($filters->stockStatus) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
                 if ($filters->stockStatus === 'in_stock') {
@@ -282,11 +295,11 @@ class ProductRepository implements ProductRepositoryInterface
                 }
             });
         }
-        
+
         // Ordenamiento
         $query->orderBy($filters->orderBy, $filters->orderDirection);
     }
-    
+
     /**
      * Aplicar filtros desde array
      */
@@ -295,26 +308,26 @@ class ProductRepository implements ProductRepositoryInterface
         if (isset($filters['search'])) {
             $query->where(function ($q) use ($filters) {
                 $q->where('name', 'like', '%' . $filters['search'] . '%')
-                  ->orWhere('slug', 'like', '%' . $filters['search'] . '%')
-                  ->orWhere('description', 'like', '%' . $filters['search'] . '%')
-                  ->orWhereHas('variants', function ($variantQuery) use ($filters) {
-                      $variantQuery->where('sku', 'like', '%' . $filters['search'] . '%');
-                  });
+                    ->orWhere('slug', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['search'] . '%')
+                    ->orWhereHas('variants', function ($variantQuery) use ($filters) {
+                        $variantQuery->where('sku', 'like', '%' . $filters['search'] . '%');
+                    });
             });
         }
-        
+
         if (isset($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
-        
+
         if (isset($filters['is_active'])) {
             $query->where('is_active', $filters['is_active']);
         }
-        
+
         if (isset($filters['is_featured'])) {
             $query->where('is_featured', $filters['is_featured']);
         }
-        
+
         if (isset($filters['min_price']) || isset($filters['max_price'])) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
                 if (isset($filters['min_price'])) {
@@ -325,7 +338,7 @@ class ProductRepository implements ProductRepositoryInterface
                 }
             });
         }
-        
+
         if (isset($filters['stock_status'])) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
                 if ($filters['stock_status'] === 'in_stock') {
@@ -335,10 +348,83 @@ class ProductRepository implements ProductRepositoryInterface
                 }
             });
         }
-        
+
         // Ordenamiento por defecto
         $orderBy = $filters['order_by'] ?? 'name';
         $orderDirection = $filters['order_direction'] ?? 'asc';
         $query->orderBy($orderBy, $orderDirection);
     }
+
+    public function search(ProductFilterDTO $filters): LengthAwarePaginator
+    {
+        $query = Product::query();
+
+        if ($filters->search) $query->where('name', 'like', "%{$filters->search}%");
+        if ($filters->search) $query->where('slug', 'like', "%{$filters->search}%");
+        // if ($filters->Product_id) $query->where('Product_id', $filters->Product_id);
+        if ($filters->search !== null) $query->where('is_active', $filters->search);
+        if ($filters->search) {
+            $query->where('stock', '>', 0);
+            if ($filters->search === 'out_of_stock') {
+                $query->where('stock', '<=', 0);
+            }
+        }
+        if ($filters->minPrice) $query->where('price', '>=', $filters->minPrice);
+        if ($filters->maxPrice) $query->where('price', '<=', $filters->maxPrice);
+
+        return $query->paginate($filters->perPage);
+    }
 }
+
+  
+
+  
+    // /**
+    //  * Crear un nuevo producto desde ProductDTO
+    //  */
+    // public function create(ProductDTO $dto): Product
+    // {
+    //     return Product::create($dto->toArray());
+    // }
+
+    // /**
+    //  * Actualizar un producto existente
+    //  */
+    // public function update(Product $product, ProductDTO $dto): Product
+    // {
+    //     $product->update($dto->toArray());
+    //     return $product->refresh();
+    // }
+
+    // /**
+    //  * Eliminar un producto (SoftDelete)
+    //  */
+    // public function delete(Product $product): bool
+    // {
+    //     return (bool) $product->delete();
+    // }
+
+    // /**
+    //  * Restaurar un producto eliminado
+    //  */
+    // public function restore(int $id): ?Product
+    // {
+    //     $product = Product::withTrashed()->find($id);
+
+    //     if ($product && $product->trashed()) {
+    //         $product->restore();
+    //         return $product;
+    //     }
+
+    //     return null;
+    // }
+
+    // /**
+    //  * Obtener todos los productos destacados activos (sin paginar)
+    //  */
+    // public function getFeatured(): Collection
+    // {
+    //     return Product::where('is_active', true)
+    //         ->where('is_featured', true)
+    //         ->get();
+    // }

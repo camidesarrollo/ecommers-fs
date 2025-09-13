@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Application\Category\Services\CategoryService;
+use App\Application\Services\CategoryService;
 use App\Application\DTOs\CategoryDTO;
 use App\Application\DTOs\CategoryFilterDTO;
 use App\Http\Requests\Category\CategoryIndexRequest;

@@ -82,7 +82,7 @@ class ProductVariantPriceHistoryController extends Controller
         $this->service->delete($history);
         return ApiResponse::noContent();
     }
-    
+
     /**
      * Obtener historial actual por ID de variante
      */

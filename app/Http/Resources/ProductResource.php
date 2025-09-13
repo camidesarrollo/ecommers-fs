@@ -31,4 +31,25 @@ class ProductResource extends JsonResource
             'updated_at' => $this->updated_at,
         ];
     }
+
+    /**
+     * Determina si el producto está en stock.
+     *
+     * @return bool
+     */
+    public function isInStock(): bool
+    {
+        // Caso 1: Si manejas stock_quantity
+        if (!is_null($this->stock_quantity)) {
+            return $this->stock_quantity > 0;
+        }
+
+        // Caso 2: Si tienes un campo stock_status (ej: 'in_stock', 'out_of_stock')
+        if (!is_null($this->stock_status)) {
+            return $this->stock_status === 'in_stock';
+        }
+
+        // Por defecto: sin stock
+        return false;
+    }
 }

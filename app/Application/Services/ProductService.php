@@ -3,7 +3,8 @@
 namespace App\Application\Services;
 
 use App\Domain\Models\Product;
-use App\Domain\Models\ListaProducto;
+use App\Domain\RepositoriesInterface\ProductRepositoryInterface;
+
 use App\Application\DTOs\ProductDTO;
 use App\Application\DTOs\ProductFilterDTO;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,133 +12,57 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductService
 {
-    /**
-     * Listar productos con filtros y paginación
-     */
-    public function list(ProductFilterDTO $filter): LengthAwarePaginator
+    private ProductRepositoryInterface $ProductRepository;
+
+    public function __construct(ProductRepositoryInterface $ProductRepository)
     {
-        $query = ProductVariantPriceHistory::query()
-            ->join('product_variants', 'product_variant_price_history.product_variant_id', '=', 'product_variants.id')
-            ->join('lista_productos', 'product_variants.product_id', '=', 'lista_productos.id')
-            ->select([
-                'product_variant_price_history.*',
-                'product_variants.sku',
-                'lista_productos.product_name',
-                'lista_productos.slug'
-            ]);
-
-        if ($filter->search) {
-            $query->where(function ($q) use ($filter) {
-                $q->where('product_name', 'like', '%' . $filter->search . '%')
-                    ->orWhere('slug', 'like', '%' . $filter->search . '%')
-                    ->orWhere('sku', 'like', '%' . $filter->search . '%');
-            });
-        }
-
-        if ($filter->category_id) {
-            $query->where('category_id', $filter->category_id);
-        }
-
-        if (!is_null($filter->isActive)) {
-            $query->where('is_active', $filter->isActive);
-        }
-
-        if (!is_null($filter->isFeatured)) {
-            $query->where('is_featured', $filter->isFeatured);
-        }
-
-        if ($filter->minPrice) {
-            $query->where('price', '>=', $filter->minPrice);
-        }
-
-        if ($filter->maxPrice) {
-            $query->where('price', '<=', $filter->maxPrice);
-        }
-
-        if ($filter->stockStatus) {
-            $query->where('stock_status', $filter->stockStatus);
-        }
-
-        $query->orderBy($filter->orderBy, $filter->orderDirection);
-
-        return $query->paginate($filter->perPage);
+        $this->ProductRepository = $ProductRepository;
+    }
+    
+  
+    public function create(ProductDTO $dto): Product
+    {
+        return $this->ProductRepository->create($dto);
     }
 
     /**
-     * Obtener un producto por su ID
+     * Actualizar una categoría existente
+     */
+    public function update(int $id, ProductDTO $dto): Product
+    {
+        return $this->ProductRepository->update($id, $dto);
+    }
+
+    /**
+     * Eliminar una categoría
+     */
+    public function delete(int $id): bool
+    {
+        return $this->ProductRepository->delete($id);
+    }
+
+    /**
+     * Buscar categoría por ID
      */
     public function findById(int $id): ?Product
     {
-        return Product::find($id);
+        return $this->ProductRepository->findById($id);
     }
 
     /**
-     * Crear un nuevo producto desde ProductDTO
+     * Obtener categorías filtradas y paginadas
      */
-    public function create(ProductDTO $dto): Product
+    public function paginate(ProductFilterDTO $filter): LengthAwarePaginator
     {
-        return Product::create($dto->toArray());
+        return $this->ProductRepository->paginate(
+            $filter->perPage
+        );
     }
 
-    /**
-     * Actualizar un producto existente
-     */
-    public function update(Product $product, ProductDTO $dto): Product
+     public function search(ProductFilterDTO $filter): LengthAwarePaginator
     {
-        $product->update($dto->toArray());
-        return $product->refresh();
-    }
-
-    /**
-     * Eliminar un producto (SoftDelete)
-     */
-    public function delete(Product $product): bool
-    {
-        return (bool) $product->delete();
-    }
-
-    /**
-     * Restaurar un producto eliminado
-     */
-    public function restore(int $id): ?Product
-    {
-        $product = Product::withTrashed()->find($id);
-
-        if ($product && $product->trashed()) {
-            $product->restore();
-            return $product;
-        }
-
-        return null;
-    }
-
-    /**
-     * Obtener todos los productos destacados activos (sin paginar)
-     */
-    public function getFeatured(): Collection
-    {
-        return Product::where('is_active', true)
-            ->where('is_featured', true)
-            ->get();
-    }
-
-    public function search(ProductFilterDTO $filter): LengthAwarePaginator
-    {
-        $query = Product::query();
-
-        if ($filter->search) $query->where('name', 'like', "%{$filter->search}%");
-        if ($filter->search) $query->where('slug', 'like', "%{$filter->search}%");
-        if ($filter->category_id) $query->where('category_id', $filter->category_id);
-        if ($filter->search !== null) $query->where('is_active', $filter->search);
-        if ($filter->search) {
-            $query->where('stock', '>', 0);
-            if ($filter->search === 'out_of_stock') {
-                $query->where('stock', '<=', 0);
-            }
-        }
-        if ($filter->minPrice) $query->where('price', '>=', $filter->minPrice);
-        if ($filter->maxPrice) $query->where('price', '<=', $filter->maxPrice);
-
-        return $query->paginate($filter->perPage);
+        return $this->ProductRepository->paginate(
+            $filter->perPage
+        );
     }
 }
