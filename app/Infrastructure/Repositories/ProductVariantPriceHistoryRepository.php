@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Products\Repositories;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Models\ProductVariantPriceHistory;
 use App\Domain\RepositoriesInterface\ProductVariantPriceHistoryRepositoryInterface;
@@ -15,11 +15,11 @@ class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistory
 
     //  * Listar historial de precios con filtros y paginación
     //  */
-    public function  list(array|ProductVariantPriceHistoryFilterDTO $filter = [], int $perPage = 15): LengthAwarePaginator
+    public function list(array|ProductVariantPriceHistoryFilterDTO $filter = [], int $perPage = 15): LengthAwarePaginator
     {
         $query = ProductVariantPriceHistory::query()
             ->join('product_variants', 'product_variant_price_history.product_variant_id', '=', 'product_variants.id')
-            ->join('lista_productos', 'product_variants.product_id', '=', 'lista_productos.id') // corregido
+            ->join('lista_productos', 'product_variants.id', '=', 'lista_productos.product_variant_id') 
             ->select([
                 'product_variant_price_history.*',
                 'product_variants.sku',
@@ -30,8 +30,8 @@ class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistory
                 'lista_productos.slug'
             ]);
 
-        // Si recibes DTO, conviértelo en array
-        if ($filter instanceof ProductVariantPriceHistoryDTO) {
+        // CORRECCIÓN: usar el DTO de filtro correcto
+        if ($filter instanceof ProductVariantPriceHistoryFilterDTO) {
             $filters = $filter->toArray();
         } else {
             $filters = $filter;
@@ -144,10 +144,17 @@ class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistory
      */
     public function paginate($modelo): LengthAwarePaginator
     {
-        if (is_string($modelo)) {
-            $query = ProductVariantPriceHistory::query();
-        } else {
+        // Si es un Query Builder
+        if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
             $query = $modelo;
+        }
+        // Si es un string que representa un modelo
+        elseif (is_string($modelo) && class_exists($modelo)) {
+            $query = $modelo::query();
+        }
+        // Por defecto usamos Category::query()
+        else {
+            $query = ProductVariantPriceHistory::query();
         }
 
         return $query->paginate(15);

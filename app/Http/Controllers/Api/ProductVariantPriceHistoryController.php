@@ -8,10 +8,10 @@ use App\Application\DTOs\ProductVariantPriceHistoryDTO;
 use App\Application\DTOs\ProductVariantPriceHistoryFilterDTO;
 use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryIndexRequest;
 use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryStoreRequest;
-use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryUpdateRequest;
 use App\Http\Resources\ProductVariantPriceHistoryResource;
 use App\Http\Controllers\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductVariantPriceHistoryController extends Controller
 {
@@ -22,12 +22,22 @@ class ProductVariantPriceHistoryController extends Controller
     /**
      * Listar historial de precios con filtros y paginación
      */
-    public function index(ProductVariantPriceHistoryIndexRequest $request): JsonResponse
+    public function index(ProductVariantPriceHistoryIndexRequest $request): AnonymousResourceCollection
     {
-        $filter = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
-        $histories = $this->service->list($filter);
+        $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
+        $products = $this->service->paginate($filterDTO);
 
-        return ApiResponse::paginated($histories, 'Historial de precios obtenido correctamente');
+        return ProductVariantPriceHistoryResource::collection($products);
+    }
+
+    public function list(ProductVariantPriceHistoryIndexRequest $request): AnonymousResourceCollection
+    {
+        $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
+
+        // Llamamos al service -> list() que aplica todos los filtros
+        $historial = $this->service->list($filterDTO);
+
+        return ProductVariantPriceHistoryResource::collection($historial);
     }
 
     /**
@@ -53,42 +63,42 @@ class ProductVariantPriceHistoryController extends Controller
         return ApiResponse::created(new ProductVariantPriceHistoryResource($history), 'Registro creado correctamente');
     }
 
-    /**
-     * Actualizar un registro de historial existente
-     */
-    public function update(ProductVariantPriceHistoryUpdateRequest $request, int $id): JsonResponse
-    {
-        $history = $this->service->findById($id);
-        if (!$history) {
-            return ApiResponse::notFound('Registro no encontrado');
-        }
+    // /**
+    //  * Actualizar un registro de historial existente
+    //  */
+    // public function update(ProductVariantPriceHistoryUpdateRequest $request, int $id): JsonResponse
+    // {
+    //     $history = $this->service->findById($id);
+    //     if (!$history) {
+    //         return ApiResponse::notFound('Registro no encontrado');
+    //     }
 
-        $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
-        $history = $this->service->update($history, $dto);
+    //     $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
+    //     $history = $this->service->update($history, $dto);
 
-        return ApiResponse::success(new ProductVariantPriceHistoryResource($history), 'Registro actualizado correctamente');
-    }
+    //     return ApiResponse::success(new ProductVariantPriceHistoryResource($history), 'Registro actualizado correctamente');
+    // }
 
-    /**
-     * Eliminar un registro de historial
-     */
-    public function destroy(int $id): JsonResponse
-    {
-        $history = $this->service->findById($id);
-        if (!$history) {
-            return ApiResponse::notFound('Registro no encontrado');
-        }
+    // /**
+    //  * Eliminar un registro de historial
+    //  */
+    // public function destroy(int $id): JsonResponse
+    // {
+    //     $history = $this->service->findById($id);
+    //     if (!$history) {
+    //         return ApiResponse::notFound('Registro no encontrado');
+    //     }
 
-        $this->service->delete($history);
-        return ApiResponse::noContent();
-    }
+    //     $this->service->delete($history);
+    //     return ApiResponse::noContent();
+    // }
 
     /**
      * Obtener historial actual por ID de variante
      */
-    public function currentByVariant(int $variantId): JsonResponse
-    {
-        $histories = $this->service->getCurrentByVariantId($variantId);
-        return ApiResponse::send(ProductVariantPriceHistoryResource::collection($histories));
-    }
+    // public function currentByVariant(int $variantId): JsonResponse
+    // {
+    //     $histories = $this->service->getCurrentByVariantId($variantId);
+    //     return ApiResponse::send(ProductVariantPriceHistoryResource::collection($histories));
+    // }
 }

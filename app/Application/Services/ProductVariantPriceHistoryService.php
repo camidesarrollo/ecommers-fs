@@ -7,7 +7,6 @@ use App\Application\DTOs\ProductVariantPriceHistoryDTO;
 use App\Application\DTOs\ProductVariantPriceHistoryFilterDTO;
 use App\Domain\RepositoriesInterface\ProductVariantPriceHistoryRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProductVariantPriceHistoryService
 {
@@ -17,8 +16,8 @@ class ProductVariantPriceHistoryService
     {
         $this->ProductRepository = $ProductRepository;
     }
-    
-  
+
+
     public function create(ProductVariantPriceHistoryDTO $dto): ProductVariantPriceHistory
     {
         return $this->ProductRepository->create($dto);
@@ -58,10 +57,21 @@ class ProductVariantPriceHistoryService
         );
     }
 
-     public function search(ProductVariantPriceHistoryFilterDTO $filter): LengthAwarePaginator
+    // public function search(ProductVariantPriceHistoryFilterDTO $filter): LengthAwarePaginator
+    // {
+    //     return $this->ProductRepository->paginate(
+    //         $filter->perPage
+    //     );
+    // }
+
+    public function search(ProductVariantPriceHistoryFilterDTO $filter): LengthAwarePaginator
     {
-        return $this->ProductRepository->paginate(
-            $filter->perPage
-        );
+        return $this->ProductRepository->list($filter, $filter->perPage ?? 15);
+    }
+
+    public function list(ProductVariantPriceHistoryFilterDTO $filter): LengthAwarePaginator
+    {
+        // Llamamos al método list() del repositorio, pasando el DTO
+        return $this->ProductRepository->list($filter, $filter->perPage ?? 15);
     }
 }

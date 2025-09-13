@@ -39,6 +39,10 @@ Route::prefix('api/v1')->group(function () {
         // Listar todas las categorías con paginación
         Route::get('/', [ProductController::class, 'index']);
 
+        Route::get('/ProductosDestacados', [ProductController::class, 'productosDestacados']);
+
+        
+
         Route::get('/Search', [ProductController::class, 'search']);
 
         // Crear nueva categoría
@@ -57,6 +61,8 @@ Route::prefix('api/v1')->group(function () {
     Route::prefix('price-history')->group(function () {
         // Listar historial con filtros y paginación
         Route::get('/', [ProductVariantPriceHistoryController::class, 'index']);
+
+         Route::get('/Listar', [ProductVariantPriceHistoryController::class, 'list']);
 
         // Obtener historial por ID
         Route::get('{id}', [ProductVariantPriceHistoryController::class, 'show'])->where('id', '[0-9]+');

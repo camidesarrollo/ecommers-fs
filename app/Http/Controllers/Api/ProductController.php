@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Application\Services\ProductService;
+use App\Application\Services\OrderItemService;
 use App\Application\DTOs\ProductDTO;
 use App\Application\DTOs\ProductFilterDTO;
 use App\Http\Requests\Product\ProductIndexRequest;
@@ -18,7 +19,8 @@ use Illuminate\Http\JsonResponse;
 class ProductController extends Controller
 {
     public function __construct(
-        protected ProductService $productService
+        protected ProductService $productService,
+        protected OrderItemService $orderItemService // 👈 inyectamos el service
     ) {}
 
 
@@ -47,6 +49,20 @@ class ProductController extends Controller
         $product = $this->productService->create($dto);
 
         return ApiResponse::created(new ProductResource($product), 'Producto creado correctamente');
+    }
+
+    public function productosDestacados(): AnonymousResourceCollection
+    {
+        // Obtenemos los top 15 productos más vendidos del último año
+        $topOrderItems = $this->orderItemService->getTopProductsLastYear(15);
+
+        // Mapear los productVariants a los productos
+        $products = $topOrderItems->map(fn($orderItem) => $orderItem->productVariant->product);
+
+        // Remover duplicados si algún producto tiene varias variantes
+        $products = $products->unique('id');
+
+        return ProductResource::collection($products);
     }
 
     // public function update(ProductUpdateRequest $request, int $id): JsonResponse
