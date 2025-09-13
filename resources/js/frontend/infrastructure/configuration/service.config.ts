@@ -5,21 +5,31 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
+import { IBasicRequestEndpoints } from "../../domain/interfaces/i.basic-request.interface";
 
 const urlBase: string = (window as any).ECOMMERCE_API_BASE || "http://127.0.0.1:8000";
 const apiVersion: string = (window as any).ECOMMERCE_API_VERSION || "v1";
 
-export const BasicRequestCategory = {
+export const BasicRequestCategory: IBasicRequestEndpoints = {
   Buscar: "Search",
   Traer: "Get",
   Crear: "Create",
   Modificar: "Update",
   Eliminar: "Delete",
   TraerTodo: "/",
-  Activas: "active",
+  Activas: "active", // endpoint extra específico de categorías
 };
 
-export const BasicRequestProduct = {
+export const BasicRequestProduct: IBasicRequestEndpoints = {
+  Buscar: "Search",
+  Traer: "Get",
+  Crear: "Create",
+  Modificar: "Update",
+  Eliminar: "Delete",
+  TraerTodo: "/",
+};
+
+export const BasicRequestProductVariantPriceHistory: IBasicRequestEndpoints = {
   Buscar: "Search",
   Traer: "Get",
   Crear: "Create",
@@ -71,4 +81,9 @@ export const CategoryInstance = setupInterceptorsTo(
 
 export const ProductInstance = setupInterceptorsTo(
   axios.create(config("products"))
+);
+
+
+export const ProductVariantPriceHistoryInstance = setupInterceptorsTo(
+  axios.create(config("price-history"))
 );
