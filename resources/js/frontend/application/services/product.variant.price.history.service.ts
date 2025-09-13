@@ -34,6 +34,19 @@ export const traerProductVariantPriceHistoryService = async (params: ITraerProdu
 };
 
 /**
+ * Listar un historial de precio específico por ID
+ */
+export const listarProductVariantPriceHistoryService = async () => {
+  try {
+    const response = await ProductVariantPriceHistoryInstance.get(`${BasicRequestProductVariantPriceHistory.Traer}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/**
  * Crear un nuevo historial de precio
  */
 export const crearProductVariantPriceHistoryService = async (params: ISetProductVariantPriceHistoryDtoInput) => {

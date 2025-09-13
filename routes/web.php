@@ -62,7 +62,7 @@ Route::prefix('api/v1')->group(function () {
         // Listar historial con filtros y paginación
         Route::get('/', [ProductVariantPriceHistoryController::class, 'index']);
 
-         Route::get('/Listar', [ProductVariantPriceHistoryController::class, 'list']);
+         Route::get('/Get', [ProductVariantPriceHistoryController::class, 'list']);
 
         // Obtener historial por ID
         Route::get('{id}', [ProductVariantPriceHistoryController::class, 'show'])->where('id', '[0-9]+');

@@ -1,7 +1,7 @@
 // src/application/callbacks/product-variant-price-history.cb.ts
 import { ref, Ref } from "vue";
 import { 
-  traerTodoProductVariantPriceHistoryUseCase, 
+  listarProductVariantPriceHistoryUseCase, 
   buscarProductVariantPriceHistoryUseCase,
 } from "../use-cases/product.variant.price.history.use.case";
 import type { IProductVariantPriceHistoryDtoOutput } from "../../domain/dtos/output/i.product.variant.price.history.dto.output";
@@ -15,7 +15,7 @@ export function useProductVariantPriceHistory(): { histories: Ref<IProductVarian
     };
 
     const traerHistories = () => {
-        traerTodoProductVariantPriceHistoryUseCase(callbackObtenerHistories);
+        listarProductVariantPriceHistoryUseCase(callbackObtenerHistories);
     };
 
     return { histories, traerHistories };

@@ -8,6 +8,7 @@ import {
   modificarProductVariantPriceHistoryService,
   eliminarProductVariantPriceHistoryService,
   traerTodoProductVariantPriceHistoryService,
+  listarProductVariantPriceHistoryService,
 } from "../services/product.variant.price.history.service";
 import { ISetProductVariantPriceHistoryDtoInput, ISearchProductVariantPriceHistoryDtoInput, ITraerProductVariantPriceHistoryDtoInput } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
 
@@ -22,6 +23,16 @@ export const traerProductVariantPriceHistoryUseCase = async (
     setState(procesarRespuesta(response));
   });
 };
+
+export const listarProductVariantPriceHistoryUseCase = async (
+  // param: ITraerProductVariantPriceHistoryDtoInput,
+  setState: SetStateFunction
+) => {
+  listarProductVariantPriceHistoryService().then((response: AxiosResponse<IConfigType>) => {
+    setState(procesarRespuesta(response));
+  });
+};
+
 
 
 /**
