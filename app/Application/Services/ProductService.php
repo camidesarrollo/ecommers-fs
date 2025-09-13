@@ -16,12 +16,20 @@ class ProductService
      */
     public function list(ProductFilterDTO $filter): LengthAwarePaginator
     {
-        $query = ListaProducto::query();
+        $query = ProductVariantPriceHistory::query()
+            ->join('product_variants', 'product_variant_price_history.product_variant_id', '=', 'product_variants.id')
+            ->join('lista_productos', 'product_variants.product_id', '=', 'lista_productos.id')
+            ->select([
+                'product_variant_price_history.*',
+                'product_variants.sku',
+                'lista_productos.product_name',
+                'lista_productos.slug'
+            ]);
 
         if ($filter->search) {
             $query->where(function ($q) use ($filter) {
                 $q->where('product_name', 'like', '%' . $filter->search . '%')
-                     ->orWhere('slug', 'like', '%' . $filter->search . '%')
+                    ->orWhere('slug', 'like', '%' . $filter->search . '%')
                     ->orWhere('sku', 'like', '%' . $filter->search . '%');
             });
         }
@@ -113,7 +121,7 @@ class ProductService
             ->get();
     }
 
-    public function search(ProductFilterDTO $filter) : LengthAwarePaginator
+    public function search(ProductFilterDTO $filter): LengthAwarePaginator
     {
         $query = Product::query();
 

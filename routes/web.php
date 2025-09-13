@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProductVariantPriceHistoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,5 +52,25 @@ Route::prefix('api/v1')->group(function () {
 
         // Eliminar categoría
         Route::delete('{id}', [ProductController::class, 'destroy'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('price-history')->group(function () {
+        // Listar historial con filtros y paginación
+        Route::get('/', [ProductVariantPriceHistoryController::class, 'index']);
+
+        // Obtener historial por ID
+        Route::get('{id}', [ProductVariantPriceHistoryController::class, 'show'])->where('id', '[0-9]+');
+
+        // Crear nuevo registro de historial
+        Route::post('/', [ProductVariantPriceHistoryController::class, 'store']);
+
+        // Actualizar historial existente
+        Route::put('{id}', [ProductVariantPriceHistoryController::class, 'update'])->where('id', '[0-9]+');
+
+        // Eliminar historial
+        Route::delete('{id}', [ProductVariantPriceHistoryController::class, 'destroy'])->where('id', '[0-9]+');
+
+        // Obtener historial actual por variante
+        Route::get('current/{variantId}', [ProductVariantPriceHistoryController::class, 'currentByVariant'])->where('variantId', '[0-9]+');
     });
 });
