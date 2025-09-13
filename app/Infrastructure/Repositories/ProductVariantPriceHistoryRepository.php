@@ -12,31 +12,82 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistoryRepositoryInterface
 {
-    /**
-     * Listar historial de precios con filtros específicos
-     */
-    public function list(array|ProductVariantPriceHistoryFilterDTO $filters = [], int $perPage = 15): LengthAwarePaginator
+
+    //  * Listar historial de precios con filtros y paginación
+    //  */
+    public function  list(array|ProductVariantPriceHistoryFilterDTO $filter = [], int $perPage = 15): LengthAwarePaginator
     {
         $query = ProductVariantPriceHistory::query()
             ->join('product_variants', 'product_variant_price_history.product_variant_id', '=', 'product_variants.id')
-            ->join('lista_productos', 'product_variants.product_id', '=', 'lista_productos.id')
+            ->join('lista_productos', 'product_variants.product_id', '=', 'lista_productos.id') // corregido
             ->select([
                 'product_variant_price_history.*',
                 'product_variants.sku',
-                'lista_productos.product_name',
+                'lista_productos.imagen',
+                'lista_productos.typeProduct',
+                'lista_productos.variant',
+                'lista_productos.name',
                 'lista_productos.slug'
             ]);
 
-        if ($filters instanceof ProductVariantPriceHistoryFilterDTO) {
-            $this->applyDTOFilters($query, $filters);
-            $perPage = $filters->perPage ?? $perPage;
+        // Si recibes DTO, conviértelo en array
+        if ($filter instanceof ProductVariantPriceHistoryDTO) {
+            $filters = $filter->toArray();
         } else {
-            $this->applyFilters($query, $filters);
+            $filters = $filter;
         }
 
-        $query->orderBy('product_variant_price_history.start_date', 'desc');
+        // Aplicación de filtros dinámicos
+        if (!empty($filters['id'])) {
+            $query->where('product_variant_price_history.id', $filters['id']);
+        }
 
-        return $query->paginate($perPage);
+        if (!empty($filters['productVariantId'])) {
+            $query->where('product_variant_price_history.product_variant_id', $filters['productVariantId']);
+        }
+
+        if (!empty($filters['minPrice'])) {
+            $query->where('product_variant_price_history.price', '>=', $filters['minPrice']);
+        }
+
+        if (!empty($filters['maxPrice'])) {
+            $query->where('product_variant_price_history.price', '<=', $filters['maxPrice']);
+        }
+
+        if (!empty($filters['minSalePrice'])) {
+            $query->where('product_variant_price_history.sale_price', '>=', $filters['minSalePrice']);
+        }
+
+        if (!empty($filters['maxSalePrice'])) {
+            $query->where('product_variant_price_history.sale_price', '<=', $filters['maxSalePrice']);
+        }
+
+        if (!empty($filters['startDateFrom'])) {
+            $query->where('product_variant_price_history.start_date', '>=', $filters['startDateFrom']);
+        }
+
+        if (!empty($filters['startDateTo'])) {
+            $query->where('product_variant_price_history.start_date', '<=', $filters['startDateTo']);
+        }
+
+        if (!empty($filters['endDateFrom'])) {
+            $query->where('product_variant_price_history.end_date', '>=', $filters['endDateFrom']);
+        }
+
+        if (!empty($filters['endDateTo'])) {
+            $query->where('product_variant_price_history.end_date', '<=', $filters['endDateTo']);
+        }
+
+        if (!empty($filters['reason'])) {
+            $query->where('product_variant_price_history.reason', 'like', "%{$filters['reason']}%");
+        }
+
+        // Ordenamiento configurable
+        $orderBy = $filters['order_by'] ?? 'product_variant_price_history.start_date';
+        $orderDirection = $filters['order_direction'] ?? 'desc';
+        $query->orderBy($orderBy, $orderDirection);
+
+        return $query->paginate($filters['perPage'] ?? $perPage);
     }
 
     public function findById(int $id): ?ProductVariantPriceHistory

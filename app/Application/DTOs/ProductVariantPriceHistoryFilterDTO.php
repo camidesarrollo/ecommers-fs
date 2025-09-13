@@ -15,7 +15,9 @@ class ProductVariantPriceHistoryFilterDTO
         public readonly ?\DateTimeImmutable $startDateTo = null,   // Fecha de inicio hasta
         public readonly ?\DateTimeImmutable $endDateFrom = null,   // Fecha de fin desde
         public readonly ?\DateTimeImmutable $endDateTo = null,     // Fecha de fin hasta
-        public readonly ?string $reason = null               // Filtrar por motivo
+        public readonly ?string $reason = null,               // Filtrar por motivo
+        public readonly int $perPage = 15             // Paginación
+
     ) {}
 
     /**
@@ -34,7 +36,8 @@ class ProductVariantPriceHistoryFilterDTO
             isset($data['start_date_to']) ? new \DateTimeImmutable($data['start_date_to']) : null,
             isset($data['end_date_from']) ? new \DateTimeImmutable($data['end_date_from']) : null,
             isset($data['end_date_to']) ? new \DateTimeImmutable($data['end_date_to']) : null,
-            $data['reason'] ?? null
+            $data['reason'] ?? null,
+            isset($data['per_page']) ? (int) $data['per_page'] : 15
         );
     }
 
@@ -55,6 +58,7 @@ class ProductVariantPriceHistoryFilterDTO
             'end_date_from'       => $this->endDateFrom?->format('Y-m-d H:i:s'),
             'end_date_to'         => $this->endDateTo?->format('Y-m-d H:i:s'),
             'reason'              => $this->reason,
+             'per_page'        => $this->perPage,
         ];
     }
 }
