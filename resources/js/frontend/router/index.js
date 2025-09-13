@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Importamos las páginas
-import Home from '../pages/Home.vue';
-import About from '../pages/About.vue';
-import Contact from '../pages/Contact.vue';
-import PreguntasFrecuentes from '../pages/PreguntasFrecuentes.vue';
-import CartPage from '../pages/CartPage.vue';
-import UserProfile from '../pages/UserProfile.vue';
-import FavoritesPage from '../pages/FavoritesPage.vue';
-import ProductoList from '../pages/ProductoList.vue';
+import Home from '../presentation/pages/Home.vue';
+import About from '../presentation/pages/About.vue';
+import Contact from '../presentation/pages/Contact.vue';
+import PreguntasFrecuentes from '../presentation/pages/PreguntasFrecuentes.vue';
+import CartPage from '../presentation/pages/CartPage.vue';
+import UserProfile from '../presentation/pages/UserProfile.vue';
+import FavoritesPage from '../presentation/pages/FavoritesPage.vue';
+import ProductoList from '../presentation/pages/ProductoList.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },

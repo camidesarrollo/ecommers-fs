@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from './frontend/presentation/App.vue';
 import router from './frontend/router/index.js';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
