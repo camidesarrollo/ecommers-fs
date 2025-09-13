@@ -17,6 +17,7 @@ class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistory
     //  */
     public function list(array|ProductVariantPriceHistoryFilterDTO $filter = [], int $perPage = 15): LengthAwarePaginator
     {
+       
         $query = ProductVariantPriceHistory::query()
             ->join('product_variants', 'product_variant_price_history.product_variant_id', '=', 'product_variants.id')
             ->join('lista_productos', 'product_variants.id', '=', 'lista_productos.product_variant_id') 

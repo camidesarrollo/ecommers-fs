@@ -20,15 +20,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $query = ListaProducto::query();
 
-        if ($filters->search) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('product_name', 'like', '%' . $filters->search . '%')
-                    ->orWhere('slug', 'like', '%' . $filters->search . '%')
-                    ->orWhere('sku', 'like', '%' . $filters->search . '%');
-            });
-        }
-
-        // Si los filtros vienen como DTO, convertir a array
+        // Convertir DTO a array si viene como DTO
         if ($filters instanceof ProductFilterDTO) {
             $filtersArray = $filters->toArray();
         } else {
@@ -37,7 +29,7 @@ class ProductRepository implements ProductRepositoryInterface
 
         $this->applyFilters($query, $filtersArray);
 
-        return $query->paginate($perPage);
+        return $query->paginate($filtersArray['per_page'] ?? $perPage);
     }
     /**
      * Buscar por ID
@@ -305,18 +297,19 @@ class ProductRepository implements ProductRepositoryInterface
      */
     private function applyFilters(Builder $query, array $filters): void
     {
-        if (isset($filters['search'])) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['search'] . '%')
-                    ->orWhere('slug', 'like', '%' . $filters['search'] . '%')
-                    ->orWhere('description', 'like', '%' . $filters['search'] . '%')
-                    ->orWhereHas('variants', function ($variantQuery) use ($filters) {
-                        $variantQuery->where('sku', 'like', '%' . $filters['search'] . '%');
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('variants', function ($variantQuery) use ($search) {
+                        $variantQuery->where('sku', 'like', "%{$search}%");
                     });
             });
         }
 
-        if (isset($filters['category_id'])) {
+        if (!empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
 
@@ -330,16 +323,16 @@ class ProductRepository implements ProductRepositoryInterface
 
         if (isset($filters['min_price']) || isset($filters['max_price'])) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
-                if (isset($filters['min_price'])) {
+                if (!empty($filters['min_price'])) {
                     $variantQuery->where('price', '>=', $filters['min_price']);
                 }
-                if (isset($filters['max_price'])) {
+                if (!empty($filters['max_price'])) {
                     $variantQuery->where('price', '<=', $filters['max_price']);
                 }
             });
         }
 
-        if (isset($filters['stock_status'])) {
+        if (!empty($filters['stock_status'])) {
             $query->whereHas('variants', function ($variantQuery) use ($filters) {
                 if ($filters['stock_status'] === 'in_stock') {
                     $variantQuery->where('stock', '>', 0);
@@ -349,9 +342,9 @@ class ProductRepository implements ProductRepositoryInterface
             });
         }
 
-        // Ordenamiento por defecto
-        $orderBy = $filters['order_by'] ?? 'name';
-        $orderDirection = $filters['order_direction'] ?? 'asc';
+        // Ordenamiento
+        $orderBy = $filters['order_by'] ?? 'created_at';
+        $orderDirection = $filters['order_direction'] ?? 'desc';
         $query->orderBy($orderBy, $orderDirection);
     }
 

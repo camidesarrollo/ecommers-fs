@@ -85,3 +85,18 @@ export const traerTodoProductService = async () => {
     throw error;
   }
 };
+
+/**
+ * Listar un historial de precio específico por ID
+ */
+export const listarProductService = async (params: ISearchProductDtoInput) => {
+  try {
+    const response = await ProductInstance.get(BasicRequestProduct.Listar, { 
+      params // Axios convierte este objeto a query string automáticamente
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error en listarProductService:", error);
+    throw error;
+  }
+};

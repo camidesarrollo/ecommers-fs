@@ -32,6 +32,15 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
+    public function list(ProductIndexRequest $request): AnonymousResourceCollection
+    {
+        $filterDTO = ProductFilterDTO::fromArray($request->validated());
+
+        // Llamamos al service -> list() que aplica todos los filtros
+        $historial = $this->productService->list($filterDTO);
+
+        return ProductResource::collection($historial);
+    }
 
 
     public function show(int $id): JsonResponse

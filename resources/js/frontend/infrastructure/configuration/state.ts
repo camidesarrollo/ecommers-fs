@@ -20,16 +20,15 @@ export function procesarRespuesta(respuesta: AxiosResponse<IConfigType>): IApiRe
       500: 'el servidor encontró una condición inesperada que impidió que se pudiera completar la solicitud.',
     }
   
-    console.log(respuesta);
   
-    const mensaje = codigosStatus[respuesta.status] ?? '';
+    // const mensaje = codigosStatus[respuesta.status] ?? '';
     
     const apiRespuesta: IApiRespuesta = {
       data: respuesta?.data?.message != null  ? [] : respuesta.data,
       code_status: respuesta.status,
       mensaje: respuesta?.data?.message,
       status: respuesta.status === 200 ? "success" : "error",
-      mensaje_status: mensaje 
+      mensaje_status: "" 
     };
 
     return apiRespuesta;

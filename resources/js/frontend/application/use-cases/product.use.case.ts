@@ -8,7 +8,8 @@ import {
   modificarProductService,
   eliminarProductService,
   traerTodoProductService,
-} from "../services/Product.service";
+  listarProductService
+} from "../services/product.service";
 import { ISetProductDtoInput, ISearchProductDtoInput, ITraerProductDtoInput } from "../../domain/dtos/input/i.product.dto.input";
 
 /**
@@ -83,3 +84,11 @@ export const traerTodoProductUseCase = async (
   });
 };
 
+export const listarProductUseCase = async (
+  param: ISearchProductDtoInput,
+  setState: SetStateFunction
+) => {
+  listarProductService(param).then((response: AxiosResponse<IConfigType>) => {
+    setState(procesarRespuesta(response));
+  });
+};

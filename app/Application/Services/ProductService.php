@@ -65,4 +65,10 @@ class ProductService
             $filter->perPage
         );
     }
+
+     public function list(ProductFilterDTO $filter): LengthAwarePaginator
+    {
+        // Llamamos al método list() del repositorio, pasando el DTO
+        return $this->ProductRepository->list($filter, $filter->perPage ?? 15);
+    }
 }

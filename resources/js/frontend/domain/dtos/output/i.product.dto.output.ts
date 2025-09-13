@@ -25,3 +25,25 @@ export interface ITraerProductDtoOutput {
   category_id?: number;
   effectivePrice: number; // viene de la lógica sale_price ?? price
 }
+
+export interface IListaProductosDTOOutput {
+  id: number | null;
+  name: string;
+  slug: string;
+  description: string | null;
+  short_description: string | null;
+  sku: string;
+  price: number;
+  sale_price: number;
+  effective_price: string | null;
+  stock_quantity: number | null;
+  stock_status: 'in_stock' | 'out_of_stock' | null;
+  is_in_stock: boolean;
+  images: string[] | null; // si manejas múltiples imágenes
+  attributes: Record<string, any> | null; // atributos dinámicos
+  weight: string | number | null;
+  dimensions: string | null;
+  is_featured: boolean | number; // según cómo lo guardes en DB
+  created_at: string;
+  updated_at: string | null;
+}

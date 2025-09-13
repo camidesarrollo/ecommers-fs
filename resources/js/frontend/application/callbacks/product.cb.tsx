@@ -1,7 +1,7 @@
 // src/application/callbacks/product.cb.ts
 import { ref, Ref } from "vue";
-import { traerTodoProductUseCase, buscarProductUseCase } from "../use-cases/product.use.case";
-import type { ITraerProductDtoOutput } from "../../domain/dtos/output/i.product.dto.output";
+import { traerTodoProductUseCase, buscarProductUseCase, listarProductUseCase } from "../use-cases/product.use.case";
+import type { ITraerProductDtoOutput, IListaProductosDTOOutput } from "../../domain/dtos/output/i.product.dto.output";
 import type { ISearchProductDtoInput } from "../../domain/dtos/input/i.product.dto.input";
 
 export function useProduct(): { productos: Ref<ITraerProductDtoOutput[]>, traerProduct: () => void } {
@@ -38,3 +38,24 @@ export function useProductSearch() {
   return { productos, buscarProduct };
 }
 
+/**
+ * Nuevo: listar productos con filtros
+ */
+export function useProductList() {
+  const productos = ref<IListaProductosDTOOutput[]>([]);
+
+  const listarProductos = (filtros: ISearchProductDtoInput) => {
+    return new Promise<IListaProductosDTOOutput[]>((resolve, reject) => {
+      // Llamamos al use case y le pasamos el callback
+      listarProductUseCase(filtros, (response: any) => {
+        try {
+          productos.value = response?.data ?? [];
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+  };
+
+  return { productos, listarProductos };
+}

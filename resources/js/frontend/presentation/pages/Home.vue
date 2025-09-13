@@ -48,18 +48,6 @@
     <!-- Featured Products -->
     <ProductosDestacados />
 
-    <!-- Categories -->
-    <!-- <section class="py-10">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-center mb-8 text-gray-800">Categorías</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <CategoryPill name="Almendras" emoji="🥜" bgClass="bg-gradient-to-br from-yellow-400 to-yellow-500" />
-                <CategoryPill name="Nueces" emoji="🌰" bgClass="bg-gradient-to-br from-yellow-300 to-yellow-400" />
-                <CategoryPill name="Pistachos" emoji="🥨" bgClass="bg-gradient-to-br from-green-400 to-green-500" />
-                <CategoryPill name="Mix Premium" emoji="🥜" bgClass="bg-gradient-to-br from-pink-400 to-pink-500" />
-            </div>
-        </div>
-    </section> -->
 
     <section class="py-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,6 +57,9 @@
     </section>
 
     <Category />
+
+    <ProductosRecientes />
+
 
     <!-- Hero -->
     <!-- <section class="relative overflow-hidden py-20 text-white bg-gradient-to-tr from-indigo-500 to-purple-700">
@@ -110,6 +101,7 @@ import SpecialOffer from '../components/SpecialOffer.vue';
 import Header from '../components/Header.vue';
 import BottomNav from '../components/BottomNav.vue';
 import ProductosDestacados from '../components/ProductosDestacados.vue';
+import ProductosRecientes from '../components/ProductosRecientes.vue';
 import ProductosOferta from '../components/ProductosOferta.vue';
 import Footer from '../components/Footer.vue';
 import BannerProductos from '../components/BannerProductos.vue';
@@ -125,6 +117,7 @@ export default {
         Header,
         BottomNav,
         ProductosDestacados,
+        ProductosRecientes,
         ProductosOferta,
         Footer,
         BannerProductos,

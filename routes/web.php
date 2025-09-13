@@ -41,7 +41,8 @@ Route::prefix('api/v1')->group(function () {
 
         Route::get('/ProductosDestacados', [ProductController::class, 'productosDestacados']);
 
-        
+        Route::get('/Get', [ProductController::class, 'list']);
+
 
         Route::get('/Search', [ProductController::class, 'search']);
 
