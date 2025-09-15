@@ -121,7 +121,7 @@ import ProductosRecientes from '../components/ProductosRecientes.vue';
 import ProductosOferta from '../components/ProductosOferta.vue';
 import Footer from '../components/Footer.vue';
 import BannerProductos from '../components/BannerProductos.vue';
-import Category from '../components/Category/Category.uc.vue';
+import Category from '../components/Category.vue';
 import ProductosEstrella from '../components/ProductosEstrella.vue';
 import RecetasIdeas from '../components/RecetasIdeas.vue';
 import OpinionesClientes from '../components/OpinionesClientes.vue';

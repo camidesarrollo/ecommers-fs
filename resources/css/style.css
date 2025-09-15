@@ -1,3 +1,110 @@
+/* =========================
+   COLORES PRINCIPALES
+   ========================= */
+:root {
+  /* Primarios */
+  --color-olive-green: #6B8E23;       /* Aceitunas, vegetales */
+  --color-nut-brown: #8B5E3C;         /* Frutos secos, chocolates */
+  --color-golden-yellow: #F4C430;     /* Almendras, cereales, semillas */
+  --color-burgundy-red: #8B0000;      /* Frutas deshidratadas, especias */
+  
+  /* Secundarios / Complementarios */
+  --color-beige: #F5F5DC;             /* Fondos suaves, productos secos */
+  --color-mint-green: #98FF98;        /* Productos frescos y saludables */
+  --color-dark-chocolate: #3B2F2F;    /* Contraste textos, chocolates, café */
+  --color-orange-warm: #FF8C00;       /* Acentos, snacks energéticos */
+
+  /* Neutrales */
+  --color-gray-light: #E5E5E5;        /* Fondos de sección y tarjetas */
+  --color-gray-dark: #4B4B4B;         /* Textos principales */
+  --color-white: #FFFFFF;             /* Limpieza visual y resaltar contenido */
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+.btn-add {
+  background-color: var(--color-olive-green);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-add:hover {
+  background-color: #556B2F; /* verde oliva oscuro */
+}
+
+.btn-delete {
+  background-color: var(--color-burgundy-red);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-delete:hover {
+  background-color: #5C0000; /* burdeos oscuro */
+}
+
+.btn-edit {
+  background-color: var(--color-golden-yellow);
+  color: var(--color-dark-chocolate);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-edit:hover {
+  background-color: #D4A017;
+}
+
+/* =========================
+   TEXTOS
+   ========================= */
+.text-primary { color: var(--color-nut-brown); }
+.text-secondary { color: var(--color-gray-dark); }
+.text-accent { color: var(--color-golden-yellow); }
+.text-success { color: var(--color-olive-green); }
+.text-warning { color: var(--color-orange-warm); }
+.text-error { color: var(--color-burgundy-red); }
+
+/* =========================
+   FONDOS
+   ========================= */
+.bg-primary { background-color: var(--color-beige); }
+.bg-secondary { background-color: var(--color-gray-light); }
+.bg-accent { background-color: var(--color-golden-yellow); }
+.bg-success { background-color: var(--color-olive-green); }
+.bg-warning { background-color: var(--color-orange-warm); }
+.bg-error { background-color: var(--color-burgundy-red); }
+
+/* =========================
+   USO COMPLEMENTARIO
+   ========================= */
+.border-primary { border-color: var(--color-nut-brown); }
+.border-secondary { border-color: var(--color-gray-light); }
+.border-accent { border-color: var(--color-golden-yellow); }
+
+/* Definimos los colores personalizados */
+.bg-green-olive { background-color: #6B8E23; }
+.bg-red-burgundy { background-color: #8B0000; }
+.bg-golden-yellow { background-color: #F4C430; }
+.bg-mint-green { background-color: #98FF98; }
+.bg-orange-warm { background-color: #FF8C00; }
+.bg-gray-light { background-color: #E5E5E5; }
+
+.text-white { color: #FFFFFF; }
+.text-dark-chocolate { color: #3B2F2F; }
+.text-gray-dark { color: #4B4B4B; }
+
+.hover\:bg-green-700:hover { background-color: #556B2F; }
+.hover\:bg-red-800:hover { background-color: #5C0000; }
+.hover\:bg-d4a017:hover { background-color: #D4A017; }
+.hover\:bg-green-400:hover { background-color: #32CD32; }
+.hover\:bg-orange-600:hover { background-color: #FF7F00; }
+.hover\:bg-gray-300:hover { background-color: #D1D1D1; }
+
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

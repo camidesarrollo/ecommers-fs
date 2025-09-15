@@ -46,7 +46,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
 // 👇 Comentamos el uso real de API para el demo
-import { useCategory } from "../../../application/callbacks/category.cb";
+import { useCategory } from "../../application/callbacks/category.cb";
 const { categorias } = useCategory();
 
 // Breakpoints de Swiper

@@ -1,23 +1,45 @@
 <template>
   <button
-    :class="[
-      'px-4 py-2 rounded-full font-semibold shadow transition-transform duration-300',
-      type === 'primary' ? 'bg-gradient-to-r from-red-500 to-orange-400 text-white hover:from-red-600 hover:to-orange-500 hover:scale-105' : '',
-      type === 'success' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700 hover:scale-105' : '',
-      type === 'purple' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105' : '',
-      type === 'blue' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105' : '',
-      type === 'light' ? 'bg-white text-blue-500 hover:bg-gray-100' : ''
-    ]"
-    @click="$emit('click')"
+    :class="['px-4 py-2 rounded-lg font-semibold transition-colors', tipoColor]"
+    @click="handleClick"
   >
-    <slot />
+    {{ label }}
   </button>
 </template>
 
-<script>
-export default {
-  props: {
-    type: { type: String, default: 'primary' },
+<script setup>
+import { computed } from 'vue'
+import { toRefs } from 'vue'
+
+const props = defineProps({
+  tipo: {
+    type: String,
+    default: 'default'
   },
-};
+  accion: {
+    type: Function,
+    default: null
+  },
+  label: {            // <-- Nueva prop para el texto
+    type: String,
+    default: ''
+  }
+})
+
+const { tipo, accion } = toRefs(props)
+
+const tipoMap = {
+  agregar: { color: 'bg-green-olive text-white hover:bg-green-700' },
+  eliminar: { color: 'bg-red-burgundy text-white hover:bg-red-800' },
+  editar: { color: 'bg-golden-yellow text-dark-chocolate hover:bg-d4a017' },
+  mas: { color: 'bg-mint-green text-dark-chocolate hover:bg-green-400' },
+  menos: { color: 'bg-orange-warm text-white hover:bg-orange-600' },
+  default: { color: 'bg-gray-light text-gray-dark hover:bg-gray-300' }
+}
+
+const tipoColor = computed(() => tipoMap[tipo.value]?.color || tipoMap.default.color)
+
+const handleClick = () => {
+  if (accion.value) accion.value()
+}
 </script>

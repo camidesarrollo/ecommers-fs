@@ -20,7 +20,8 @@
           <span class="text-green-600 font-bold text-lg">${{ price }}</span>
           <span v-if="oldPrice" class="text-gray-400 line-through ml-2">${{ oldPrice }}</span>
         </div>
-        <Button :type="buttonType" @click="$emit('add')">{{ buttonText }}</Button>
+<Button :tipo="buttonType" :accion="$emit.bind($, 'add')" :label="buttonText" />
+
       </div>
     </div>
   </div>
@@ -41,7 +42,7 @@ export default {
     image: String,       // Nueva prop para imagen
     bgClass: String,
     buttonText: { type: String, default: 'Agregar' },
-    buttonType: { type: String, default: 'success' },
+    buttonType: { type: String, default: 'agregar' },
   },
 };
 </script>

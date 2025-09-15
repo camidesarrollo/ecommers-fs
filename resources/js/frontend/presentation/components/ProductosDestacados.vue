@@ -70,7 +70,7 @@ const productos = [
     discount: 20,
     emoji: "🥜",
     bgClass: "bg-yellow-100",
-    buttonType: "success"
+    buttonType: "agregar"
   },
   {
     title: "Mix de Nueces Deluxe",
@@ -78,7 +78,7 @@ const productos = [
     price: 18.50,
     emoji: "🌰",
     bgClass: "bg-yellow-50",
-    buttonType: "purple"
+    buttonType: "agregar"
   },
   {
     title: "Pistachos Salados",
@@ -86,7 +86,7 @@ const productos = [
     price: 22.00,
     emoji: "🥨",
     bgClass: "bg-green-100",
-    buttonType: "blue"
+    buttonType: "agregar"
   },
   {
     title: "Nueces de Brasil",
@@ -94,7 +94,7 @@ const productos = [
     price: 25.00,
     emoji: "🌰",
     bgClass: "bg-pink-100",
-    buttonType: "red"
+    buttonType: "agregar"
   },
   {
     title: "Castañas de Cajú",
@@ -102,7 +102,7 @@ const productos = [
     price: 20.00,
     emoji: "🌰",
     bgClass: "bg-orange-100",
-    buttonType: "green"
+    buttonType: "agregar"
   }
 ];
 
