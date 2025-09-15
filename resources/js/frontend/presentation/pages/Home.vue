@@ -123,7 +123,7 @@ import Footer from '../components/Footer.vue';
 import BannerProductos from '../components/BannerProductos.vue';
 import Category from '../components/Category.vue';
 import ProductosEstrella from '../components/ProductosEstrella.vue';
-import RecetasIdeas from '../components/RecetasIdeas.vue';
+import RecetasIdeas from '../components/BannerRecetasIdeas.vue';
 import OpinionesClientes from '../components/OpinionesClientes.vue';
 import PacksSuscripciones from '../components/PacksSuscripciones.vue';
 import PropiedadesNutricionales from '../components/PropiedadesNutricionales.vue';

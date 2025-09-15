@@ -104,7 +104,7 @@ onMounted(() => {
 });
 
 const variantes = [
-  { bgClass: "bg-yellow-100", buttonType: "success" },
+  { bgClass: "bg-yellow-100", buttonType:  "agregar" },
   { bgClass: "bg-yellow-50", buttonType: "purple" },
   { bgClass: "bg-green-100", buttonType: "blue" },
   { bgClass: "bg-pink-100", buttonType: "red" },

@@ -31,6 +31,7 @@ estrella es el más vendido absoluto
             :bgClass="producto.bgClass"
             :buttonType="producto.buttonType"
             :highlightText="producto.highlightText"
+            
           />
         </SwiperSlide>
       </Swiper>
@@ -62,7 +63,7 @@ const productos = [
     discount: 20,
     emoji: "🥜",
     bgClass: "bg-yellow-100",
-    buttonType: "success",
+    buttonType:  "agregar",
     highlightText: "Stock limitado, aprovecha antes que se acabe!"
   },
   {
@@ -73,7 +74,7 @@ const productos = [
     discount: 16,
     emoji: "🌰",
     bgClass: "bg-yellow-50",
-    buttonType: "purple",
+    buttonType: "agregar",
     highlightText: "Top ventas del mes, ¡no te lo pierdas!"
   },
   {

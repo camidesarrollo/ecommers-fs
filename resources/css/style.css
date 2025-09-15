@@ -1,23 +1,151 @@
 /* =========================
-   COLORES PRINCIPALES
-   ========================= */
+   VARIABLES CSS DEL NEGOCIO
+========================= */
 :root {
   /* Primarios */
   --color-olive-green: #6B8E23;       /* Aceitunas, vegetales */
+  --color-olive-green-dark: #556B1A;
   --color-nut-brown: #8B5E3C;         /* Frutos secos, chocolates */
+  --color-nut-brown-dark: #6B4529;
   --color-golden-yellow: #F4C430;     /* Almendras, cereales, semillas */
+  --color-golden-yellow-dark: #D4A017;
   --color-burgundy-red: #8B0000;      /* Frutas deshidratadas, especias */
-  
+  --color-burgundy-red-dark: #650000;
+     
   /* Secundarios / Complementarios */
   --color-beige: #F5F5DC;             /* Fondos suaves, productos secos */
+  --color-beige-dark: #E6E6C7;
   --color-mint-green: #98FF98;        /* Productos frescos y saludables */
+  --color-mint-green-dark: #7DE67D;
   --color-dark-chocolate: #3B2F2F;    /* Contraste textos, chocolates, café */
   --color-orange-warm: #FF8C00;       /* Acentos, snacks energéticos */
-
+  --color-orange-warm-dark: #CC7000;
+   
   /* Neutrales */
   --color-gray-light: #E5E5E5;        /* Fondos de sección y tarjetas */
+  --color-gray-light-dark: #D0D0D0;
   --color-gray-dark: #4B4B4B;         /* Textos principales */
   --color-white: #FFFFFF;             /* Limpieza visual y resaltar contenido */
+}
+
+/* =========================
+   CLASES PRINCIPALES DE FONDO
+========================= */
+.bg-olive-green { background-color: var(--color-olive-green); }
+.bg-olive-green-dark { background-color: var(--color-olive-green-dark); }
+.hover\:bg-olive-green-dark:hover { background-color: var(--color-olive-green-dark); }
+
+.bg-nut-brown { background-color: var(--color-nut-brown); }
+.bg-nut-brown-dark { background-color: var(--color-nut-brown-dark); }
+.hover\:bg-nut-brown-dark:hover { background-color: var(--color-nut-brown-dark); }
+
+.bg-golden-yellow { background-color: var(--color-golden-yellow); }
+.bg-golden-yellow-dark { background-color: var(--color-golden-yellow-dark); }
+.hover\:bg-golden-yellow-dark:hover { background-color: var(--color-golden-yellow-dark); }
+
+.bg-burgundy-red { background-color: var(--color-burgundy-red); }
+.bg-burgundy-red-dark { background-color: var(--color-burgundy-red-dark); }
+.hover\:bg-burgundy-red-dark:hover { background-color: var(--color-burgundy-red-dark); }
+
+.bg-beige { background-color: var(--color-beige); }
+.bg-beige-dark { background-color: var(--color-beige-dark); }
+.hover\:bg-beige-dark:hover { background-color: var(--color-beige-dark); }
+
+.bg-mint-green { background-color: var(--color-mint-green); }
+.bg-mint-green-dark { background-color: var(--color-mint-green-dark); }
+.hover\:bg-mint-green-dark:hover { background-color: var(--color-mint-green-dark); }
+
+.bg-dark-chocolate { background-color: var(--color-dark-chocolate); }
+
+.bg-orange-warm { background-color: var(--color-orange-warm); }
+.bg-orange-warm-dark { background-color: var(--color-orange-warm-dark); }
+.hover\:bg-orange-warm-dark:hover { background-color: var(--color-orange-warm-dark); }
+
+.bg-gray-light { background-color: var(--color-gray-light); }
+.bg-gray-light-dark { background-color: var(--color-gray-light-dark); }
+.hover\:bg-gray-light-dark:hover { background-color: var(--color-gray-light-dark); }
+
+.bg-white { background-color: var(--color-white); }
+
+/* =========================
+   CLASES DE TEXTO
+========================= */
+.text-dark-chocolate { color: var(--color-dark-chocolate); }
+.text-gray-dark { color: var(--color-gray-dark); }
+.text-white { color: var(--color-white); }
+
+/* =========================
+   CLASES DE BORDES
+========================= */
+.border-nut-brown { border-color: var(--color-nut-brown); }
+
+/* =========================
+   SOMBRAS CON COLORES
+========================= */
+.shadow-olive-green\/30 { box-shadow: 0 10px 25px rgba(107, 142, 35, 0.3); }
+.hover\:shadow-olive-green\/30:hover { box-shadow: 0 15px 35px rgba(107, 142, 35, 0.3); }
+
+.shadow-burgundy-red\/30 { box-shadow: 0 10px 25px rgba(139, 0, 0, 0.3); }
+.hover\:shadow-burgundy-red\/30:hover { box-shadow: 0 15px 35px rgba(139, 0, 0, 0.3); }
+
+.shadow-golden-yellow\/30 { box-shadow: 0 10px 25px rgba(244, 196, 48, 0.3); }
+.hover\:shadow-golden-yellow\/30:hover { box-shadow: 0 15px 35px rgba(244, 196, 48, 0.3); }
+
+.shadow-mint-green\/30 { box-shadow: 0 10px 25px rgba(152, 255, 152, 0.3); }
+.hover\:shadow-mint-green\/30:hover { box-shadow: 0 15px 35px rgba(152, 255, 152, 0.3); }
+
+.shadow-orange-warm\/30 { box-shadow: 0 10px 25px rgba(255, 140, 0, 0.3); }
+.hover\:shadow-orange-warm\/30:hover { box-shadow: 0 15px 35px rgba(255, 140, 0, 0.3); }
+
+.shadow-nut-brown\/30 { box-shadow: 0 10px 25px rgba(139, 94, 60, 0.3); }
+.hover\:shadow-nut-brown\/30:hover { box-shadow: 0 15px 35px rgba(139, 94, 60, 0.3); }
+
+.shadow-beige\/30 { box-shadow: 0 10px 25px rgba(245, 245, 220, 0.3); }
+.hover\:shadow-beige\/30:hover { box-shadow: 0 15px 35px rgba(245, 245, 220, 0.3); }
+
+.shadow-gray-light\/30 { box-shadow: 0 10px 25px rgba(229, 229, 229, 0.3); }
+.hover\:shadow-gray-light\/30:hover { box-shadow: 0 15px 35px rgba(229, 229, 229, 0.3); }
+
+/* =========================
+   GRADIENTES PERSONALIZADOS
+========================= */
+.bg-gradient-to-br.from-olive-green.to-mint-green { background: linear-gradient(to bottom right, var(--color-olive-green), var(--color-mint-green)); }
+.bg-gradient-to-br.from-dark-chocolate.to-nut-brown { background: linear-gradient(to bottom right, var(--color-dark-chocolate), var(--color-nut-brown)); }
+.bg-gradient-to-br.from-golden-yellow.to-beige { background: linear-gradient(to bottom right, var(--color-golden-yellow), var(--color-beige)); }
+.bg-gradient-to-br.from-nut-brown.to-dark-chocolate { background: linear-gradient(to bottom right, var(--color-nut-brown), var(--color-dark-chocolate)); }
+.bg-gradient-to-br.from-burgundy-red.to-orange-warm { background: linear-gradient(to bottom right, var(--color-burgundy-red), var(--color-orange-warm)); }
+.bg-gradient-to-br.from-nut-brown.to-golden-yellow { background: linear-gradient(to bottom right, var(--color-nut-brown), var(--color-golden-yellow)); }
+.bg-gradient-to-br.from-beige.to-golden-yellow { background: linear-gradient(to bottom right, var(--color-beige), var(--color-golden-yellow)); }
+.bg-gradient-to-br.from-orange-warm.to-burgundy-red { background: linear-gradient(to bottom right, var(--color-orange-warm), var(--color-burgundy-red)); }
+.bg-gradient-to-br.from-golden-yellow.to-nut-brown { background: linear-gradient(to bottom right, var(--color-golden-yellow), var(--color-nut-brown)); }
+.bg-gradient-to-br.from-burgundy-red.to-olive-green { background: linear-gradient(to bottom right, var(--color-burgundy-red), var(--color-olive-green)); }
+.bg-gradient-to-br.from-mint-green.to-olive-green { background: linear-gradient(to bottom right, var(--color-mint-green), var(--color-olive-green)); }
+.bg-gradient-to-br.from-mint-green.to-beige { background: linear-gradient(to bottom right, var(--color-mint-green), var(--color-beige)); }
+.bg-gradient-to-br.from-burgundy-red.to-golden-yellow { background: linear-gradient(to bottom right, var(--color-burgundy-red), var(--color-golden-yellow)); }
+.bg-gradient-to-br.from-beige.to-mint-green { background: linear-gradient(to bottom right, var(--color-beige), var(--color-mint-green)); }
+.bg-gradient-to-br.from-golden-yellow.to-orange-warm { background: linear-gradient(to bottom right, var(--color-golden-yellow), var(--color-orange-warm)); }
+.bg-gradient-to-br.from-olive-green.to-golden-yellow { background: linear-gradient(to bottom right, var(--color-olive-green), var(--color-golden-yellow)); }
+.bg-gradient-to-br.from-gray-light.to-gray-dark { background: linear-gradient(to bottom right, var(--color-gray-light), var(--color-gray-dark)); }
+
+/* =========================
+   EFECTOS ADICIONALES
+========================= */
+.drop-shadow-lg { text-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.3);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+button:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* =========================
