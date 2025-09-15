@@ -42,22 +42,39 @@
 
     <Category />
 
+
     <!-- Products Offer -->
     <ProductosOferta />
+
+    <ProductosEstrella />
 
     <!-- Featured Products -->
     <ProductosDestacados />
 
+    <ProductosRecientes />
 
+    <RecetasIdeas />
+
+    <OpinionesClientes />
+
+    <PacksSuscripciones />
+
+    <PropiedadesNutricionales />
+
+    <Gif />
+
+    <Newsletter />
+
+
+    <!-- 
     <section class="py-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <SpecialOffer title="¡Oferta Especial!" subtitle="Compra 3 productos y llévate el 4to GRATIS"
                 buttonText="Aprovechar Oferta" />
         </div>
     </section>
+ -->
 
-
-    <ProductosRecientes />
 
 
     <!-- Hero -->
@@ -105,7 +122,13 @@ import ProductosOferta from '../components/ProductosOferta.vue';
 import Footer from '../components/Footer.vue';
 import BannerProductos from '../components/BannerProductos.vue';
 import Category from '../components/Category/Category.uc.vue';
-
+import ProductosEstrella from '../components/ProductosEstrella.vue';
+import RecetasIdeas from '../components/RecetasIdeas.vue';
+import OpinionesClientes from '../components/OpinionesClientes.vue';
+import PacksSuscripciones from '../components/PacksSuscripciones.vue';
+import PropiedadesNutricionales from '../components/PropiedadesNutricionales.vue';
+import Gif from '../components/Gif.vue';
+import Newsletter from '../components/Newsletter.vue';
 export default {
     name: "Home",
     components: {
@@ -120,7 +143,14 @@ export default {
         ProductosOferta,
         Footer,
         BannerProductos,
-        Category
+        Category,
+        ProductosEstrella,
+        RecetasIdeas,
+        OpinionesClientes,
+        PacksSuscripciones,
+        PropiedadesNutricionales,
+        Gif,
+        Newsletter
     },
     data() {
         return {

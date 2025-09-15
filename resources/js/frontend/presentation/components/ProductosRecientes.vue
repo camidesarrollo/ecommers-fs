@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Encabezado -->
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Productos Recientes</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Novedades / Últimos Productos</h2>
         <a class="text-blue-500 font-semibold" href="/productoList">Ver todos</a>
       </div>
 

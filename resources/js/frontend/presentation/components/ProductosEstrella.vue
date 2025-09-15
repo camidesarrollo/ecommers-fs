@@ -1,14 +1,5 @@
-<!---
-Mayor crecimiento en ventas (productos cuya venta aumentó más que el mes anterior).
-
-Productos con alta conversión reciente (muchos clicks/añadidos al carrito vs visitas).
-
-Margen de ganancia alto (estratégico para promoción).
-
-Stock limitado (urgencia: “aprovecha antes que se acabe”).
-
-Popularidad reciente (top N productos en últimos 7 días).
-
+<!--
+estrella es el más vendido absoluto
 -->
 
 <template>
@@ -16,16 +7,16 @@ Popularidad reciente (top N productos en últimos 7 días).
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Encabezado -->
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Productos Destacados</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Mix del Mes / Producto Estrella</h2>
         <a class="text-blue-500 font-semibold" href="/productoList">Ver todos</a>
       </div>
 
-      <!-- Carrusel -->
+      <!-- Carrusel de productos estrella -->
       <Swiper
         :slides-per-view="1"
         :space-between="20"
         :breakpoints="breakpoints"
-        :navigation="productos.length > 4 ? navigationOptions : false"
+        :navigation="productos.length > 3 ? navigationOptions : false"
         pagination
         class="pb-6"
       >
@@ -39,6 +30,7 @@ Popularidad reciente (top N productos en últimos 7 días).
             :emoji="producto.emoji"
             :bgClass="producto.bgClass"
             :buttonType="producto.buttonType"
+            :highlightText="producto.highlightText"
           />
         </SwiperSlide>
       </Swiper>
@@ -55,12 +47,12 @@ import 'swiper/css/pagination';
 import ProductCard from './ProductCard.vue';
 
 const breakpoints = {
-  640: { slidesPerView: 1 },   // Móviles
-  768: { slidesPerView: 2 },   // Tablets
-  1024: { slidesPerView: 4 },  // Escritorio
+  640: { slidesPerView: 1 },
+  768: { slidesPerView: 2 },
+  1024: { slidesPerView: 3 },
 };
 
-// Lista de productos
+// Productos estrella seleccionados según criterios
 const productos = [
   {
     title: "Almendras Tostadas Premium",
@@ -70,46 +62,35 @@ const productos = [
     discount: 20,
     emoji: "🥜",
     bgClass: "bg-yellow-100",
-    buttonType: "success"
+    buttonType: "success",
+    highlightText: "Stock limitado, aprovecha antes que se acabe!"
   },
   {
     title: "Mix de Nueces Deluxe",
     subtitle: "300g - Selección especial",
     price: 18.50,
+    oldPrice: 22.00,
+    discount: 16,
     emoji: "🌰",
     bgClass: "bg-yellow-50",
-    buttonType: "purple"
+    buttonType: "purple",
+    highlightText: "Top ventas del mes, ¡no te lo pierdas!"
   },
   {
     title: "Pistachos Salados",
     subtitle: "250g - Origen Turquía",
     price: 22.00,
+    oldPrice: 25.50,
+    discount: 14,
     emoji: "🥨",
     bgClass: "bg-green-100",
-    buttonType: "blue"
-  },
-  {
-    title: "Nueces de Brasil",
-    subtitle: "400g - Selección premium",
-    price: 25.00,
-    emoji: "🌰",
-    bgClass: "bg-pink-100",
-    buttonType: "red"
-  },
-  {
-    title: "Castañas de Cajú",
-    subtitle: "350g - Orgánico",
-    price: 20.00,
-    emoji: "🌰",
-    bgClass: "bg-orange-100",
-    buttonType: "green"
+    buttonType: "blue",
+    highlightText: "Popularidad reciente, edición limitada"
   }
 ];
 
-// Opciones de navegación personalizadas
 const navigationOptions = {
   nextEl: '.swiper-button-next-custom',
   prevEl: '.swiper-button-prev-custom'
 };
 </script>
-

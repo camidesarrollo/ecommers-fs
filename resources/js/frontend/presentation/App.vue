@@ -5,7 +5,7 @@
     <Header />
 
     <!-- Contenido dinámico -->
-    <main class="flex-grow pb-24">
+    <main class="flex-grow">
       <router-view />
     </main>
 
