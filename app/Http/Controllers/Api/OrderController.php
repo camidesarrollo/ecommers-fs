@@ -10,67 +10,104 @@ use App\Http\Requests\Order\OrderIndexRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Resources\OrderResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
-    private OrderService $orderService;
+    use ApiResponseTrait;
 
-    public function __construct(OrderService $orderService)
-    {
-        $this->orderService = $orderService;
-    }
+    public function __construct(protected OrderService $orderService) {}
 
     /**
      * Listar órdenes con paginación
      */
-    public function index(OrderIndexRequest $request): AnonymousResourceCollection
+    public function index(OrderIndexRequest $request): JsonResponse
     {
-        $filterDTO = new OrderFilterDTO($request->validated());
-        $orders = $this->orderService->paginate($filterDTO);
+        try {
+            $filterDTO = OrderFilterDTO::fromArray($request->validated());
+            $orders = $this->orderService->paginate($filterDTO);
 
-        return OrderResource::collection($orders);
-    }
+                  // Si el servicio retorna un paginador
+            if ($orders instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                return $this->paginatedResponse(
+                    $orders->through(fn($history) => new OrderResource($history)),
+                    'Órdenes obtenidas exitosamente'
+                );
+            }
 
-    /**
-     * Mostrar una orden
-     */
-    public function show(int $id): JsonResponse|OrderResource
-    {
-        $order = $this->orderService->findById($id);
-
-        if (!$order) {
-            return response()->json(['message' => 'Orden no encontrada'], 404);
+            // Si retorna una colección
+            return $this->collectionResponse(
+                OrderResource::collection($orders),
+                'Órdenes obtenidas exitosamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return new OrderResource($order);
     }
 
     /**
-     * Crear una orden
+     * Mostrar una orden específica
      */
-    public function store(OrderStoreRequest $request): OrderResource
+    public function show(int $id): JsonResponse
     {
-        $orderDTO = OrderDTO::fromArray($request->validated());
-        $order = $this->orderService->create($orderDTO);
+        try {
+            $order = $this->orderService->findById($id);
 
-        return new OrderResource($order);
+            if (!$order) {
+                return $this->notFoundResponse('Orden no encontrada');
+            }
+
+            return $this->resourceResponse(
+                new OrderResource($order),
+                'Orden obtenida exitosamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
     /**
-     * Actualizar una orden
+     * Crear una nueva orden
+     */
+    public function store(OrderStoreRequest $request): JsonResponse
+    {
+        try {
+            $orderDTO = OrderDTO::fromArray($request->validated());
+            $order = $this->orderService->create($orderDTO);
+
+            return $this->resourceResponse(
+                new OrderResource($order),
+                'Orden creada correctamente',
+                201
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    /**
+     * Actualizar una orden existente
      */
     public function update(OrderUpdateRequest $request, int $id): JsonResponse
     {
-        $orderDTO = OrderDTO::fromArray($request->validated());
-        $updated = $this->orderService->update($id, $orderDTO);
+        try {
+            $order = $this->orderService->findById($id);
 
-        if (!$updated) {
-            return response()->json(['message' => 'No se pudo actualizar la orden'], 400);
+            if (!$order) {
+                return $this->notFoundResponse('Orden no encontrada');
+            }
+
+            $orderDTO = OrderDTO::fromArray($request->validated());
+            $updatedOrder = $this->orderService->update($id, $orderDTO);
+
+            return $this->resourceResponse(
+                new OrderResource($updatedOrder),
+                'Orden actualizada correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json(['message' => 'Orden actualizada correctamente']);
     }
 
     /**
@@ -78,12 +115,22 @@ class OrderController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $deleted = $this->orderService->delete($id);
+        try {
+            $order = $this->orderService->findById($id);
 
-        if (!$deleted) {
-            return response()->json(['message' => 'No se pudo eliminar la orden'], 400);
+            if (!$order) {
+                return $this->notFoundResponse('Orden no encontrada');
+            }
+
+            $this->orderService->delete($id);
+
+            return $this->successResponse(
+                null,
+                'Orden eliminada correctamente',
+                204
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json(['message' => 'Orden eliminada correctamente']);
     }
 }

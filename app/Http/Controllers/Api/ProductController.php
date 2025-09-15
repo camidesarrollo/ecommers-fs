@@ -21,22 +21,20 @@ class ProductController extends Controller
 
     public function __construct(
         protected ProductService $productService,
-        protected OrderItemService $orderItemService,
+        protected OrderItemService $orderItemService
     ) {}
 
-    /**
-     * Listar productos con paginación
-     */
+    /** Listar productos con paginación */
     public function index(ProductIndexRequest $request): JsonResponse
     {
         try {
             $filterDTO = ProductFilterDTO::fromArray($request->validated());
             $products = $this->productService->paginate($filterDTO);
 
-            // Si el servicio retorna un paginador
+              // Si el servicio retorna un paginador
             if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator) {
                 return $this->paginatedResponse(
-                    $products->through(fn($product) => new ProductResource($product)),
+                    $products->through(fn($history) => new ProductResource($history)),
                     'Productos obtenidos exitosamente'
                 );
             }
@@ -52,9 +50,7 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Listar todos los productos (sin paginación)
-     */
+    /** Listar todos los productos (sin paginación) */
     public function list(ProductIndexRequest $request): JsonResponse
     {
         try {
@@ -71,9 +67,7 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Mostrar un producto específico
-     */
+    /** Mostrar un producto específico */
     public function show(int $id): JsonResponse
     {
         try {
@@ -93,9 +87,7 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Crear un nuevo producto
-     */
+    /** Crear un nuevo producto */
     public function store(ProductStoreRequest $request): JsonResponse
     {
         try {
@@ -113,20 +105,12 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Obtener productos destacados (más vendidos)
-     */
+    /** Productos destacados (más vendidos) */
     public function productosDestacados(): JsonResponse
     {
         try {
-            // Obtenemos los top 15 productos más vendidos del último año
             $topOrderItems = $this->orderItemService->getTopProductsLastYear(15);
-
-            // Mapear los productVariants a los productos
-            $products = $topOrderItems->map(fn($orderItem) => $orderItem->productVariant->product);
-
-            // Remover duplicados si algún producto tiene varias variantes
-            $products = $products->unique('id');
+            $products = $topOrderItems->map(fn($item) => $item->productVariant->product)->unique('id');
 
             return $this->collectionResponse(
                 ProductResource::collection($products),
@@ -138,9 +122,7 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Buscar productos con filtros
-     */
+    /** Buscar productos con filtros */
     public function search(ProductSearchRequest $request): JsonResponse
     {
         try {
@@ -157,14 +139,12 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Actualizar un producto existente
-     */
+    /** Actualizar un producto existente */
     public function update(ProductUpdateRequest $request, int $id): JsonResponse
     {
         try {
             $product = $this->productService->findById($id);
-            
+
             if (!$product) {
                 return $this->notFoundResponse('Producto no encontrado');
             }
@@ -182,20 +162,18 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Eliminar un producto
-     */
+    /** Eliminar un producto */
     public function destroy(int $id): JsonResponse
     {
         try {
             $product = $this->productService->findById($id);
-            
+
             if (!$product) {
                 return $this->notFoundResponse('Producto no encontrado');
             }
 
             $this->productService->delete($product->id);
-            
+
             return $this->successResponse(
                 null,
                 'Producto eliminado correctamente',

@@ -21,6 +21,17 @@ class OrderFilterDTO
         $this->page = $filters['page'] ?? 1;
     }
 
+    /**
+     * Crear instancia desde un array
+     */
+    public static function fromArray(array $filters): self
+    {
+        return new self($filters);
+    }
+
+    /**
+     * Convertir DTO a array
+     */
     public function toArray(): array
     {
         return [
