@@ -28,7 +28,9 @@ class ProductVariantPriceHistoryRepository implements ProductVariantPriceHistory
                 'lista_productos.typeProduct',
                 'lista_productos.variant',
                 'lista_productos.name',
-                'lista_productos.slug'
+                'lista_productos.slug',
+                'product_variants.stock_status',
+                'product_variants.stock_quantity'
             ]);
 
         // CORRECCIÓN: usar el DTO de filtro correcto

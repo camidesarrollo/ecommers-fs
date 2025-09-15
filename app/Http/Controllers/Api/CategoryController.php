@@ -30,6 +30,7 @@ class CategoryController extends Controller
         $filterDTO = new CategoryFilterDTO($request->validated());
         $categories = $this->categoryService->paginate($filterDTO);
 
+
         return CategoryResource::collection($categories);
     }
 

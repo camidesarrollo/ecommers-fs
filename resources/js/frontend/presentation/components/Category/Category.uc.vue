@@ -1,5 +1,5 @@
 <template>
-  <section class="py-10 bg-gray-100">
+  <section v-if="categorias.length > 0"  class="py-10 bg-gray-100">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-2xl font-bold text-center mb-8 text-gray-800">Categorías</h2>
 
@@ -10,13 +10,13 @@
           >
             <!-- Badge de cantidad -->
             <div class="absolute top-2 right-2 bg-white text-gray-800 text-xs font-bold px-2 py-1 rounded-full shadow">
-              {{ cat.product_count }} productos
+              {{ cat.productCount }} productos
             </div>
 
             <!-- Badge de "Nuevo" -->
             <div
-              v-if="cat.is_new"
-              class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow"
+              v-if="cat.isNew"
+              class="absolute top-2 left-2 bg-red-500 text-gray text-xs font-bold px-2 py-1 rounded-full shadow"
             >
               Nuevo
             </div>
@@ -27,13 +27,13 @@
             </div>
 
             <!-- Nombre -->
-            <span class="text-lg font-bold text-white drop-shadow">{{ cat.name }}</span>
+            <span class="text-lg font-bold text-gray drop-shadow">{{ cat.name }}</span>
 
             <!-- Descripción -->
-            <span class="text-sm text-white/90 italic mb-1">{{ cat.description }}</span>
+            <span class="text-sm text-gray/90 italic mb-1">{{ cat.description }}</span>
 
             <!-- CTA -->
-            <span class="text-xs text-white/80 underline">Ver más</span>
+            <span class="text-xs text-gray/80 underline">Ver más</span>
           </div>
         </swiper-slide>
       </swiper>

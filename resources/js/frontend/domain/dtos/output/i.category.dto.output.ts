@@ -4,9 +4,9 @@ export interface ITraerCategoryDtoOutput {
   name: string;
   slug: string;
   description?: string;
-  short_description?: string;
-  product_count?: string;
-  is_new?: boolean; 
+  shortDescription?: string;
+  productCount?: string;
+  isNew?: boolean; 
   image?: string;
   bgClass?: string;
   sortOrder?: number;

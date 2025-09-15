@@ -22,7 +22,6 @@ class Category extends Model
         'sort_order',
         'is_active',
         'parent_id',
-        'is_new',              // 👈 también si lo tienes en la DB
         'create_at',
         'update_at'
     ];

@@ -8,6 +8,7 @@ export function useCategory(): { categorias: Ref<ITraerCategoryDtoOutput[]> } {
 
   // Callback para cuando lleguen las categorías
   const CallBackFunctionObtenerCategorias = (data: any) => {
+    console.log(data.data);
     categorias.value = data.data;
   };
 

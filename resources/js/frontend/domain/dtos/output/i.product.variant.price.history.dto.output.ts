@@ -15,5 +15,7 @@ export interface IProductVariantPriceHistoryDtoOutput {
   updated_at: string;
   typeProduct: string; //Tipo de producto
   variant: string //Variante
-  imagen: string 
+  imagen: string,
+  stock_status: string,
+  stock_quantity: string, 
 }

@@ -25,6 +25,8 @@ class ProductVariantPriceHistoryResource extends JsonResource
             'variant'            => $this->variant,
             'name'               => $this->name,
             'slug'               => $this->slug,
+            'stock_status'       => $this->stock_status,
+            'stock_quantity'     => $this->stock_quantity
         ];
     }
 
