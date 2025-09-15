@@ -75,7 +75,7 @@ class OrderRepository implements OrderRepositoryInterface
         return Order::all();
     }
 
-    public function paginate($modelo): LengthAwarePaginator
+    public function paginate($modelo, $perPage): LengthAwarePaginator
     {
         if ($modelo instanceof Builder) {
             $query = $modelo;
@@ -85,7 +85,7 @@ class OrderRepository implements OrderRepositoryInterface
             $query = Order::query();
         }
 
-        return $query->paginate(15);
+        return $query->paginate($perPage);
     }
 
     private function applyFilters(Builder $query, array $filters): void

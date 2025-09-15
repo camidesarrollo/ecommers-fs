@@ -17,7 +17,21 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function list(array|CategoryFilterDTO $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = Category::query();
+        $query = Category::query()
+            ->withCount('products') // genera campo "products_count"
+            ->select(
+                'id',
+                'name',
+                'slug',
+                'description',
+                'short_description',
+                'image',
+                'bg_class as bgClass',
+                'sort_order as sortOrder',
+                'is_active as isActive',
+                'parent_id as parentId',
+                'is_new'
+            );
 
         // Si los filtros vienen como DTO, convertir a array
         if ($filters instanceof CategoryFilterDTO) {
@@ -28,6 +42,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         $this->applyFilters($query, $filtersArray);
 
+        // CORREGIDO: Llamar paginate directamente en el query, no pasarlo como parámetro
         return $query->paginate($perPage);
     }
 
@@ -131,7 +146,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * Paginar modelo
      */
-    public function paginate($modelo): LengthAwarePaginator
+    public function paginate($modelo, $perPage): LengthAwarePaginator
     {
         // Si es un Query Builder
         if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
@@ -143,10 +158,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         // Por defecto usamos Category::query()
         else {
-            $query = Category::query();
+           $query = Category::withCount('products');
         }
 
-        return $query->paginate(15);
+        return $query->paginate($perPage);
     }
 
     /**
@@ -154,19 +169,22 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     private function applyFilters(Builder $query, array $filters): void
     {
-        if (isset($filters['name'])) {
+        if (isset($filters['name']) && !empty($filters['name'])) {
             $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
 
-        if (isset($filters['slug'])) {
+        if (isset($filters['slug']) && !empty($filters['slug'])) {
             $query->where('slug', 'like', '%' . $filters['slug'] . '%');
         }
 
         if (isset($filters['is_active'])) {
-            $query->where('is_active', $filters['is_active']);
+            // CORREGIDO: Verificar que sea un booleano válido
+            if (is_bool($filters['is_active'])) {
+                $query->where('is_active', $filters['is_active']);
+            }
         }
 
-        if (isset($filters['parent_id'])) {
+        if (array_key_exists('parent_id', $filters)) {
             if ($filters['parent_id'] === null) {
                 $query->whereNull('parent_id');
             } else {
@@ -174,16 +192,16 @@ class CategoryRepository implements CategoryRepositoryInterface
             }
         }
 
-        if (isset($filters['created_from'])) {
+        if (isset($filters['created_from']) && !empty($filters['created_from'])) {
             $query->whereDate('created_at', '>=', $filters['created_from']);
         }
 
-        if (isset($filters['created_to'])) {
+        if (isset($filters['created_to']) && !empty($filters['created_to'])) {
             $query->whereDate('created_at', '<=', $filters['created_to']);
         }
 
-        if (isset($filters['search'])) {
-            $search = $filters['search'];
+        if (isset($filters['search']) && !empty($filters['search'])) {
+            $search = trim($filters['search']);
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere('slug', 'like', '%' . $search . '%')
@@ -191,12 +209,18 @@ class CategoryRepository implements CategoryRepositoryInterface
             });
         }
 
-        // Ordenamiento por defecto
-        if (!isset($filters['order_by'])) {
-            $query->orderBy('name', 'asc');
-        } else {
-            $orderDirection = $filters['order_direction'] ?? 'asc';
+        // CORREGIDO: Validar columnas permitidas para order_by
+        $allowedOrderColumns = ['id', 'name', 'slug', 'created_at', 'sort_order', 'is_active'];
+
+        if (isset($filters['order_by']) && in_array($filters['order_by'], $allowedOrderColumns)) {
+            $orderDirection = isset($filters['order_direction']) &&
+                in_array(strtolower($filters['order_direction']), ['asc', 'desc'])
+                ? $filters['order_direction']
+                : 'asc';
             $query->orderBy($filters['order_by'], $orderDirection);
+        } else {
+            // Ordenamiento por defecto
+            $query->orderBy('name', 'asc');
         }
     }
 }

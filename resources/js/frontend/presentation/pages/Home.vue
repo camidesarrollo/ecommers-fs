@@ -1,11 +1,7 @@
 <template>
     <BannerProductos />
 
-
-    <!-- Products Offer -->
-    <ProductosOferta />
-
-    <section class="py-12 text-white bg-gradient-to-tr from-indigo-500 to-purple-700">
+    <section class="py-12 text-brown-900 bg-gradient-to-tr from-green-400 to-yellow-100">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -44,6 +40,10 @@
         </div>
     </section>
 
+    <Category />
+
+    <!-- Products Offer -->
+    <ProductosOferta />
 
     <!-- Featured Products -->
     <ProductosDestacados />
@@ -56,7 +56,6 @@
         </div>
     </section>
 
-    <Category />
 
     <ProductosRecientes />
 

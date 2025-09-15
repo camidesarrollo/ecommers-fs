@@ -52,7 +52,7 @@ class ProductVariantPriceHistoryService
      */
     public function paginate(ProductVariantPriceHistoryFilterDTO $filter): LengthAwarePaginator
     {
-        return $this->ProductRepository->paginate(
+        return $this->ProductRepository->paginate(null,
             $filter->perPage
         );
     }

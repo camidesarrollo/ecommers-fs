@@ -64,7 +64,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Paginar modelo
      */
-    public function paginate($modelo): LengthAwarePaginator
+    public function paginate($modelo, $perPage): LengthAwarePaginator
     {
         // Si es un Query Builder
         if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
@@ -75,6 +75,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
             $query = $modelo::query();
         }
 
-        return $query->paginate(15);
+        return $query->paginate($perPage);
     }
 }

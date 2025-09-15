@@ -10,52 +10,78 @@ use App\Http\Requests\OrderItem\OrderItemIndexRequest;
 use App\Http\Requests\OrderItem\OrderItemStoreRequest;
 use App\Http\Requests\OrderItem\OrderItemUpdateRequest;
 use App\Http\Resources\OrderItemResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 
 class OrderItemController extends Controller
 {
-    private OrderItemService $orderItemService;
+    use ApiResponseTrait;
 
-    public function __construct(OrderItemService $orderItemService)
-    {
-        $this->orderItemService = $orderItemService;
-    }
+    public function __construct(private OrderItemService $orderItemService) {}
 
     /**
      * Listar ítems de órdenes con paginación
      */
-    public function index(OrderItemIndexRequest $request): AnonymousResourceCollection
+    public function index(OrderItemIndexRequest $request): JsonResponse
     {
-        $filterDTO = new OrderItemFilterDTO($request->validated());
-        $items = $this->orderItemService->paginate($filterDTO);
+        try {
+            $filterDTO = new OrderItemFilterDTO($request->validated());
+            $items = $this->orderItemService->paginate($filterDTO);
 
-        return OrderItemResource::collection($items);
+            if ($items instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                return $this->paginatedResponse(
+                    $items->through(fn($item) => new OrderItemResource($item)),
+                    'Ítems de orden obtenidos exitosamente'
+                );
+            }
+
+            return $this->collectionResponse(
+                OrderItemResource::collection($items),
+                'Ítems de orden obtenidos exitosamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
     /**
      * Mostrar un ítem de orden
      */
-    public function show(int $id): JsonResponse|OrderItemResource
+    public function show(int $id): JsonResponse
     {
-        $item = $this->orderItemService->findById($id);
+        try {
+            $item = $this->orderItemService->findById($id);
 
-        if (!$item) {
-            return response()->json(['message' => 'Ítem de orden no encontrado'], 404);
+            if (!$item) {
+                return $this->notFoundResponse('Ítem de orden no encontrado');
+            }
+
+            return $this->resourceResponse(
+                new OrderItemResource($item),
+                'Ítem de orden obtenido exitosamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return new OrderItemResource($item);
     }
 
     /**
      * Crear un ítem de orden
      */
-    public function store(OrderItemStoreRequest $request): OrderItemResource
+    public function store(OrderItemStoreRequest $request): JsonResponse
     {
-        $itemDTO = OrderItemDTO::fromArray($request->validated());
-        $item = $this->orderItemService->create($itemDTO);
+        try {
+            $itemDTO = OrderItemDTO::fromArray($request->validated());
+            $item = $this->orderItemService->create($itemDTO);
 
-        return new OrderItemResource($item);
+            return $this->resourceResponse(
+                new OrderItemResource($item),
+                'Ítem de orden creado correctamente',
+                201
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
     /**
@@ -63,14 +89,22 @@ class OrderItemController extends Controller
      */
     public function update(OrderItemUpdateRequest $request, int $id): JsonResponse
     {
-        $itemDTO = OrderItemDTO::fromArray($request->validated());
-        $updated = $this->orderItemService->update($id, $itemDTO);
+        try {
+            $item = $this->orderItemService->findById($id);
+            if (!$item) {
+                return $this->notFoundResponse('Ítem de orden no encontrado');
+            }
 
-        if (!$updated) {
-            return response()->json(['message' => 'No se pudo actualizar el ítem de la orden'], 400);
+            $itemDTO = OrderItemDTO::fromArray($request->validated());
+            $updated = $this->orderItemService->update($id, $itemDTO);
+
+            return $this->successResponse(
+                new OrderItemResource($updated),
+                'Ítem de orden actualizado correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json(['message' => 'Ítem de orden actualizado correctamente']);
     }
 
     /**
@@ -78,21 +112,38 @@ class OrderItemController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $deleted = $this->orderItemService->delete($id);
+        try {
+            $item = $this->orderItemService->findById($id);
+            if (!$item) {
+                return $this->notFoundResponse('Ítem de orden no encontrado');
+            }
 
-        if (!$deleted) {
-            return response()->json(['message' => 'No se pudo eliminar el ítem de la orden'], 400);
+            $this->orderItemService->delete($id);
+
+            return $this->successResponse(
+                null,
+                'Ítem de orden eliminado correctamente',
+                204
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json(['message' => 'Ítem de orden eliminado correctamente']);
     }
 
+    /**
+     * Productos más vendidos del último año
+     */
     public function topProducts(): JsonResponse
     {
-        $topProducts = $this->orderItemService->getTopProductsLastYear(15);
+        try {
+            $topProducts = $this->orderItemService->getTopProductsLastYear(15);
 
-        return response()->json([
-            'data' => $topProducts
-        ]);
+            return $this->collectionResponse(
+                OrderItemResource::collection($topProducts),
+                'Top productos del último año obtenidos exitosamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 }

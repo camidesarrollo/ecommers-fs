@@ -220,7 +220,7 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Paginar modelo
      */
-    public function paginate($modelo): LengthAwarePaginator
+    public function paginate($modelo, $perPage): LengthAwarePaginator
     {
         // Si es un Query Builder
         if ($modelo instanceof \Illuminate\Database\Eloquent\Builder) {
@@ -235,7 +235,7 @@ class ProductRepository implements ProductRepositoryInterface
             $query = Product::with(['category', 'variants']);
         }
 
-        return $query->paginate(15);
+        return $query->paginate($perPage);
     }
 
 

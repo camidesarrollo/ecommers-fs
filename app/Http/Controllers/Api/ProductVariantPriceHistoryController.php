@@ -8,13 +8,15 @@ use App\Application\DTOs\ProductVariantPriceHistoryDTO;
 use App\Application\DTOs\ProductVariantPriceHistoryFilterDTO;
 use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryIndexRequest;
 use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryStoreRequest;
+use App\Http\Requests\ProductVariantPriceHistory\ProductVariantPriceHistoryUpdateRequest;
 use App\Http\Resources\ProductVariantPriceHistoryResource;
-use App\Http\Controllers\Api\ApiResponse;
+use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductVariantPriceHistoryController extends Controller
 {
+    use ApiResponseTrait;
+
     public function __construct(
         protected ProductVariantPriceHistoryService $service
     ) {}
@@ -22,22 +24,48 @@ class ProductVariantPriceHistoryController extends Controller
     /**
      * Listar historial de precios con filtros y paginación
      */
-    public function index(ProductVariantPriceHistoryIndexRequest $request): AnonymousResourceCollection
+    public function index(ProductVariantPriceHistoryIndexRequest $request): JsonResponse
     {
-        $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
-        $products = $this->service->paginate($filterDTO);
+        try {
+            $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
+            $priceHistory = $this->service->paginate($filterDTO);
 
-        return ProductVariantPriceHistoryResource::collection($products);
+            // Si el servicio retorna un paginador
+            if ($priceHistory instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                return $this->paginatedResponse(
+                    $priceHistory->through(fn($history) => new ProductVariantPriceHistoryResource($history)),
+                    'Historial de precios obtenido exitosamente'
+                );
+            }
+
+            // Si retorna una colección
+            return $this->collectionResponse(
+                ProductVariantPriceHistoryResource::collection($priceHistory),
+                'Historial de precios obtenido exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    public function list(ProductVariantPriceHistoryIndexRequest $request): AnonymousResourceCollection
+    /**
+     * Listar historial sin paginación (todos los registros filtrados)
+     */
+    public function list(ProductVariantPriceHistoryIndexRequest $request): JsonResponse
     {
-        $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
+        try {
+            $filterDTO = ProductVariantPriceHistoryFilterDTO::fromArray($request->validated());
+            $historial = $this->service->list($filterDTO);
 
-        // Llamamos al service -> list() que aplica todos los filtros
-        $historial = $this->service->list($filterDTO);
+            return $this->collectionResponse(
+                ProductVariantPriceHistoryResource::collection($historial),
+                'Lista completa del historial de precios obtenida exitosamente'
+            );
 
-        return ProductVariantPriceHistoryResource::collection($historial);
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
     /**
@@ -45,11 +73,21 @@ class ProductVariantPriceHistoryController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $history = $this->service->findById($id);
+        try {
+            $history = $this->service->findById($id);
 
-        return $history
-            ? ApiResponse::resource(new ProductVariantPriceHistoryResource($history), 'Registro encontrado')
-            : ApiResponse::notFound('Registro no encontrado');
+            if (!$history) {
+                return $this->notFoundResponse('Registro de historial de precios no encontrado');
+            }
+
+            return $this->resourceResponse(
+                new ProductVariantPriceHistoryResource($history),
+                'Registro de historial de precios obtenido exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
     /**
@@ -57,48 +95,68 @@ class ProductVariantPriceHistoryController extends Controller
      */
     public function store(ProductVariantPriceHistoryStoreRequest $request): JsonResponse
     {
-        $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
-        $history = $this->service->create($dto);
+        try {
+            $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
+            $history = $this->service->create($dto);
 
-        return ApiResponse::created(new ProductVariantPriceHistoryResource($history), 'Registro creado correctamente');
+            return $this->resourceResponse(
+                new ProductVariantPriceHistoryResource($history),
+                'Registro de historial de precios creado correctamente',
+                201
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    // /**
-    //  * Actualizar un registro de historial existente
-    //  */
-    // public function update(ProductVariantPriceHistoryUpdateRequest $request, int $id): JsonResponse
-    // {
-    //     $history = $this->service->findById($id);
-    //     if (!$history) {
-    //         return ApiResponse::notFound('Registro no encontrado');
-    //     }
+    /**
+     * Actualizar un registro de historial existente
+     */
+    public function update(ProductVariantPriceHistoryUpdateRequest $request, int $id): JsonResponse
+    {
+        try {
+            $history = $this->service->findById($id);
+            
+            if (!$history) {
+                return $this->notFoundResponse('Registro de historial de precios no encontrado');
+            }
 
-    //     $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
-    //     $history = $this->service->update($history, $dto);
+            $dto = ProductVariantPriceHistoryDTO::fromArray($request->validated());
+            $updatedHistory = $this->service->update($history->id, $dto);
 
-    //     return ApiResponse::success(new ProductVariantPriceHistoryResource($history), 'Registro actualizado correctamente');
-    // }
+            return $this->resourceResponse(
+                new ProductVariantPriceHistoryResource($updatedHistory),
+                'Registro de historial de precios actualizado correctamente'
+            );
 
-    // /**
-    //  * Eliminar un registro de historial
-    //  */
-    // public function destroy(int $id): JsonResponse
-    // {
-    //     $history = $this->service->findById($id);
-    //     if (!$history) {
-    //         return ApiResponse::notFound('Registro no encontrado');
-    //     }
-
-    //     $this->service->delete($history);
-    //     return ApiResponse::noContent();
-    // }
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
 
     /**
-     * Obtener historial actual por ID de variante
+     * Eliminar un registro de historial
      */
-    // public function currentByVariant(int $variantId): JsonResponse
-    // {
-    //     $histories = $this->service->getCurrentByVariantId($variantId);
-    //     return ApiResponse::send(ProductVariantPriceHistoryResource::collection($histories));
-    // }
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $history = $this->service->findById($id);
+            
+            if (!$history) {
+                return $this->notFoundResponse('Registro de historial de precios no encontrado');
+            }
+
+            $this->service->delete($id);
+            
+            return $this->successResponse(
+                null,
+                'Registro de historial de precios eliminado correctamente',
+                204
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
 }

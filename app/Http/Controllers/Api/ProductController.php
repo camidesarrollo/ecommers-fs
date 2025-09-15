@@ -12,116 +12,198 @@ use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Requests\Product\ProductSearchRequest;
 use App\Http\Resources\ProductResource;
-use App\Http\Controllers\Api\ApiResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
+    use ApiResponseTrait;
+
     public function __construct(
         protected ProductService $productService,
-        protected OrderItemService $orderItemService // 👈 inyectamos el service
+        protected OrderItemService $orderItemService,
     ) {}
 
-
-    public function index(ProductIndexRequest $request): AnonymousResourceCollection
+    /**
+     * Listar productos con paginación
+     */
+    public function index(ProductIndexRequest $request): JsonResponse
     {
-        $filterDTO = ProductFilterDTO::fromArray($request->validated());
-        $products = $this->productService->paginate($filterDTO);
+        try {
+            $filterDTO = ProductFilterDTO::fromArray($request->validated());
+            $products = $this->productService->paginate($filterDTO);
 
-        return ProductResource::collection($products);
+            // Si el servicio retorna un paginador
+            if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                return $this->paginatedResponse(
+                    $products->through(fn($product) => new ProductResource($product)),
+                    'Productos obtenidos exitosamente'
+                );
+            }
+
+            // Si retorna una colección
+            return $this->collectionResponse(
+                ProductResource::collection($products),
+                'Productos obtenidos exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    public function list(ProductIndexRequest $request): AnonymousResourceCollection
+    /**
+     * Listar todos los productos (sin paginación)
+     */
+    public function list(ProductIndexRequest $request): JsonResponse
     {
-        $filterDTO = ProductFilterDTO::fromArray($request->validated());
+        try {
+            $filterDTO = ProductFilterDTO::fromArray($request->validated());
+            $products = $this->productService->list($filterDTO);
 
-        // Llamamos al service -> list() que aplica todos los filtros
-        $historial = $this->productService->list($filterDTO);
+            return $this->collectionResponse(
+                ProductResource::collection($products),
+                'Lista de productos obtenida exitosamente'
+            );
 
-        return ProductResource::collection($historial);
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-
+    /**
+     * Mostrar un producto específico
+     */
     public function show(int $id): JsonResponse
     {
-        $product = $this->productService->findById($id);
+        try {
+            $product = $this->productService->findById($id);
 
-        return $product
-            ? ApiResponse::resource(new ProductResource($product), 'Producto encontrado')
-            : ApiResponse::notFound('Producto no encontrado');
+            if (!$product) {
+                return $this->notFoundResponse('Producto no encontrado');
+            }
+
+            return $this->resourceResponse(
+                new ProductResource($product),
+                'Producto obtenido exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
+    /**
+     * Crear un nuevo producto
+     */
     public function store(ProductStoreRequest $request): JsonResponse
     {
-        $dto = ProductDTO::fromArray($request->validated());
-        $product = $this->productService->create($dto);
+        try {
+            $dto = ProductDTO::fromArray($request->validated());
+            $product = $this->productService->create($dto);
 
-        return ApiResponse::created(new ProductResource($product), 'Producto creado correctamente');
+            return $this->resourceResponse(
+                new ProductResource($product),
+                'Producto creado correctamente',
+                201
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    public function productosDestacados(): AnonymousResourceCollection
+    /**
+     * Obtener productos destacados (más vendidos)
+     */
+    public function productosDestacados(): JsonResponse
     {
-        // Obtenemos los top 15 productos más vendidos del último año
-        $topOrderItems = $this->orderItemService->getTopProductsLastYear(15);
+        try {
+            // Obtenemos los top 15 productos más vendidos del último año
+            $topOrderItems = $this->orderItemService->getTopProductsLastYear(15);
 
-        // Mapear los productVariants a los productos
-        $products = $topOrderItems->map(fn($orderItem) => $orderItem->productVariant->product);
+            // Mapear los productVariants a los productos
+            $products = $topOrderItems->map(fn($orderItem) => $orderItem->productVariant->product);
 
-        // Remover duplicados si algún producto tiene varias variantes
-        $products = $products->unique('id');
+            // Remover duplicados si algún producto tiene varias variantes
+            $products = $products->unique('id');
 
-        return ProductResource::collection($products);
+            return $this->collectionResponse(
+                ProductResource::collection($products),
+                'Productos destacados obtenidos exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    // public function update(ProductUpdateRequest $request, int $id): JsonResponse
-    // {
-    //     $product = $this->productService->findById($id);
-    //     if (!$product) {
-    //         return ApiResponse::notFound('Producto no encontrado');
-    //     }
-
-    //     $dto = ProductDTO::fromArray($request->validated());
-    //     $product = $this->productService->update($product, $dto);
-
-    //     return ApiResponse::success(new ProductResource($product), 'Producto actualizado correctamente');
-    // }
-
-    // public function destroy(int $id): JsonResponse
-    // {
-    //     $product = $this->productService->findById($id);
-    //     if (!$product) {
-    //         return ApiResponse::notFound('Producto no encontrado');
-    //     }
-
-    //     $this->productService->delete($product);
-    //     return ApiResponse::noContent();
-    // }
-
-    // public function restore(int $id): JsonResponse
-    // {
-    //     $product = $this->productService->restore($id);
-    //     return $product
-    //         ? ApiResponse::success(new ProductResource($product), 'Producto restaurado correctamente')
-    //         : ApiResponse::notFound('No se pudo restaurar el producto');
-    // }
-
-    // public function featured(): JsonResponse
-    // {
-    //     $products = $this->productService->getFeatured();
-    //     $data = ProductResource::collection($products);
-
-    //     return ApiResponse::send($data);
-    // }
-
-    //   /**
-    //  * Buscar productos con filtros
-    //  */
-    public function search(ProductSearchRequest $request): AnonymousResourceCollection
+    /**
+     * Buscar productos con filtros
+     */
+    public function search(ProductSearchRequest $request): JsonResponse
     {
-        $filterDTO = ProductFilterDTO::fromArray($request->validated());
-        $products = $this->productService->search($filterDTO);
+        try {
+            $filterDTO = ProductFilterDTO::fromArray($request->validated());
+            $products = $this->productService->search($filterDTO);
 
-        return ProductResource::collection($products);
+            return $this->collectionResponse(
+                ProductResource::collection($products),
+                'Búsqueda de productos completada exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    /**
+     * Actualizar un producto existente
+     */
+    public function update(ProductUpdateRequest $request, int $id): JsonResponse
+    {
+        try {
+            $product = $this->productService->findById($id);
+            
+            if (!$product) {
+                return $this->notFoundResponse('Producto no encontrado');
+            }
+
+            $dto = ProductDTO::fromArray($request->validated());
+            $updatedProduct = $this->productService->update($product->id, $dto);
+
+            return $this->resourceResponse(
+                new ProductResource($updatedProduct),
+                'Producto actualizado correctamente'
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    /**
+     * Eliminar un producto
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $product = $this->productService->findById($id);
+            
+            if (!$product) {
+                return $this->notFoundResponse('Producto no encontrado');
+            }
+
+            $this->productService->delete($product->id);
+            
+            return $this->successResponse(
+                null,
+                'Producto eliminado correctamente',
+                204
+            );
+
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 }

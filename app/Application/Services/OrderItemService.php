@@ -76,7 +76,7 @@ class OrderItemService
 
     public function paginate(OrderItemFilterDTO $filter): LengthAwarePaginator
     {
-        return $this->orderItemRepository->paginate(
+        return $this->orderItemRepository->paginate(null,
             $filter->perPage
         );
     }

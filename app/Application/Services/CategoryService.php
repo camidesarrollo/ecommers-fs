@@ -71,7 +71,8 @@ class CategoryService
      */
     public function paginate(CategoryFilterDTO $filter): LengthAwarePaginator
     {
-        return $this->categoryRepository->paginate(
+
+        return $this->categoryRepository->paginate(null,
             $filter->perPage
         );
     }

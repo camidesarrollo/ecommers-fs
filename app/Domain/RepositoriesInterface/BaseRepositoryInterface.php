@@ -42,6 +42,6 @@ interface BaseRepositoryInterface
      */
     public function all(): Collection;
 
-    public function paginate($modelo): LengthAwarePaginator;
+    public function paginate($modelo, $perPage): LengthAwarePaginator;
         
 }

@@ -16,11 +16,15 @@ class Category extends Model
         'name',
         'slug',
         'description',
+        'short_description',   // 👈 agrega este si lo tienes en la DB
         'image',
         'bg_class',
         'sort_order',
         'is_active',
         'parent_id',
+        'is_new',              // 👈 también si lo tienes en la DB
+        'create_at',
+        'update_at'
     ];
 
     /**
@@ -37,5 +41,13 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    /**
+     * Relación: productos
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
     }
 }

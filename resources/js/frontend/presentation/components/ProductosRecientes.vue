@@ -34,16 +34,16 @@
     </div>
   </section>
 </template>
-
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import ProductCard from './ProductCard.vue';
 import { useProductList } from '../../application/callbacks/product.cb';
+import { toRaw } from 'vue';
 
 const breakpoints = {
   640: { slidesPerView: 1 },
@@ -57,27 +57,39 @@ const navigationOptions = {
 };
 
 // --- Productos recientes ---
-const { productos, listarProductos } = useProductList(); 
-// productos: ref([]), listarProductos: función API
+const { productos, listarProductos, loading, error } = useProductList();
 
 // Computed seguro, protege si productos.value aún no existe
 const productosRecientes = computed(() => {
-  console.log(productos?.value);
-  if (!productos?.value) return [];
-  return productos.value
-    .filter(p => p.is_in_stock) // solo productos en stock
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); // más recientes primero
+  const rawProductos = toRaw(productos?.value) || [];
+
+  console.log(
+    `[${new Date().toLocaleTimeString()}] Productos en computed:`,
+    rawProductos
+  );
+
+  if (!Array.isArray(rawProductos)) {
+    console.log('No hay productos o no es array');
+    return [];
+  }
+
+  // return rawProductos
+  //   .filter(p => p.is_in_stock) // solo productos en stock
+  //   .sort((a, b) => {
+  //     // Ordenar por fecha de creación (más recientes primero)
+  //     const dateA = new Date(a.created_at || 0).getTime();
+  //     const dateB = new Date(b.created_at || 0).getTime();
+  //     return dateB - dateA;
+  //   })
+  //   .slice(0, 12); // Limitar a 12 productos recientes
+
+  return rawProductos;
 });
 
 // Cargar productos al montar el componente
 onMounted(async () => {
-  await listarProductos({
-    search: '',
-    stockStatus: 'in_stock',
-    orderBy: 'created_at',
-    orderDirection: 'desc',
-    perPage: 20
-  });
+  console.log('Componente montado, cargando productos...');
+  await listarProductos();
 });
 
 // Variantes de estilos

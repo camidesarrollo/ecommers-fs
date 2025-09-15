@@ -19,12 +19,15 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
+            'shortDescription' => $this->short_description,
             'bgClass' => $this->bg_class,
+            'image' => $this->image ? asset($this->image) : null, // URL completa
+            'sortOrder' => $this->sort_order,
+            'isActive' => $this->is_active,
+            'isNew' => $this->is_new,
+            'parentId' => $this->parent_id,
+            'productCount' => $this->products_count ?? 0, // cantidad de productos
 
-            'image' => $this->image ? asset($this->image) : null, // url completa
-            'sort_order' => $this->sort_order,
-            'is_active' => $this->is_active,
-            'parent_id' => $this->parent_id,
             'parent' => $this->whenLoaded('parent', function () {
                 return [
                     'id' => $this->parent->id,
@@ -33,8 +36,8 @@ class CategoryResource extends JsonResource
                 ];
             }),
             'children' => CategoryResource::collection($this->whenLoaded('children')),
-            'created_at' => $this->created_at?->toDateTimeString(),
-            'updated_at' => $this->updated_at?->toDateTimeString(),
+            'createdAt' => $this->created_at?->toDateTimeString(),
+            'updatedAt' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }
