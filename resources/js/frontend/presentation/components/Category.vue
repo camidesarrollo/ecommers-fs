@@ -54,9 +54,13 @@ const { categorias } = useCategory();
 
 // Breakpoints de Swiper
 const breakpoints = {
-  640: { slidesPerView: 3 },
-  768: { slidesPerView: 4 },
-  1024: { slidesPerView: 5 },
+  320: { slidesPerView: 1 },
+  640: { slidesPerView: 2 },
+  768: { slidesPerView: 3 },
+  
+  1024: { slidesPerView: 3 },
+  1440: { slidesPerView: 4 },
+  
 };
 
 // Función para asignar color representativo según categoría usando los colores del negocio

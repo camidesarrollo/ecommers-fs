@@ -1,44 +1,7 @@
 <template>
     <BannerProductos />
 
-    <section class="py-12 text-brown-900 bg-gradient-to-tr from-green-400 to-yellow-100">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <!-- Tarjeta 1 -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
-                    <div class="flex justify-center mb-4">
-                        <img src="/public/img/icons8-en-tránsito.gif" alt="" class="w-10 h-10" />
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">
-                        DESPACHO GRATIS EN R. METROPOLITANA
-                    </h3>
-                    <p class="text-gray-600 text-sm">Por compras desde $100.000 + IVA</p>
-                </div>
-
-                <!-- Tarjeta 2 -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
-                    <div class="flex justify-center mb-4">
-                        <img src="/public/img/icons8-garantía.gif" alt="" class="w-10 h-10" />
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">PRODUCTOS DE CALIDAD</h3>
-                    <p class="text-gray-600 text-sm">Con altos estándares de exigencia y selección</p>
-                </div>
-
-                <!-- Tarjeta 3 -->
-                <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition">
-                    <div class="flex justify-center mb-4">
-                        <img src="/public/img/icons8-terminal-punto-de-venta.gif" alt="" class="w-10 h-10" />
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">PAGO SEGURO</h3>
-                    <p class="text-gray-600 text-sm">
-                        Aceptamos tarjetas de débito y crédito de forma segura
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </section>
+   <Servicios />
 
     <Category />
 
@@ -129,6 +92,7 @@ import PacksSuscripciones from '../components/PacksSuscripciones.vue';
 import PropiedadesNutricionales from '../components/PropiedadesNutricionales.vue';
 import Gif from '../components/Gif.vue';
 import Newsletter from '../components/Newsletter.vue';
+import Servicios from '../components/Servicios.vue';
 export default {
     name: "Home",
     components: {
@@ -150,7 +114,8 @@ export default {
         PacksSuscripciones,
         PropiedadesNutricionales,
         Gif,
-        Newsletter
+        Newsletter,
+        Servicios
     },
     data() {
         return {
