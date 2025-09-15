@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-// Importamos las páginas
 import Home from '../presentation/pages/Home.vue';
 import About from '../presentation/pages/About.vue';
 import Contact from '../presentation/pages/Contact.vue';
@@ -11,14 +9,14 @@ import FavoritesPage from '../presentation/pages/FavoritesPage.vue';
 import ProductoList from '../presentation/pages/ProductoList.vue';
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/about', name: 'About', component: About },
-  { path: '/contact', name: 'Contact', component: Contact },
-  { path: '/preguntasFrecuentes', name: 'PreguntasFrecuentes', component: PreguntasFrecuentes },
-  { path: '/profile', name: 'UserProfile', component: UserProfile },
-  { path: '/favorites', name: 'FavoritesPage', component: FavoritesPage },
-  { path: '/productoList', name: 'ProductoList', component: ProductoList },
-  { path: '/carrito', name: 'CartPage', component: CartPage },
+  { path: '/', name: 'Home', component: Home, meta: { layout: 'public' } },
+  { path: '/about', name: 'About', component: About, meta: { layout: 'public' } },
+  { path: '/contact', name: 'Contact', component: Contact, meta: { layout: 'public' } },
+  { path: '/preguntasFrecuentes', name: 'PreguntasFrecuentes', component: PreguntasFrecuentes, meta: { layout: 'public' } },
+  { path: '/profile', name: 'UserProfile', component: UserProfile, meta: { layout: 'public' } },
+  { path: '/favorites', name: 'FavoritesPage', component: FavoritesPage, meta: { layout: 'public' } },
+  { path: '/productoList', name: 'ProductoList', component: ProductoList, meta: { layout: 'public' } },
+  { path: '/carrito', name: 'CartPage', component: CartPage, meta: { layout: 'public' } },
 ];
 
 const router = createRouter({
