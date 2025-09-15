@@ -1,5 +1,5 @@
 <template>
-  <section v-if="categorias.length > 0" class="py-10 bg-gray-100">
+  <section v-if="categorias.length > 0" class="py-10 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-2xl font-bold text-center mb-8 text-gray-800">Categorías</h2>
        
@@ -57,7 +57,6 @@ const breakpoints = {
   320: { slidesPerView: 1 },
   640: { slidesPerView: 2 },
   768: { slidesPerView: 3 },
-  
   1024: { slidesPerView: 3 },
   1440: { slidesPerView: 4 },
   
