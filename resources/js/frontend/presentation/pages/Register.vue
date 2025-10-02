@@ -11,11 +11,15 @@
         <!-- Logo y título -->
         <div class="text-center mb-8 slide-in">
           <div class="inline-flex items-center gap-3 mb-4">
-            <div class="w-16 h-16 rounded-full bg-gradient-nuts flex items-center justify-center floating pulse-warm">
+            <!-- <div class="w-16 h-16 rounded-full bg-gradient-nuts flex items-center justify-center floating pulse-warm">
               <font-awesome-icon :icon="['fas', 'seedling']" class="text-2xl text-white" />
+            </div> -->
+            <div
+              class="rounded-full p-2 bg-gradient-to-br from-yellow-700 to-yellow-500 text-white text-xl animate-bounce">
+              <img src="/public/img/fbe92c76-59d0-4525-a1fe-8e06a4c98dbd2.PNG" alt="" class="w-10 h-10" />
             </div>
           </div>
-          <h1 class="text-3xl font-bold text-dark-chocolate mb-2">¡Únete a nuestra familia!</h1>
+          <h1 class="text-3xl font-bold text-dark-chocolate mb-2">¡Registrate!</h1>
           <p class="text-gray-dark">Crea tu cuenta en Secos y Saludables JPJ</p>
         </div>
 
@@ -37,11 +41,7 @@
                   <font-awesome-icon :icon="['fas', 'envelope']" class="text-olive-green mr-2" />
                   Correo electrónico
                 </label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  id="email"
-                  placeholder="correo@ejemplo.com"
+                <input v-model="form.email" type="email" id="email" placeholder="correo@ejemplo.com"
                   :class="inputClass('email')">
                 <p v-if="errors.email" class="text-burgundy-red text-sm mt-1">
                   <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
@@ -55,11 +55,7 @@
                   <font-awesome-icon :icon="['fas', 'phone']" class="text-olive-green mr-2" />
                   Teléfono
                 </label>
-                <input
-                  v-model="form.phone"
-                  type="tel"
-                  id="phone"
-                  placeholder="+56 9 1234 5678"
+                <input v-model="form.phone" type="tel" id="phone" placeholder="+56 9 1234 5678"
                   :class="inputClass('phone')">
                 <p class="text-xs text-gray-dark mt-1">
                   Usaremos estos datos para verificar tu identidad y enviar información sobre tus compras.
@@ -83,12 +79,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-2">
                   <label for="name" class="block text-sm font-semibold text-dark-chocolate">Nombre</label>
-                  <input
-                    v-model="form.name"
-                    type="text"
-                    id="name"
-                    placeholder="Tu nombre"
-                    :class="inputClass('name')">
+                  <input v-model="form.name" type="text" id="name" placeholder="Tu nombre" :class="inputClass('name')">
                   <p v-if="errors.name" class="text-burgundy-red text-sm mt-1">
                     <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
                     {{ errors.name }}
@@ -97,11 +88,7 @@
 
                 <div class="space-y-2">
                   <label for="apellido" class="block text-sm font-semibold text-dark-chocolate">Apellido</label>
-                  <input
-                    v-model="form.apellido"
-                    type="text"
-                    id="apellido"
-                    placeholder="Tu apellido"
+                  <input v-model="form.apellido" type="text" id="apellido" placeholder="Tu apellido"
                     :class="inputClass('apellido')">
                   <p v-if="errors.apellido" class="text-burgundy-red text-sm mt-1">
                     <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
@@ -122,12 +109,7 @@
 
               <div class="space-y-2">
                 <label for="rut" class="block text-sm font-semibold text-dark-chocolate">RUT</label>
-                <input
-                  v-model="form.rut"
-                  type="text"
-                  id="rut"
-                  placeholder="12.345.678-9"
-                  @input="formatRut"
+                <input v-model="form.rut" type="text" id="rut" placeholder="12.345.678-9" @input="formatRut"
                   :class="inputClass('rut')">
                 <p class="text-xs text-gray-dark mt-1">
                   Verifica que el RUT/Pasaporte sea el tuyo y que tus datos coincidan con el documento.
@@ -152,15 +134,9 @@
                 <div class="space-y-2 relative">
                   <label for="password" class="block text-sm font-semibold text-dark-chocolate">Contraseña</label>
                   <div class="relative">
-                    <input
-                      v-model="form.password"
-                      :type="showPassword ? 'text' : 'password'"
-                      id="password"
-                      placeholder="••••••••"
-                      :class="inputClass('password') + ' pr-12'">
-                    <button
-                      type="button"
-                      @click="togglePassword"
+                    <input v-model="form.password" :type="showPassword ? 'text' : 'password'" id="password"
+                      placeholder="••••••••" :class="inputClass('password') + ' pr-12'">
+                    <button type="button" @click="togglePassword"
                       class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-dark hover:text-olive-green">
                       <font-awesome-icon :icon="['fas', showPassword ? 'eye-slash' : 'eye']" />
                     </button>
@@ -172,17 +148,12 @@
                 </div>
 
                 <div class="space-y-2 relative">
-                  <label for="confirmPassword" class="block text-sm font-semibold text-dark-chocolate">Confirma la contraseña</label>
+                  <label for="confirmPassword" class="block text-sm font-semibold text-dark-chocolate">Confirma la
+                    contraseña</label>
                   <div class="relative">
-                    <input
-                      v-model="form.confirmPassword"
-                      :type="showConfirmPassword ? 'text' : 'password'"
-                      id="confirmPassword"
-                      placeholder="••••••••"
-                      :class="inputClass('confirmPassword') + ' pr-12'">
-                    <button
-                      type="button"
-                      @click="toggleConfirmPassword"
+                    <input v-model="form.confirmPassword" :type="showConfirmPassword ? 'text' : 'password'"
+                      id="confirmPassword" placeholder="••••••••" :class="inputClass('confirmPassword') + ' pr-12'">
+                    <button type="button" @click="toggleConfirmPassword"
                       class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-dark hover:text-olive-green">
                       <font-awesome-icon :icon="['fas', showConfirmPassword ? 'eye-slash' : 'eye']" />
                     </button>
@@ -197,10 +168,7 @@
               <div v-if="form.password" class="space-y-2">
                 <div class="text-sm font-medium text-gray-dark">Fortaleza de contraseña:</div>
                 <div class="flex space-x-1">
-                  <div
-                    v-for="i in 4"
-                    :key="i"
-                    class="h-2 flex-1 rounded-full transition-colors"
+                  <div v-for="i in 4" :key="i" class="h-2 flex-1 rounded-full transition-colors"
                     :class="getPasswordStrengthClass(i)"></div>
                 </div>
                 <p class="text-xs" :class="getPasswordStrengthTextClass()">{{ passwordStrengthText }}</p>
@@ -210,9 +178,7 @@
             <!-- Términos y condiciones -->
             <div class="space-y-4">
               <label class="flex items-start cursor-pointer group">
-                <input
-                  v-model="form.acceptTerms"
-                  type="checkbox"
+                <input v-model="form.acceptTerms" type="checkbox"
                   class="mt-1 w-4 h-4 rounded border-2 border-gray-300 text-olive-green focus:ring-olive-green">
                 <span class="ml-3 text-sm text-gray-dark leading-relaxed">
                   Al crear tu cuenta estás aceptando
@@ -232,19 +198,8 @@
             </div>
 
             <!-- Botón de registro -->
-            <button
-              type="submit"
-              :disabled="loading || !isFormValid"
-              class="w-full btn-primary text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-olive-green focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed">
-              <span v-if="!loading">
-                <font-awesome-icon :icon="['fas', 'user-plus']" class="mr-2" />
-                Crear cuenta
-              </span>
-              <span v-else>
-                <font-awesome-icon :icon="['fas', 'spinner']" class="mr-2 fa-spin" />
-                Creando cuenta...
-              </span>
-            </button>
+            <UiButtons tipo="agregar" :label="'Crear cuenta'" :accion="crearCuenta" :loading="loading"
+              :isFormValid="isFormValid" icono="user-plus" loadingText="Creando cuenta..." />
           </form>
 
           <!-- Ya tienes cuenta -->
@@ -314,6 +269,7 @@ import {
 import { useUser } from "../../application/callbacks/user.cb"
 import { registerUserSchema } from "../../domain/schema/user.shema"
 import NutDecoration from '../components/NutDecoration/NutDecoration.vue'
+import UiButtons from '../components/Buttons/UiButtons.vue'
 
 library.add(
   faEnvelope,
@@ -337,7 +293,8 @@ export default {
   name: 'RegisterPage',
   components: {
     FontAwesomeIcon,
-    NutDecoration
+    NutDecoration,
+    UiButtons
   },
   setup() {
     const router = useRouter()
