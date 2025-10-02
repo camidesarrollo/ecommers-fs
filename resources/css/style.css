@@ -238,6 +238,12 @@
 /* =========================
    GRADIENTES PERSONALIZADOS
 ========================= */
+.to-mint-green {
+  --tw-gradient-to: #e8f5e9;
+}
+.from-beige {
+  --tw-gradient-from: #f5f5dc;
+}
 .bg-gradient-to-br.from-olive-green.to-mint-green {
   background: linear-gradient(to bottom right, var(--color-olive-green), var(--color-mint-green));
 }
@@ -471,13 +477,6 @@ button:disabled:hover {
   color: #FFFFFF;
 }
 
-.text-dark-chocolate {
-  color: #3B2F2F;
-}
-
-.text-gray-dark {
-  color: #4B4B4B;
-}
 
 .hover\:bg-green-700:hover {
   background-color: #556B2F;
@@ -639,9 +638,9 @@ button:disabled:hover {
 }
 
 .glass-effect {
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .pulse-glow {
@@ -670,10 +669,15 @@ button:disabled:hover {
 }
 
 .bg-pattern {
-  background-image:
+  /* background-image:
     radial-gradient(circle at 25% 25%, rgba(107, 142, 35, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(244, 196, 48, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(139, 94, 60, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 50% 50%, rgba(139, 94, 60, 0.05) 0%, transparent 50%); */
+
+  background-color: #f8f5f0;
+  background-image: radial-gradient(circle at 25px 25px, rgba(139, 119, 101, 0.05) 2%, transparent 0%),
+    radial-gradient(circle at 75px 75px, rgba(139, 119, 101, 0.05) 2%, transparent 0%);
+  background-size: 100px 100px;
 }
 
 .floating {
@@ -775,4 +779,55 @@ button:disabled:hover {
 .toast-leave-to {
   opacity: 0;
   transform: translateX(100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8b7765;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b5d4f;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Smooth scrollbar for notifications */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: var(--color-gray-light);
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: var(--color-olive-green);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: var(--color-olive-green-dark);
 }

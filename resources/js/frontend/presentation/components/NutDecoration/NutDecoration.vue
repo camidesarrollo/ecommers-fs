@@ -7,6 +7,7 @@
       :style="{
         left: nut.left,
         animationDelay: nut.delay,
+        animationDuration: nut.duration,
         fontSize: size,
         opacity: opacity
       }"
@@ -52,7 +53,8 @@ export default {
         result.push({
           emoji: props.nutTypes[i % props.nutTypes.length],
           left: `${(i + 1) * spacing}%`,
-          delay: `${i}s`
+          delay: `${i * 2}s`,
+          duration: `${8 + Math.random() * 4}s` // Duración variable entre 8-12s
         })
       }
       
@@ -76,17 +78,26 @@ export default {
 
 .nut-decoration {
   position: absolute;
-  animation: float 6s ease-in-out infinite;
+  bottom: -100px;
+  animation: floatUpDiagonal infinite ease-in-out;
   pointer-events: none;
   user-select: none;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
+@keyframes floatUpDiagonal {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
   }
-  50% {
-    transform: translateY(-20px) rotate(10deg);
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(50px) rotate(360deg);
+    opacity: 0;
   }
 }
 </style>

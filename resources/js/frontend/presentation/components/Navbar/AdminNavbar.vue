@@ -324,38 +324,3 @@ if (typeof document !== 'undefined') {
   });
 }
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
-}
-
-.fade-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* Smooth scrollbar for notifications */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: var(--color-gray-light);
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: var(--color-olive-green);
-  border-radius: 3px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: var(--color-olive-green-dark);
-}
-</style>

@@ -241,33 +241,3 @@ const showHelp = () => {
   emit('show-help');
 };
 </script>
-
-<style scoped>
-/* Smooth scrollbar */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: rgba(59, 47, 47, 0.3);
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: var(--color-olive-green);
-  border-radius: 3px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: var(--color-olive-green-dark);
-}
-
-/* Animations */
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-</style>
