@@ -26,6 +26,7 @@
         <!-- Formulario de registro -->
         <div class="glass-effect rounded-2xl p-8 shadow-2xl slide-in delay-200">
           <form @submit.prevent="handleRegister" class="space-y-8">
+
             <!-- Datos de contacto -->
             <div class="space-y-6">
               <div class="border-b border-gray-200 pb-4">
@@ -35,36 +36,16 @@
                 </h2>
               </div>
 
-              <!-- Email -->
-              <div class="space-y-2">
-                <label for="email" class="block text-sm font-semibold text-dark-chocolate">
-                  <font-awesome-icon :icon="['fas', 'envelope']" class="text-olive-green mr-2" />
-                  Correo electrónico
-                </label>
-                <input v-model="form.email" type="email" id="email" placeholder="correo@ejemplo.com"
-                  :class="inputClass('email')">
-                <p v-if="errors.email" class="text-burgundy-red text-sm mt-1">
-                  <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                  {{ errors.email }}
-                </p>
-              </div>
+              <!-- Email con UiInput -->
+              <UiInput id="email" v-model="form.email" type="email" label="Correo electrónico"
+                placeholder="correo@ejemplo.com" :icon="['fas', 'envelope']" :prefix-icon="['fas', 'at']"
+                :error="errors.email" required />
 
-              <!-- Teléfono -->
-              <div class="space-y-2">
-                <label for="phone" class="block text-sm font-semibold text-dark-chocolate">
-                  <font-awesome-icon :icon="['fas', 'phone']" class="text-olive-green mr-2" />
-                  Teléfono
-                </label>
-                <input v-model="form.phone" type="tel" id="phone" placeholder="+56 9 1234 5678"
-                  :class="inputClass('phone')">
-                <p class="text-xs text-gray-dark mt-1">
-                  Usaremos estos datos para verificar tu identidad y enviar información sobre tus compras.
-                </p>
-                <p v-if="errors.phone" class="text-burgundy-red text-sm mt-1">
-                  <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                  {{ errors.phone }}
-                </p>
-              </div>
+              <!-- Teléfono con UiInput -->
+              <UiInput id="phone" v-model="form.phone" type="tel" label="Teléfono" placeholder="+56 9 1234 5678"
+                :icon="['fas', 'phone']" :prefix-icon="['fas', 'mobile-alt']" :error="errors.phone"
+                helper-text="Usaremos estos datos para verificar tu identidad y enviar información sobre tus compras."
+                required />
             </div>
 
             <!-- Información personal -->
@@ -77,24 +58,13 @@
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <label for="name" class="block text-sm font-semibold text-dark-chocolate">Nombre</label>
-                  <input v-model="form.name" type="text" id="name" placeholder="Tu nombre" :class="inputClass('name')">
-                  <p v-if="errors.name" class="text-burgundy-red text-sm mt-1">
-                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                    {{ errors.name }}
-                  </p>
-                </div>
+                <!-- Nombre -->
+                <UiInput id="name" v-model="form.name" type="text" label="Nombre" placeholder="Tu nombre"
+                  :error="errors.name" required />
 
-                <div class="space-y-2">
-                  <label for="apellido" class="block text-sm font-semibold text-dark-chocolate">Apellido</label>
-                  <input v-model="form.apellido" type="text" id="apellido" placeholder="Tu apellido"
-                    :class="inputClass('apellido')">
-                  <p v-if="errors.apellido" class="text-burgundy-red text-sm mt-1">
-                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                    {{ errors.apellido }}
-                  </p>
-                </div>
+                <!-- Apellido -->
+                <UiInput id="apellido" v-model="form.apellido" type="text" label="Apellido" placeholder="Tu apellido"
+                  :error="errors.apellido" required />
               </div>
             </div>
 
@@ -107,18 +77,11 @@
                 </h2>
               </div>
 
-              <div class="space-y-2">
-                <label for="rut" class="block text-sm font-semibold text-dark-chocolate">RUT</label>
-                <input v-model="form.rut" type="text" id="rut" placeholder="12.345.678-9" @input="formatRut"
-                  :class="inputClass('rut')">
-                <p class="text-xs text-gray-dark mt-1">
-                  Verifica que el RUT/Pasaporte sea el tuyo y que tus datos coincidan con el documento.
-                </p>
-                <p v-if="errors.rut" class="text-burgundy-red text-sm mt-1">
-                  <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                  {{ errors.rut }}
-                </p>
-              </div>
+              <!-- RUT con formato automático -->
+              <UiInput id="rut" v-model="form.rut" type="text" label="RUT" placeholder="12.345.678-9"
+                :icon="['fas', 'id-card']" :prefix-icon="['fas', 'id-badge']" :error="errors.rut"
+                helper-text="Verifica que el RUT/Pasaporte sea el tuyo y que tus datos coincidan con el documento."
+                @input="formatRut" required />
             </div>
 
             <!-- Contraseña -->
@@ -131,47 +94,26 @@
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2 relative">
-                  <label for="password" class="block text-sm font-semibold text-dark-chocolate">Contraseña</label>
-                  <div class="relative">
-                    <input v-model="form.password" :type="showPassword ? 'text' : 'password'" id="password"
-                      placeholder="••••••••" :class="inputClass('password') + ' pr-12'">
-                    <button type="button" @click="togglePassword"
-                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-dark hover:text-olive-green">
-                      <font-awesome-icon :icon="['fas', showPassword ? 'eye-slash' : 'eye']" />
-                    </button>
-                  </div>
-                  <p v-if="errors.password" class="text-burgundy-red text-sm mt-1">
-                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                    {{ errors.password }}
-                  </p>
-                </div>
+                <!-- Contraseña -->
+                <UiInput id="password" v-model="form.password" type="password" label="Contraseña" placeholder="••••••••"
+                  :error="errors.password" :show-password-toggle="true" required />
 
-                <div class="space-y-2 relative">
-                  <label for="confirmPassword" class="block text-sm font-semibold text-dark-chocolate">Confirma la
-                    contraseña</label>
-                  <div class="relative">
-                    <input v-model="form.confirmPassword" :type="showConfirmPassword ? 'text' : 'password'"
-                      id="confirmPassword" placeholder="••••••••" :class="inputClass('confirmPassword') + ' pr-12'">
-                    <button type="button" @click="toggleConfirmPassword"
-                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-dark hover:text-olive-green">
-                      <font-awesome-icon :icon="['fas', showConfirmPassword ? 'eye-slash' : 'eye']" />
-                    </button>
-                  </div>
-                  <p v-if="errors.confirmPassword" class="text-burgundy-red text-sm mt-1">
-                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                    {{ errors.confirmPassword }}
-                  </p>
-                </div>
+                <!-- Confirmar contraseña -->
+                <UiInput id="confirmPassword" v-model="form.confirmPassword" type="password"
+                  label="Confirma la contraseña" placeholder="••••••••" :error="errors.confirmPassword"
+                  :show-password-toggle="true" required />
               </div>
 
+              <!-- Indicador de fortaleza -->
               <div v-if="form.password" class="space-y-2">
                 <div class="text-sm font-medium text-gray-dark">Fortaleza de contraseña:</div>
                 <div class="flex space-x-1">
                   <div v-for="i in 4" :key="i" class="h-2 flex-1 rounded-full transition-colors"
                     :class="getPasswordStrengthClass(i)"></div>
                 </div>
-                <p class="text-xs" :class="getPasswordStrengthTextClass()">{{ passwordStrengthText }}</p>
+                <p class="text-xs" :class="getPasswordStrengthTextClass()">
+                  {{ passwordStrengthText }}
+                </p>
               </div>
             </div>
 
@@ -179,7 +121,7 @@
             <div class="space-y-4">
               <label class="flex items-start cursor-pointer group">
                 <input v-model="form.acceptTerms" type="checkbox"
-                  class="mt-1 w-4 h-4 rounded border-2 border-gray-300 text-olive-green focus:ring-olive-green">
+                  class="mt-1 w-4 h-4 rounded border-2 border-gray-300 text-olive-green focus:ring-olive-green" />
                 <span class="ml-3 text-sm text-gray-dark leading-relaxed">
                   Al crear tu cuenta estás aceptando
                   <a href="/terminos" target="_blank" class="text-olive-green hover:text-nut-brown font-semibold">
@@ -201,6 +143,7 @@
             <UiButtons tipo="agregar" :label="'Crear cuenta'" :accion="crearCuenta" :loading="loading"
               :isFormValid="isFormValid" icono="user-plus" loadingText="Creando cuenta..." />
           </form>
+
 
           <!-- Ya tienes cuenta -->
           <div class="mt-8 text-center">
@@ -224,23 +167,7 @@
     </div>
 
     <!-- Toast de notificación -->
-    <Transition name="toast" appear>
-      <div v-if="toast.show" class="fixed top-4 right-4 z-50 max-w-sm">
-        <div class="bg-white border-l-4 rounded-lg shadow-lg p-4" :class="toastBorderClass">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <font-awesome-icon :icon="toastIcon" :class="toastIconClass" />
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-dark-chocolate">{{ toast.message }}</p>
-            </div>
-            <button @click="hideToast" class="ml-auto text-gray-400 hover:text-gray-600">
-              <font-awesome-icon :icon="['fas', 'times']" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
+    <ToastNotification :show="toast.show" :type="toast.type" :message="toast.message" @close="toast.show = false" />
   </div>
 </template>
 
@@ -270,7 +197,8 @@ import { useUser } from "../../application/callbacks/user.cb"
 import { registerUserSchema } from "../../domain/schema/user.shema"
 import NutDecoration from '../components/NutDecoration/NutDecoration.vue'
 import UiButtons from '../components/Buttons/UiButtons.vue'
-
+import UiInput from '../components/Input/UiInput.vue'
+import ToastNotification from '../components/Toast/ToastNotification.vue'
 library.add(
   faEnvelope,
   faPhone,
@@ -294,7 +222,9 @@ export default {
   components: {
     FontAwesomeIcon,
     NutDecoration,
-    UiButtons
+    UiButtons,
+    UiInput,
+    ToastNotification
   },
   setup() {
     const router = useRouter()
