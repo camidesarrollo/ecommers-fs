@@ -1,11 +1,11 @@
 import axios from "axios";
 import { CategoryInstance, BasicRequestCategory } from "../../infrastructure/configuration/service.config";
-import { ISetCategoryDtoInput, ISearchCategoryDtoInput, ITraerCategoryDtoInput } from "../../domain/dtos/input/i.category.dto.input.ts";
+import { ISetCategoryRequest, ISearchCategoryRequest, ITraerCategoryRequest } from "../../domain/dtos/input/i.category.dto.input.ts";
 
 /**
  * Traer una categoría específica
  */
-export const traerCategoryService = async (params: ITraerCategoryDtoInput) => {
+export const traerCategoryService = async (params: ITraerCategoryRequest) => {
   try {
     const uri = `${CategoryInstance}${BasicRequestCategory.Traer}?id=${params.id}`;
     const response = await axios.post(uri, params);
@@ -18,7 +18,7 @@ export const traerCategoryService = async (params: ITraerCategoryDtoInput) => {
 /**
  * Buscar categorías según filtros
  */
-export const buscarCategoryService = async (params: ISearchCategoryDtoInput) => {
+export const buscarCategoryService = async (params: ISearchCategoryRequest) => {
   try {
     const uri = `${CategoryInstance}${BasicRequestCategory.Buscar}`;
     const response = await axios.post(uri, params);
@@ -31,7 +31,7 @@ export const buscarCategoryService = async (params: ISearchCategoryDtoInput) => 
 /**
  * Crear una nueva categoría
  */
-export const crearCategoryService = async (params: ISetCategoryDtoInput) => {
+export const crearCategoryService = async (params: ISetCategoryRequest) => {
   try {
     const uri = `${CategoryInstance}${BasicRequestCategory.Crear}`;
     const response = await axios.post(uri, params);
@@ -44,7 +44,7 @@ export const crearCategoryService = async (params: ISetCategoryDtoInput) => {
 /**
  * Modificar una categoría existente
  */
-export const modificarCategoryService = async (params: ISetCategoryDtoInput) => {
+export const modificarCategoryService = async (params: ISetCategoryRequest) => {
   try {
     const uri = `${CategoryInstance}${BasicRequestCategory.Modificar}`;
     const response = await axios.post(uri, params);
@@ -57,7 +57,7 @@ export const modificarCategoryService = async (params: ISetCategoryDtoInput) => 
 /**
  * Eliminar una categoría
  */
-export const eliminarCategoryService = async (params: ISearchCategoryDtoInput) => {
+export const eliminarCategoryService = async (params: ISearchCategoryRequest) => {
   try {
     const uri = `${CategoryInstance}${BasicRequestCategory.Eliminar}`;
     const response = await axios.post(uri, params);

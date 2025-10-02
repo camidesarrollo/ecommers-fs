@@ -28,6 +28,66 @@
           </transition>
         </div>
 
+        <!-- Usuario/Login -->
+        <div class="relative">
+          <button @click="toggleUser" class="text-gray-700 text-2xl relative">
+            <font-awesome-icon v-if="!isLoggedIn" :icon="['fas', 'user']" />
+            <img v-else :src="user.avatar" :alt="user.name" class="w-8 h-8 rounded-full object-cover border-2 border-yellow-400">
+          </button>
+
+          <!-- Dropdown del usuario -->
+          <transition name="fade">
+            <div v-if="userOpen"
+              class="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+              
+              <!-- Usuario no logueado -->
+              <div v-if="!isLoggedIn" class="p-4">
+                <div class="text-center mb-4">
+                  <font-awesome-icon :icon="['fas', 'user-circle']" class="text-4xl text-gray-400 mb-2" />
+                  <p class="text-gray-600 text-sm">¡Inicia sesión para acceder a tu cuenta!</p>
+                </div>
+                <div class="space-y-2">
+                  <button @click="login" class="w-full bg-yellow-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition">
+                    Iniciar Sesión
+                  </button>
+                  <button @click="register" class="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition">
+                    Registrarse
+                  </button>
+                </div>
+              </div>
+
+              <!-- Usuario logueado -->
+              <div v-else class="p-4">
+                <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+                  <img :src="user.avatar" :alt="user.name" class="w-12 h-12 rounded-full object-cover">
+                  <div>
+                    <p class="font-semibold text-gray-800">{{ user.name }}</p>
+                    <p class="text-sm text-gray-500">{{ user.email }}</p>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <a href="/perfil" class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-gray-700">
+                    <font-awesome-icon :icon="['fas', 'user']" class="text-sm" />
+                    Mi Perfil
+                  </a>
+                  <a href="/pedidos" class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-gray-700">
+                    <font-awesome-icon :icon="['fas', 'box']" class="text-sm" />
+                    Mis Pedidos
+                  </a>
+                  <a href="/favoritos" class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-gray-700">
+                    <font-awesome-icon :icon="['fas', 'heart']" class="text-sm" />
+                    Favoritos
+                  </a>
+                  <button @click="logout" class="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-red-600">
+                    <font-awesome-icon :icon="['fas', 'sign-out-alt']" class="text-sm" />
+                    Cerrar Sesión
+                  </button>
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
+
         <!-- Carrito -->
         <div class="relative">
           <button @click="toggleCart" class="relative text-gray-700 text-2xl">
@@ -80,9 +140,9 @@
 import { ref, computed } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faShoppingCart, faUser, faUserCircle, faBox, faHeart, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faSearch, faShoppingCart)
+library.add(faSearch, faShoppingCart, faUser, faUserCircle, faBox, faHeart, faSignOutAlt)
 
 export default {
   name: "Header",
@@ -91,6 +151,15 @@ export default {
     const searchOpen = ref(false);
     const query = ref('');
     const cartOpen = ref(false);
+    const userOpen = ref(false);
+    const isLoggedIn = ref(false); // Cambia a true para probar el estado logueado
+
+    // Datos del usuario (solo visibles cuando está logueado)
+    const user = ref({
+      name: 'Juan Pérez',
+      email: 'juan@example.com',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=64&q=80'
+    });
 
     const cartItems = ref([
       { name: 'Almendras Premium', price: 5000, quantity: 2, image: 'https://images.unsplash.com/photo-1611078481039-0e118f2e503f?auto=format&fit=crop&w=64&q=80' },
@@ -100,12 +169,38 @@ export default {
 
     const toggleSearch = () => searchOpen.value = !searchOpen.value;
     const toggleCart = () => cartOpen.value = !cartOpen.value;
+    const toggleUser = () => userOpen.value = !userOpen.value;
 
     const submitSearch = () => {
       if (query.value.trim() === '') return;
       console.log("Buscando:", query.value);
       query.value = '';
       searchOpen.value = false;
+    };
+
+    const login = () => {
+      console.log("Redirigir a login");
+      // Aquí podrías redirigir a tu página de login
+      window.location.href = '/login';
+      // userOpen.value = false;
+      
+      // // Para demostración, simular login después de 1 segundo
+      // setTimeout(() => {
+      //   isLoggedIn.value = true;
+      // }, 1000);
+    };
+
+    const register = () => {
+      console.log("Redirigir a registro");
+      // Aquí podrías redirigir a tu página de registro
+      // window.location.href = '/register';
+      userOpen.value = false;
+    };
+
+    const logout = () => {
+      isLoggedIn.value = false;
+      userOpen.value = false;
+      console.log("Usuario cerró sesión");
     };
 
     const increaseQuantity = (index) => {
@@ -121,7 +216,26 @@ export default {
     const total = computed(() => cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0));
     const totalItems = computed(() => cartItems.value.reduce((sum, item) => sum + item.quantity, 0));
 
-    return { searchOpen, query, toggleSearch, submitSearch, cartOpen, toggleCart, cartItems, total, totalItems, increaseQuantity, decreaseQuantity };
+    return { 
+      searchOpen, 
+      query, 
+      toggleSearch, 
+      submitSearch, 
+      cartOpen, 
+      toggleCart, 
+      userOpen,
+      toggleUser,
+      isLoggedIn,
+      user,
+      login,
+      register,
+      logout,
+      cartItems, 
+      total, 
+      totalItems, 
+      increaseQuantity, 
+      decreaseQuantity 
+    };
   }
 }
 </script>
@@ -156,7 +270,7 @@ export default {
   transform: scale(0.8) translateY(-10px);
 }
 
-/* Carrito fade */
+/* Carrito y usuario fade */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

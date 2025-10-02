@@ -15,7 +15,7 @@
 
       <!-- Tabs de navegación -->
       <div class="bg-white rounded-xl shadow-md p-4 mb-6 flex flex-wrap gap-2">
-        <button
+        <UiButtons
           v-for="tab in tabs" :key="tab"
           @click="activeTab = tab"
           :class="activeTab === tab 
@@ -35,7 +35,7 @@
             <input type="email" placeholder="Correo electrónico" class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition" />
             <input type="text" placeholder="Teléfono" class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition" />
           </div>
-          <button class="bg-yellow-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
+          <UiButtons class="bg-yellow-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
             Actualizar información
           </button>
         </div>
@@ -48,11 +48,11 @@
               <p class="text-gray-500 text-sm">Av. Grecia 2929, Ñuñoa, Santiago</p>
             </div>
             <div class="flex gap-2">
-              <button class="text-blue-500 hover:underline text-sm">Editar</button>
-              <button class="text-red-500 hover:underline text-sm">Eliminar</button>
+              <UiButtons class="text-blue-500 hover:underline text-sm">Editar</button>
+              <UiButtons class="text-red-500 hover:underline text-sm">Eliminar</button>
             </div>
           </div>
-          <button class="bg-green-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
+          <UiButtons class="bg-green-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
             Agregar dirección
           </button>
         </div>
@@ -65,8 +65,8 @@
               <p class="text-gray-500 text-sm">3 productos - 05/08/2025</p>
             </div>
             <div class="flex gap-2">
-              <button class="bg-yellow-400 text-white px-4 py-1 rounded-lg text-sm hover:brightness-105 transition">Ver detalles</button>
-              <button class="bg-gray-100 text-gray-700 px-4 py-1 rounded-lg text-sm hover:bg-gray-200 transition">Repetir pedido</button>
+              <UiButtons class="bg-yellow-400 text-white px-4 py-1 rounded-lg text-sm hover:brightness-105 transition">Ver detalles</button>
+              <UiButtons class="bg-gray-100 text-gray-700 px-4 py-1 rounded-lg text-sm hover:bg-gray-200 transition">Repetir pedido</button>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
           <div v-for="(producto, index) in 6" :key="index" class="bg-gray-50 rounded-lg p-4 flex flex-col items-center shadow-sm hover:shadow-md transition">
             <div class="w-24 h-24 bg-yellow-100 rounded-lg mb-2 flex items-center justify-center text-2xl">🥜</div>
             <p class="font-semibold text-gray-800">Producto Favorito</p>
-            <button class="mt-2 bg-yellow-400 text-white px-4 py-1 rounded-lg hover:brightness-105 transition text-sm">
+            <UiButtons class="mt-2 bg-yellow-400 text-white px-4 py-1 rounded-lg hover:brightness-105 transition text-sm">
               Agregar al carrito
             </button>
           </div>
@@ -90,11 +90,11 @@
               <p class="text-gray-500 text-sm">Expira 12/25</p>
             </div>
             <div class="flex gap-2">
-              <button class="text-blue-500 hover:underline text-sm">Editar</button>
-              <button class="text-red-500 hover:underline text-sm">Eliminar</button>
+              <UiButtons class="text-blue-500 hover:underline text-sm">Editar</button>
+              <UiButtons class="text-red-500 hover:underline text-sm">Eliminar</button>
             </div>
           </div>
-          <button class="bg-green-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
+          <UiButtons class="bg-green-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition">
             Agregar método de pago
           </button>
         </div>

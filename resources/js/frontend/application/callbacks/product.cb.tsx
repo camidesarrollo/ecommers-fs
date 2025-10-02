@@ -2,7 +2,7 @@
 import { ref, Ref } from "vue";
 import { traerTodoProductUseCase, buscarProductUseCase, listarProductUseCase } from "../use-cases/product.use.case";
 import type { ITraerProductDtoOutput, IListaProductosDTOOutput } from "../../domain/dtos/output/i.product.dto.output";
-import type { ISearchProductDtoInput } from "../../domain/dtos/input/i.product.dto.input";
+import type { ISearchProductRequest } from "../../domain/dtos/input/i.product.dto.input";
 import { IApiRespuesta } from "../../domain/interfaces/i.apiRespuesta";
 
 export function useProduct(): { productos: Ref<ITraerProductDtoOutput[]>, traerProduct: () => void } {
@@ -22,7 +22,7 @@ export function useProduct(): { productos: Ref<ITraerProductDtoOutput[]>, traerP
 export function useProductSearch() {
   const productos = ref<ITraerProductDtoOutput[]>([]);
 
-  const buscarProduct = (filtros: ISearchProductDtoInput) => {
+  const buscarProduct = (filtros: ISearchProductRequest) => {
     return new Promise<ITraerProductDtoOutput[]>((resolve, reject) => {
       // Llamamos al use case y le pasamos el callback
       buscarProductUseCase(filtros, (response: any) => {

@@ -35,7 +35,7 @@
         />
 
         <!-- Botón personalizado -->
-        <Button
+        <UiButtons
           tipo="agregar"
           :accion="suscribirse"
           label="Suscribirme"
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Button from './Button.vue' // Importamos el componente
+import UiButtons from './Buttons/UiButtons.vue' // Importamos el componente
 
 const email = ref('')
 const mensaje = ref('')

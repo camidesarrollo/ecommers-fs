@@ -8,44 +8,26 @@
       </div>
 
       <!-- Carrusel -->
-      <Swiper
-        :slides-per-view="1"
-        :space-between="20"
-        :breakpoints="breakpoints"
-        :navigation="historiesVigentes.length > 4 ? navigationOptions : false"
-        pagination
-        class="pb-6"
-      >
+      <Swiper :slides-per-view="1" :space-between="20" :breakpoints="breakpoints"
+        :navigation="historiesVigentes.length > 4 ? navigationOptions : false" pagination class="pb-6">
         <SwiperSlide v-for="(history, index) in historiesVigentes" :key="index">
-          <ProductCard
-            :title="history.typeProduct"
-            :subtitle="history.variant"
-            :price="history.sale_price"
-            :oldPrice="history.price"
-            :discount="computeDiscount(history.price, history.sale_price)"
-            :image="history.imagen"
-            :bgClass="variantes[Math.floor(Math.random() * variantes.length)].bgClass"
-            :buttonType="variantes[Math.floor(Math.random() * variantes.length)].buttonType"
-          >
+          <ProductCard :title="history.typeProduct" :subtitle="history.variant" :price="history.sale_price"
+            :oldPrice="history.price" :discount="computeDiscount(history.price, history.sale_price)"
+            :image="history.imagen" :bgClass="variantes[Math.floor(Math.random() * variantes.length)].bgClass"
+            :buttonType="variantes[Math.floor(Math.random() * variantes.length)].buttonType">
             <!-- Sellos visuales -->
             <template #badge>
               <div class="absolute top-2 left-2 flex flex-col gap-1">
-                <span
-                  v-if="history.sale_price && history.price"
-                  class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow"
-                >
+                <span v-if="history.sale_price && history.price"
+                  class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
                   -{{ computeDiscount(history.price, history.sale_price) }}%
                 </span>
-                <span
-                  v-if="isSoloHoy(history)"
-                  class="bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded shadow"
-                >
+                <span v-if="isSoloHoy(history)"
+                  class="bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded shadow">
                   Solo hoy
                 </span>
-                <span
-                  v-if="Number(history.stock_quantity) <= 5"
-                  class="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded shadow"
-                >
+                <span v-if="Number(history.stock_quantity) <= 5"
+                  class="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
                   Quedan pocas unidades
                 </span>
               </div>
@@ -53,12 +35,7 @@
 
             <!-- Botón rápido -->
             <template #button>
-              <button
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
-                @click="addToCart(history)"
-              >
-                Agregar al carrito
-              </button>
+              <UiButtons tipo="agregar" :accion="() => addToCart(history)" label="Agregar al carrito" class="w-full" />
             </template>
           </ProductCard>
         </SwiperSlide>
@@ -74,6 +51,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import ProductCard from './ProductCard.vue';
+import UiButtons from '../components/Buttons/UiButtons.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useProductVariantPriceHistory } from '../../application/callbacks/product.variant.price.history.cb';
 import type { IProductVariantPriceHistoryDtoOutput } from "../../domain/dtos/output/i.product.variant.price.history.dto.output";
@@ -104,7 +82,7 @@ onMounted(() => {
 });
 
 const variantes = [
-  { bgClass: "bg-yellow-100", buttonType:  "agregar" },
+  { bgClass: "bg-yellow-100", buttonType: "agregar" },
   { bgClass: "bg-yellow-50", buttonType: "purple" },
   { bgClass: "bg-green-100", buttonType: "blue" },
   { bgClass: "bg-pink-100", buttonType: "red" },

@@ -54,7 +54,7 @@
           </ul>
 
           <!-- CTA con Button.vue -->
-          <Button
+          <UiButtons
             :tipo="'agregar'"
             :accion="() => window.location.href = pack.link"
             :label="`Suscríbete y ahorra ${pack.descuento ?? 0}%`"
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "./Button.vue"; // ajusta la ruta según tu proyecto
+import UiButtons from "./Buttons/UiButtons.vue"; // ajusta la ruta según tu proyecto
 
 interface Pack {
   nombre: string;

@@ -1,5 +1,5 @@
 // Input para crear o actualizar historial de precio de variante
-export interface ISetProductVariantPriceHistoryDtoInput {
+export interface ISetProductVariantPriceHistoryRequest {
   product_variant_id: number;       // ID de la variante del producto
   price: number;                    // precio normal
   sale_price?: number | null;       // precio de oferta, opcional
@@ -9,7 +9,7 @@ export interface ISetProductVariantPriceHistoryDtoInput {
 }
 
 // Input para buscar historial de precios (filtros)
-export interface ISearchProductVariantPriceHistoryDtoInput {
+export interface ISearchProductVariantPriceHistoryRequest {
   id?: number;
   productVariantId?: number;
   minPrice?: number;
@@ -25,12 +25,12 @@ export interface ISearchProductVariantPriceHistoryDtoInput {
 }
 
 // Input para traer un historial específico
-export interface ITraerProductVariantPriceHistoryDtoInput {
+export interface ITraerProductVariantPriceHistoryRequest {
   id: number;
 }
 
 // Input para acciones generales (activar/desactivar, eliminar, etc.)
-export interface IActionProductVariantPriceHistoryDtoInput {
+export interface IActionProductVariantPriceHistoryRequest {
   id: number;
   action: 'delete';                 // generalmente solo delete para historial
 }

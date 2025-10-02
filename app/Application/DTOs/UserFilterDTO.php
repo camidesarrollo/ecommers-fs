@@ -5,7 +5,10 @@ namespace App\Application\DTOs;
 class UserFilterDTO
 {
     public ?string $name;
+    public ?string $apellido;
     public ?string $email;
+    public ?string $rut;
+    public ?string $pasaporte;
     public ?string $role;
     public ?bool $status; // true = activo, false = inactivo
     public ?int $perPage;
@@ -14,7 +17,10 @@ class UserFilterDTO
     public function __construct(array $filters = [])
     {
         $this->name = $filters['name'] ?? null;
+        $this->apellido = $filters['apellido'] ?? null;
         $this->email = $filters['email'] ?? null;
+        $this->rut = $filters['rut'] ?? null;
+        $this->pasaporte = $filters['pasaporte'] ?? null;
         $this->role = $filters['role'] ?? null;
         $this->status = $filters['status'] ?? null;
         $this->perPage = $filters['per_page'] ?? 15;
@@ -27,12 +33,15 @@ class UserFilterDTO
     public function toArray(): array
     {
         return [
-            'name'     => $this->name,
-            'email'    => $this->email,
-            'role'     => $this->role,
-            'status'   => $this->status,
-            'perPage'  => $this->perPage,
-            'page'     => $this->page,
+            'name'       => $this->name,
+            'apellido'   => $this->apellido,
+            'email'      => $this->email,
+            'rut'        => $this->rut,
+            'pasaporte'  => $this->pasaporte,
+            'role'       => $this->role,
+            'status'     => $this->status,
+            'perPage'    => $this->perPage,
+            'page'       => $this->page,
         ];
     }
 }

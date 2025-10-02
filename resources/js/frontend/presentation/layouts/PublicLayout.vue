@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import HeaderPublic from '../components/Header.vue';
-import FooterPublic from '../components/Footer.vue';
+import HeaderPublic from '../components/Headers/Header.vue';
+import FooterPublic from '../components/Footers/Footer.vue';
 export default { components: { HeaderPublic, FooterPublic } };
 </script>

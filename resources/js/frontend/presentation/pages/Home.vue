@@ -54,7 +54,7 @@
         <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-5xl md:text-6xl font-extrabold mb-4 hero-text">Frutos Secos Premium</h1>
             <p class="text-xl md:text-2xl mb-8 hero-text opacity-90">Naturales, frescos y llenos de sabor</p>
-            <button
+            <UiButtons
                 class="bg-gradient-to-r from-pink-500 to-yellow-400 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:brightness-110 transition">
                 Explorar Productos
             </button>
@@ -73,16 +73,15 @@
 </template>
 
 <script>
-import Button from '../components/Button.vue';
 import ProductCard from '../components/ProductCard.vue';
 import CategoryPill from '../components/CategoryPill.vue';
 import SpecialOffer from '../components/SpecialOffer.vue';
-import Header from '../components/Header.vue';
+import Header from '../components/Headers/Header.vue';
 import BottomNav from '../components/BottomNav.vue';
 import ProductosDestacados from '../components/ProductosDestacados.vue';
 import ProductosRecientes from '../components/ProductosRecientes.vue';
 import ProductosOferta from '../components/ProductosOferta.vue';
-import Footer from '../components/Footer.vue';
+import Footer from '../components/Footers/Footer.vue';
 import BannerProductos from '../components/BannerProductos.vue';
 import Category from '../components/Category.vue';
 import ProductosEstrella from '../components/ProductosEstrella.vue';
@@ -96,7 +95,6 @@ import Servicios from '../components/Servicios.vue';
 export default {
     name: "Home",
     components: {
-        Button,
         ProductCard,
         CategoryPill,
         SpecialOffer,

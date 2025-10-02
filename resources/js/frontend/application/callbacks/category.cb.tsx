@@ -2,12 +2,13 @@
 import { ref, onMounted, Ref } from "vue";
 import { allActiveCategoryUseCase } from "../use-cases/category.use.case";
 import type { ITraerCategoryDtoOutput } from "../../domain/dtos/output/i.category.dto.output";
+import { IApiRespuesta } from "../../domain/interfaces/i.apiRespuesta";
 
 export function useCategory(): { categorias: Ref<ITraerCategoryDtoOutput[]> } {
   const categorias = ref<ITraerCategoryDtoOutput[]>([]);
 
   // Callback para cuando lleguen las categorías
-  const CallBackFunctionObtenerCategorias = (data: any) => {
+  const CallBackFunctionObtenerCategorias = (data: IApiRespuesta) => {
     console.log(data.data);
     categorias.value = data.data;
   };

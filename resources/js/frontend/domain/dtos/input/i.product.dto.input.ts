@@ -1,5 +1,5 @@
 // Input para crear o actualizar producto
-export interface ISetProductDtoInput {
+export interface ISetProductRequest {
   name: string;
   slug?: string;
   description?: string;
@@ -24,7 +24,7 @@ export interface ISetProductDtoInput {
 }
 
 // Input para buscar productos (filtros)
-export interface ISearchProductDtoInput {
+export interface ISearchProductRequest {
   search?: string;
   category_id?: number;
   isActive?: boolean;
@@ -39,12 +39,12 @@ export interface ISearchProductDtoInput {
 
 
 // Input para traer un producto específico
-export interface ITraerProductDtoInput {
+export interface ITraerProductRequest {
   id: number;
 }
 
 // Input para acciones generales (activar/desactivar, eliminar, etc.)
-export interface IActionProductDtoInput {
+export interface IActionProductRequest {
   id: number;
   action: 'activate' | 'deactivate' | 'delete';
 }

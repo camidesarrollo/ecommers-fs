@@ -10,13 +10,13 @@ import {
   traerTodoProductVariantPriceHistoryService,
   listarProductVariantPriceHistoryService,
 } from "../services/product.variant.price.history.service";
-import { ISetProductVariantPriceHistoryDtoInput, ISearchProductVariantPriceHistoryDtoInput, ITraerProductVariantPriceHistoryDtoInput } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
+import { ISetProductVariantPriceHistoryRequest, ISearchProductVariantPriceHistoryRequest, ITraerProductVariantPriceHistoryRequest } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
 
 /**
  * Traer una categoría específica
  */
 export const traerProductVariantPriceHistoryUseCase = async (
-  param: ITraerProductVariantPriceHistoryDtoInput,
+  param: ITraerProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   traerProductVariantPriceHistoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -25,7 +25,7 @@ export const traerProductVariantPriceHistoryUseCase = async (
 };
 
 export const listarProductVariantPriceHistoryUseCase = async (
-  // param: ITraerProductVariantPriceHistoryDtoInput,
+  // param: ITraerProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   listarProductVariantPriceHistoryService().then((response: AxiosResponse<IConfigType>) => {
@@ -39,7 +39,7 @@ export const listarProductVariantPriceHistoryUseCase = async (
  * Buscar ProductVariantPriceHistoryos según filtros
  */
 export const buscarProductVariantPriceHistoryUseCase = async (
-  param: ISearchProductVariantPriceHistoryDtoInput,
+  param: ISearchProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   buscarProductVariantPriceHistoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -51,7 +51,7 @@ export const buscarProductVariantPriceHistoryUseCase = async (
  * Crear una nueva categoría
  */
 export const crearProductVariantPriceHistoryUseCase = async (
-  param: ISetProductVariantPriceHistoryDtoInput,
+  param: ISetProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   crearProductVariantPriceHistoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -63,7 +63,7 @@ export const crearProductVariantPriceHistoryUseCase = async (
  * Modificar una categoría existente
  */
 export const modificarProductVariantPriceHistoryUseCase = async (
-  param: ISetProductVariantPriceHistoryDtoInput,
+  param: ISetProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   modificarProductVariantPriceHistoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -75,7 +75,7 @@ export const modificarProductVariantPriceHistoryUseCase = async (
  * Eliminar una categoría
  */
 export const eliminarProductVariantPriceHistoryUseCase = async (
-  param: ISearchProductVariantPriceHistoryDtoInput,
+  param: ISearchProductVariantPriceHistoryRequest,
   setState: SetStateFunction
 ) => {
   eliminarProductVariantPriceHistoryService(param).then((response: AxiosResponse<IConfigType>) => {

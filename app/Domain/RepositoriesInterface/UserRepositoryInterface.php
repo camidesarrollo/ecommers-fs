@@ -30,4 +30,11 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * Obtener un registro por ID
      */
     public function findById(int $id): ?User;
+
+    public function register(array|UserDTO $data): ?User;
+
+    public function findByEmail(string $email): ?User;
+
+    public function login(string $email, string $password, ?string $deviceName = null): ?array
+    
 }

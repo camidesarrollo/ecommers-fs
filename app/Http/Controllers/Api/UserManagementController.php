@@ -1,187 +1,194 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Domain\Models\User;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Application\Services\UserService;
+use App\Application\DTOs\UserDTO;
+use App\Application\DTOs\UserFilterDTO;
+use App\Http\Requests\User\UserIndexRequest;
+use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Traits\ApiResponseTrait;
+use Illuminate\Http\JsonResponse;
 
 class UserManagementController extends Controller
 {
-    public function __construct()
+    use ApiResponseTrait;
+
+    public function __construct(protected UserService $service)
     {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum')->except(['login', 'register']);
     }
 
-    // Listar usuarios (solo admins)
-    public function index(Request $request)
+    /**
+     * Listar usuarios con paginación y filtros
+     */
+    public function index(UserIndexRequest $request): JsonResponse
     {
-        $this->authorize('viewAny', User::class);
+        try {
+            $filterDTO = UserFilterDTO::fromArray($request->validated());
+            $users = $this->service->listUsers($filterDTO);
 
-        $users = User::with(['roles', 'permissions'])
-            ->when($request->role, function ($query, $role) {
-                return $query->role($role);
-            })
-            ->when($request->search, function ($query, $search) {
-                return $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
-                });
-            })
-            ->paginate($request->per_page ?? 15);
+            if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+                return $this->paginatedResponse(
+                    $users->through(fn($user) => new UserResource($user)),
+                    'Usuarios obtenidos correctamente'
+                );
+            }
 
-        return response()->json([
-            'success' => true,
-            'data' => $users->through(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'status' => $user->status,
-                    'roles' => $user->getUserRoles(),
-                    'permissions' => $user->getUserPermissions(),
-                    'created_at' => $user->created_at,
-                    'updated_at' => $user->updated_at,
-                ];
-            })
-        ]);
-    }
-
-    // Crear usuario
-    public function store(Request $request)
-    {
-        $this->authorize('create', User::class);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'phone' => 'nullable|string|max:20',
-            'roles' => 'nullable|array',
-            'roles.*' => 'string|exists:roles,name'
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'status' => 'active',
-        ]);
-
-        // Asignar roles
-        if ($request->roles) {
-            $user->assignRole($request->roles);
-        } else {
-            $user->assignRole('customer');
+            return $this->collectionResponse(
+                UserResource::collection($users),
+                'Usuarios obtenidos correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'status' => $user->status,
-                'roles' => $user->getUserRoles(),
-                'permissions' => $user->getUserPermissions(),
-            ],
-            'message' => 'Usuario creado exitosamente'
-        ], 201);
     }
 
-    // Actualizar usuario
-    public function update(Request $request, User $user)
+    /**
+     * Listar todos los usuarios filtrados (sin paginación)
+     */
+    public function list(UserIndexRequest $request): JsonResponse
     {
-        $this->authorize('update', $user);
+        try {
+            $filterDTO = UserFilterDTO::fromArray($request->validated());
+            $users = $this->service->listUsers($filterDTO, 0); // 0 = sin paginación
 
-        $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'status' => 'sometimes|in:active,inactive,suspended',
-            'roles' => 'nullable|array',
-            'roles.*' => 'string|exists:roles,name'
-        ]);
-
-        $user->update($request->only(['name', 'email', 'phone', 'status']));
-
-        // Actualizar roles si se proporcionan
-        if ($request->has('roles')) {
-            $user->syncRoles($request->roles);
+            return $this->collectionResponse(
+                UserResource::collection($users),
+                'Lista completa de usuarios obtenida correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'status' => $user->status,
-                'roles' => $user->getUserRoles(),
-                'permissions' => $user->getUserPermissions(),
-            ],
-            'message' => 'Usuario actualizado exitosamente'
-        ]);
     }
 
-    // Eliminar usuario
-    public function destroy(User $user)
+    /**
+     * Mostrar usuario por ID
+     */
+    public function show(int $id): JsonResponse
     {
-        $this->authorize('delete', $user);
+        try {
+            $user = $this->service->findUserById($id);
 
-        $user->delete();
+            if (!$user) {
+                return $this->notFoundResponse('Usuario no encontrado');
+            }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario eliminado exitosamente'
-        ]);
+            return $this->resourceResponse(
+                new UserResource($user),
+                'Usuario obtenido correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    // Asignar rol específico
-    public function assignRole(Request $request, User $user)
+    /**
+     * Registrar un usuario
+     */
+    public function register(UserStoreRequest $request): JsonResponse
     {
-        $this->authorize('update', $user);
+        try {
+            $dto = UserDTO::fromArray($request->validated());
+            $user = $this->service->register($dto);
 
-        $request->validate([
-            'role' => 'required|string|exists:roles,name'
-        ]);
-
-        $user->assignRole($request->role);
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => $user->name,
-                'roles' => $user->getUserRoles(),
-            ],
-            'message' => 'Rol asignado exitosamente'
-        ]);
+            return $this->resourceResponse(
+                new UserResource($user),
+                'Usuario registrado correctamente',
+                201
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 
-    // Remover rol específico
-    public function removeRole(Request $request, User $user)
+    /**
+     * Login de usuario
+     */
+    public function login(UserLoginRequest $request): JsonResponse
     {
-        $this->authorize('update', $user);
+        try {
+            $data = $request->validated();
+            $login = $this->service->login(
+                $data['email'],
+                $data['password'],
+                $data['device_name'] ?? null
+            );
 
-        $request->validate([
-            'role' => 'required|string|exists:roles,name'
-        ]);
+            return $this->successResponse($login, 'Login exitoso');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 401);
+        }
+    }
 
-        $user->removeRole($request->role);
+    /**
+     * Actualizar usuario
+     */
+    public function update(UserUpdateRequest $request, int $id): JsonResponse
+    {
+        try {
+            $user = $this->service->findUserById($id);
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => $user->name,
-                'roles' => $user->getUserRoles(),
-            ],
-            'message' => 'Rol removido exitosamente'
-        ]);
+            if (!$user) {
+                return $this->notFoundResponse('Usuario no encontrado');
+            }
+
+            $dto = UserDTO::fromArray($request->validated());
+            $updatedUser = $this->service->updateUser($id, $dto);
+
+            return $this->resourceResponse(
+                new UserResource($updatedUser),
+                'Usuario actualizado correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    /**
+     * Eliminar usuario (soft delete)
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $deleted = $this->service->deleteUser($id);
+
+            if (!$deleted) {
+                return $this->notFoundResponse('Usuario no encontrado');
+            }
+
+            return $this->successResponse(
+                null,
+                'Usuario eliminado correctamente',
+                204
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    /**
+     * Restaurar usuario eliminado
+     */
+    public function restore(int $id): JsonResponse
+    {
+        try {
+            $user = $this->service->restoreUser($id);
+
+            if (!$user) {
+                return $this->notFoundResponse('Usuario no encontrado o no eliminado');
+            }
+
+            return $this->resourceResponse(
+                new UserResource($user),
+                'Usuario restaurado correctamente'
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 }

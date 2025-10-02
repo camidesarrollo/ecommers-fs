@@ -10,13 +10,13 @@ import {
   traerTodoProductService,
   listarProductService
 } from "../services/product.service";
-import { ISetProductDtoInput, ISearchProductDtoInput, ITraerProductDtoInput } from "../../domain/dtos/input/i.product.dto.input";
+import { ISetProductRequest, ISearchProductRequest, ITraerProductRequest } from "../../domain/dtos/input/i.product.dto.input";
 
 /**
  * Traer una categoría específica
  */
 export const traerProductUseCase = async (
-  param: ITraerProductDtoInput,
+  param: ITraerProductRequest,
   setState: SetStateFunction
 ) => {
   traerProductService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -29,7 +29,7 @@ export const traerProductUseCase = async (
  * Buscar productos según filtros
  */
 export const buscarProductUseCase = async (
-  param: ISearchProductDtoInput,
+  param: ISearchProductRequest,
   setState: SetStateFunction
 ) => {
   buscarProductService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -41,7 +41,7 @@ export const buscarProductUseCase = async (
  * Crear una nueva categoría
  */
 export const crearProductUseCase = async (
-  param: ISetProductDtoInput,
+  param: ISetProductRequest,
   setState: SetStateFunction
 ) => {
   crearProductService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -53,7 +53,7 @@ export const crearProductUseCase = async (
  * Modificar una categoría existente
  */
 export const modificarProductUseCase = async (
-  param: ISetProductDtoInput,
+  param: ISetProductRequest,
   setState: SetStateFunction
 ) => {
   modificarProductService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -65,7 +65,7 @@ export const modificarProductUseCase = async (
  * Eliminar una categoría
  */
 export const eliminarProductUseCase = async (
-  param: ISearchProductDtoInput,
+  param: ISearchProductRequest,
   setState: SetStateFunction
 ) => {
   eliminarProductService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -85,7 +85,7 @@ export const traerTodoProductUseCase = async (
 };
 
 export const listarProductUseCase = async (
-  param: ISearchProductDtoInput,
+  param: ISearchProductRequest,
   setState: SetStateFunction
 ) => {
   listarProductService(param).then((response: AxiosResponse<IConfigType>) => {

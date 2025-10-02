@@ -8,9 +8,9 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantPriceHistoryController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{any}', function () {
+    return view('welcome'); // tu vista principal con <div id="app"></div>
+})->where('any', '.*');
 
 // Rutas públicas
 Route::post('/register', [AuthController::class, 'register']);
@@ -71,7 +71,7 @@ Route::prefix('api/v1')->group(function () {
         // Listar historial con filtros y paginación
         Route::get('/', [ProductVariantPriceHistoryController::class, 'index']);
 
-         Route::get('/Get', [ProductVariantPriceHistoryController::class, 'list']);
+        Route::get('/Get', [ProductVariantPriceHistoryController::class, 'list']);
 
         // Obtener historial por ID
         Route::get('{id}', [ProductVariantPriceHistoryController::class, 'show'])->where('id', '[0-9]+');
@@ -88,30 +88,34 @@ Route::prefix('api/v1')->group(function () {
         // Obtener historial actual por variante
         Route::get('current/{variantId}', [ProductVariantPriceHistoryController::class, 'currentByVariant'])->where('variantId', '[0-9]+');
     });
+    Route::prefix('user')->group(function () {
+        Route::post('/login', [UserManagementController::class, 'login']);
+        Route::post('/register', [UserManagementController::class, 'register']);
+    });         
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
-    
+
     // Gestión de usuarios (solo admins)
     Route::middleware('role:admin,super-admin')->group(function () {
         Route::apiResource('users', UserManagementController::class);
         Route::post('/users/{user}/assign-role', [UserManagementController::class, 'assignRole']);
         Route::post('/users/{user}/remove-role', [UserManagementController::class, 'removeRole']);
-        
+
         // Roles y permisos
         Route::get('/roles', [RolePermissionController::class, 'roles']);
         Route::get('/permissions', [RolePermissionController::class, 'permissions']);
         Route::post('/roles', [RolePermissionController::class, 'createRole']);
         Route::put('/roles/{role}/permissions', [RolePermissionController::class, 'updateRolePermissions']);
     });
-    
+
     // Rutas por permisos específicos
     Route::middleware('permission:view products')->group(function () {
         Route::get('/products', [ProductController::class, 'index']);
     });
-    
+
     Route::middleware('permission:create products')->group(function () {
         Route::post('/products', [ProductController::class, 'store']);
     });

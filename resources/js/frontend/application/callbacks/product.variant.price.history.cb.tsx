@@ -5,12 +5,13 @@ import {
   buscarProductVariantPriceHistoryUseCase,
 } from "../use-cases/product.variant.price.history.use.case";
 import type { IProductVariantPriceHistoryDtoOutput } from "../../domain/dtos/output/i.product.variant.price.history.dto.output";
-import type { ISearchProductVariantPriceHistoryDtoInput } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
+import type { ISearchProductVariantPriceHistoryRequest } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
+import { IApiRespuesta } from "../../domain/interfaces/i.apiRespuesta";
 
 export function useProductVariantPriceHistory(): { histories: Ref<IProductVariantPriceHistoryDtoOutput[]>, traerHistories: () => void } {
     const histories = ref<IProductVariantPriceHistoryDtoOutput[]>([]);
 
-    const callbackObtenerHistories = (response: any) => {
+    const callbackObtenerHistories = (response: IApiRespuesta) => {
         histories.value = response.data ?? [];
     };
 
@@ -24,7 +25,7 @@ export function useProductVariantPriceHistory(): { histories: Ref<IProductVarian
 export function useProductVariantPriceHistorySearch() {
   const histories = ref<IProductVariantPriceHistoryDtoOutput[]>([]);
 
-  const buscarHistories = (filtros: ISearchProductVariantPriceHistoryDtoInput) => {
+  const buscarHistories = (filtros: ISearchProductVariantPriceHistoryRequest) => {
     return new Promise<IProductVariantPriceHistoryDtoOutput[]>((resolve, reject) => {
       buscarProductVariantPriceHistoryUseCase(filtros, (response: any) => {
         try {

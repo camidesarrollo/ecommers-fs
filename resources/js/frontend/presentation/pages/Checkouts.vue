@@ -34,7 +34,7 @@
             </div>
           </div>
 
-          <button @click="confirmOrder"
+          <UiButtons @click="confirmOrder"
             class="mt-6 bg-yellow-400 text-white py-3 rounded-lg font-semibold hover:brightness-105 transition">
             Confirmar compra
           </button>

@@ -16,10 +16,10 @@
                 <p class="font-semibold text-gray-800">{{ item.name }}</p>
                 <p class="text-sm text-gray-500">Precio unitario: ${{ item.price }}</p>
                 <div class="flex items-center mt-2 gap-2">
-                  <button @click="decreaseQuantity(index)" class="bg-gray-200 px-2 rounded hover:bg-gray-300 transition">-</button>
+                  <UiButtons @click="decreaseQuantity(index)" class="bg-gray-200 px-2 rounded hover:bg-gray-300 transition">-</button>
                   <span>{{ item.quantity }}</span>
-                  <button @click="increaseQuantity(index)" class="bg-gray-200 px-2 rounded hover:bg-gray-300 transition">+</button>
-                  <button @click="removeItem(index)" class="ml-4 text-red-500 hover:text-red-700 transition text-sm">Eliminar</button>
+                  <UiButtons @click="increaseQuantity(index)" class="bg-gray-200 px-2 rounded hover:bg-gray-300 transition">+</button>
+                  <UiButtons @click="removeItem(index)" class="ml-4 text-red-500 hover:text-red-700 transition text-sm">Eliminar</button>
                 </div>
               </div>
               <p class="font-semibold text-gray-800">${{ (item.price * item.quantity).toFixed(0) }}</p>
@@ -43,7 +43,7 @@
             <span>Total</span>
             <span>${{ total.toFixed(0) }}</span>
           </div>
-          <button class="bg-yellow-400 text-white py-3 rounded-lg font-semibold hover:brightness-105 transition mt-4">
+          <UiButtons class="bg-yellow-400 text-white py-3 rounded-lg font-semibold hover:brightness-105 transition mt-4">
             Proceder al pago
           </button>
         </div>

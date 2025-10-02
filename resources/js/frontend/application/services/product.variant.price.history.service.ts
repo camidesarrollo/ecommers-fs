@@ -1,11 +1,10 @@
-import axios from "axios";
 import { ProductVariantPriceHistoryInstance, BasicRequestProductVariantPriceHistory } from "../../infrastructure/configuration/service.config";
-import { ISetProductVariantPriceHistoryDtoInput, ISearchProductVariantPriceHistoryDtoInput, ITraerProductVariantPriceHistoryDtoInput } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
+import { ISetProductVariantPriceHistoryRequest, ISearchProductVariantPriceHistoryRequest, ITraerProductVariantPriceHistoryRequest } from "../../domain/dtos/input/i.product.variant.price.history.dto.input";
 
 /**
  * Buscar historial de precios según filtros
  */
-export const buscarProductVariantPriceHistoryService = async (params: ISearchProductVariantPriceHistoryDtoInput) => {
+export const buscarProductVariantPriceHistoryService = async (params: ISearchProductVariantPriceHistoryRequest) => {
   try {
     console.log("Parámetros enviados:", params);
     const response = await ProductVariantPriceHistoryInstance.get(BasicRequestProductVariantPriceHistory.Buscar, {
@@ -21,7 +20,7 @@ export const buscarProductVariantPriceHistoryService = async (params: ISearchPro
 /**
  * Traer un historial de precio específico por ID
  */
-export const traerProductVariantPriceHistoryService = async (params: ITraerProductVariantPriceHistoryDtoInput) => {
+export const traerProductVariantPriceHistoryService = async (params: ITraerProductVariantPriceHistoryRequest) => {
   try {
     const response = await ProductVariantPriceHistoryInstance.get(`${BasicRequestProductVariantPriceHistory.Traer}`, {
       params: { id: params.id },
@@ -49,7 +48,7 @@ export const listarProductVariantPriceHistoryService = async () => {
 /**
  * Crear un nuevo historial de precio
  */
-export const crearProductVariantPriceHistoryService = async (params: ISetProductVariantPriceHistoryDtoInput) => {
+export const crearProductVariantPriceHistoryService = async (params: ISetProductVariantPriceHistoryRequest) => {
   try {
     const response = await ProductVariantPriceHistoryInstance.post(BasicRequestProductVariantPriceHistory.Crear, params);
     return response.data;
@@ -62,7 +61,7 @@ export const crearProductVariantPriceHistoryService = async (params: ISetProduct
 /**
  * Modificar un historial de precio existente
  */
-export const modificarProductVariantPriceHistoryService = async (params: ISetProductVariantPriceHistoryDtoInput) => {
+export const modificarProductVariantPriceHistoryService = async (params: ISetProductVariantPriceHistoryRequest) => {
   try {
     const response = await ProductVariantPriceHistoryInstance.post(BasicRequestProductVariantPriceHistory.Modificar, params);
     return response.data;
@@ -75,7 +74,7 @@ export const modificarProductVariantPriceHistoryService = async (params: ISetPro
 /**
  * Eliminar un historial de precio
  */
-export const eliminarProductVariantPriceHistoryService = async (params: ISearchProductVariantPriceHistoryDtoInput) => {
+export const eliminarProductVariantPriceHistoryService = async (params: ISearchProductVariantPriceHistoryRequest) => {
   try {
     const response = await ProductVariantPriceHistoryInstance.post(BasicRequestProductVariantPriceHistory.Eliminar, params);
     return response.data;

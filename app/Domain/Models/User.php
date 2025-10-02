@@ -2,7 +2,6 @@
 
 namespace App\Domain\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,9 +16,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'phone',
-        'status',
-        'avatar'
+        'phone',        // teléfono de contacto
+        'status',       // estado (active/inactive)
+        'avatar',       // foto de perfil
+
+        // Datos adicionales
+        'nombre',       // nombre real
+        'apellido',     // apellido real
+        'rut',          // RUT
+        'pasaporte',    // pasaporte
     ];
 
     protected $hidden = [

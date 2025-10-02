@@ -25,11 +25,11 @@
 
           <!-- Botones -->
           <div class="flex gap-2">
-            <button @click="addToCart(producto)"
+            <UiButtons @click="addToCart(producto)"
                     class="bg-yellow-400 text-white px-4 py-2 rounded-lg font-semibold hover:brightness-105 transition">
               Agregar al carrito
             </button>
-            <button @click="removeFromFavorites(index)"
+            <UiButtons @click="removeFromFavorites(index)"
                     class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
               Quitar
             </button>

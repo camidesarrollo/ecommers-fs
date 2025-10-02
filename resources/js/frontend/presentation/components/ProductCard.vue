@@ -20,7 +20,7 @@
           <span class="text-green-600 font-bold text-lg">${{ price }}</span>
           <span v-if="oldPrice" class="text-gray-400 line-through ml-2">${{ oldPrice }}</span>
         </div>
-<Button :tipo="buttonType" :accion="$emit.bind($, 'add')" :label="buttonText" />
+        <Button :tipo="buttonType" :accion="$emit.bind($, 'add')" :label="buttonText" />
 
       </div>
     </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Button from './Button.vue';
+import Button from './Buttons/UiButtons.vue';
 
 export default {
   components: { Button },

@@ -6,7 +6,7 @@
 
       <!-- Filtro por categoría -->
       <div class="flex flex-wrap gap-2 mb-8">
-        <button v-for="cat in categoriasConTodos" :key="cat.id" @click="handleCategoryChange(cat.id)" :class="selectedCategory === cat.id
+        <UiButtons v-for="cat in categoriasConTodos" :key="cat.id" @click="handleCategoryChange(cat.id)" :class="selectedCategory === cat.id
           ? 'bg-yellow-400 text-white'
           : 'bg-white text-gray-700 hover:bg-yellow-200'" class="px-4 py-2 rounded-full font-semibold transition">
           {{ cat.name }}
@@ -36,7 +36,7 @@
           <p class="text-gray-600 mb-4">${{ Number(producto.price).toLocaleString() }}</p>
 
           <!-- Botón agregar al carrito -->
-          <button @click="addToCart(producto)"
+          <UiButtons @click="addToCart(producto)"
             class="bg-yellow-400 text-white px-4 py-2 rounded-lg font-semibold hover:brightness-105 transition">
             Agregar al carrito
           </button>
@@ -55,7 +55,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useCategory } from "../../application/callbacks/category.cb";
 import { useProduct, useProductSearch } from "../../application/callbacks/product.cb";
-import type { ISearchProductDtoInput } from "../../domain/dtos/input/i.product.dto.input";
+import type { ISearchProductRequest } from "../../domain/dtos/input/i.product.dto.input";
 
 // --- State management ---
 const loading = ref(true);
@@ -80,7 +80,7 @@ const cargarProductos = async () => {
     if (selectedCategory.value === "Todos") {
       await traerProduct(); // ya maneja el async internamente
     } else {
-      const filtros: ISearchProductDtoInput = {
+      const filtros: ISearchProductRequest = {
         category_id: Number(selectedCategory.value)
       };
       const { productos: filteredProducts, buscarProduct } = useProductSearch();

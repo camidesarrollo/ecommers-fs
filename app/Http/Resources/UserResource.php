@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
 
 class UserResource extends JsonResource
 {
@@ -18,12 +17,15 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'apellido' => $this->apellido,
             'email' => $this->email,
             'phone' => $this->phone,
+            'rut' => $this->rut,
+            'pasaporte' => $this->pasaporte,
             'status' => $this->status,
-            'avatar' => $this->avatar ? asset($this->avatar) : null, // URL completa
-            'roles' => $this->getRoleNames()->toArray(), // Roles asignados
-            'permissions' => $this->getAllPermissions()->pluck('name')->toArray(), // Permisos completos
+            'avatar' => $this->avatar ? asset($this->avatar) : null,
+            'roles' => $this->getRoleNames()->toArray(),
+            'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
             'isAdmin' => $this->hasRole(['admin', 'super-admin']),
             'isVendor' => $this->hasRole('vendor'),
             'isCustomer' => $this->hasRole('customer'),

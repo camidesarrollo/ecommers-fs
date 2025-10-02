@@ -33,7 +33,7 @@
           <p class="text-white text-sm mb-4">{{ description }}</p>
 
           <!-- Botón con componente Button.vue -->
-          <Button
+          <UiButtons
             :tipo="'agregar'"
             :accion="$emit.bind($, 'cta-click')"
             :label="'Llévalo ahora'"
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "./Button.vue"; // ajusta la ruta según tu proyecto
+import UiButtons from "./Buttons/UiButtons.vue"; // ajusta la ruta según tu proyecto
 
 const props = defineProps<{
   videoUrl?: string;   // URL del video mp4

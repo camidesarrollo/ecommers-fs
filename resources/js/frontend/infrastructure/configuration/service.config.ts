@@ -38,6 +38,17 @@ export const BasicRequestProductVariantPriceHistory: IBasicRequestEndpoints = {
   TraerTodo: "/",
 };
 
+export const UserRequest: IBasicRequestEndpoints = {
+  Buscar: "Search",
+  Traer: "Get",
+  Crear: "Create",
+  Modificar: "Update",
+  Eliminar: "Delete",
+  TraerTodo: "/",
+  Registro: "Register",
+  Login: "Login"
+}
+
 // Configuración de Axios para categorías
 const config = (modulo: string): InternalAxiosRequestConfig => {
   return {
@@ -86,4 +97,8 @@ export const ProductInstance = setupInterceptorsTo(
 
 export const ProductVariantPriceHistoryInstance = setupInterceptorsTo(
   axios.create(config("price-history"))
+);
+
+export const UserRequestInstance = setupInterceptorsTo(
+  axios.create(config("user"))
 );

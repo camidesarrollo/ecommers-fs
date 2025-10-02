@@ -10,13 +10,13 @@ import {
   traerTodoCategoryService,
   allActiveService
 } from "../../application/services/category.service";
-import { ISetCategoryDtoInput, ISearchCategoryDtoInput, ITraerCategoryDtoInput } from "../../domain/dtos/input/i.category.dto.input";
+import { ISetCategoryRequest, ISearchCategoryRequest, ITraerCategoryRequest } from "../../domain/dtos/input/i.category.dto.input";
 
 /**
  * Traer una categoría específica
  */
 export const traerCategoryUseCase = async (
-  param: ITraerCategoryDtoInput,
+  param: ITraerCategoryRequest,
   setState: SetStateFunction
 ) => {
   traerCategoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -39,7 +39,7 @@ export const allActiveCategoryUseCase = async (
  * Buscar categorías según filtros
  */
 export const buscarCategoryUseCase = async (
-  param: ISearchCategoryDtoInput,
+  param: ISearchCategoryRequest,
   setState: SetStateFunction
 ) => {
   buscarCategoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -51,7 +51,7 @@ export const buscarCategoryUseCase = async (
  * Crear una nueva categoría
  */
 export const crearCategoryUseCase = async (
-  param: ISetCategoryDtoInput,
+  param: ISetCategoryRequest,
   setState: SetStateFunction
 ) => {
   crearCategoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -63,7 +63,7 @@ export const crearCategoryUseCase = async (
  * Modificar una categoría existente
  */
 export const modificarCategoryUseCase = async (
-  param: ISetCategoryDtoInput,
+  param: ISetCategoryRequest,
   setState: SetStateFunction
 ) => {
   modificarCategoryService(param).then((response: AxiosResponse<IConfigType>) => {
@@ -75,7 +75,7 @@ export const modificarCategoryUseCase = async (
  * Eliminar una categoría
  */
 export const eliminarCategoryUseCase = async (
-  param: ISearchCategoryDtoInput,
+  param: ISearchCategoryRequest,
   setState: SetStateFunction
 ) => {
   eliminarCategoryService(param).then((response: AxiosResponse<IConfigType>) => {

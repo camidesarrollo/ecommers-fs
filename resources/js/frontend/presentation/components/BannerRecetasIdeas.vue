@@ -11,7 +11,7 @@
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex flex-col justify-center items-start p-6 sm:p-12">
       <h2 class="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg mb-2">{{ titulo }}</h2>
       <p class="text-white text-lg drop-shadow-md mb-4">{{ descripcion }}</p>
-      <Button 
+      <UiButtons 
         :tipo="buttonType"
         :accion="() => $emit('navigate', link)" 
         :label="buttonText"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from './Button.vue'
+import UiButtons from './Buttons/UiButtons.vue'
 
 interface Banner {
   titulo: string

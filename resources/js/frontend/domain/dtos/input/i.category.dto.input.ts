@@ -1,5 +1,5 @@
 // Input para crear o actualizar categoría
-export interface ISetCategoryDtoInput {
+export interface ISetCategoryRequest {
   name: string;
   slug?: string;            // opcional si se genera automáticamente
   description?: string;
@@ -11,7 +11,7 @@ export interface ISetCategoryDtoInput {
 }
 
 // Input para buscar categorías (filtros)
-export interface ISearchCategoryDtoInput {
+export interface ISearchCategoryRequest {
   name?: string;
   slug?: string;
   is_active?: boolean;
@@ -21,12 +21,12 @@ export interface ISearchCategoryDtoInput {
 }
 
 // Input para traer una categoría específica
-export interface ITraerCategoryDtoInput {
+export interface ITraerCategoryRequest {
   id: number;
 }
 
 // Input para acciones generales (activar/desactivar, eliminar, etc.)
-export interface IActionCategoryDtoInput {
+export interface IActionCategoryRequest {
   id: number;
   action: 'activate' | 'deactivate' | 'delete';
 }
