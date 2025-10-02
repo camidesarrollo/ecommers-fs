@@ -8,9 +8,11 @@ use App\Domain\RepositoriesInterface\CategoryRepositoryInterface;
 use App\Domain\RepositoriesInterface\ProductRepositoryInterface;
 use App\Domain\RepositoriesInterface\ProductVariantPriceHistoryRepositoryInterface;
 use App\Domain\RepositoriesInterface\OrderItemRepositoryInterface;
+use App\Domain\RepositoriesInterface\UserRepositoryInterface;
 use App\Infrastructure\Repositories\ProductRepository;
 use App\Infrastructure\Repositories\ProductVariantPriceHistoryRepository;
 use App\Infrastructure\Repositories\OrderItemRepository;
+use App\Infrastructure\Repositories\UserRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(ProductVariantPriceHistoryRepositoryInterface::class, ProductVariantPriceHistoryRepository::class);
          $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**

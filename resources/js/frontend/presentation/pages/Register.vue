@@ -335,15 +335,16 @@ export default {
         }
 
         // Llamar al servicio de registro
-        await register(payload)
+        let registro = await register(payload)
 
+        console.log(registro);
         // Si llegó aquí, el registro fue exitoso
         showToast('¡Cuenta creada exitosamente!', 'success')
 
         // Redirigir al login después de 2 segundos
-        setTimeout(() => {
-          router.push('/login')
-        }, 2000)
+        // setTimeout(() => {
+        //   router.push('/login')
+        // }, 2000)
       } catch (err) {
         console.error('Error en registro:', err)
 

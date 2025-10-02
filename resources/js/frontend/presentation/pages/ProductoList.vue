@@ -6,7 +6,7 @@
 
       <!-- Filtro por categoría -->
       <div class="flex flex-wrap gap-2 mb-8">
-        <UiButtons v-for="cat in categoriasConTodos" :key="cat.id" @click="handleCategoryChange(cat.id)" :class="selectedCategory === cat.id
+        <button v-for="cat in categoriasConTodos" :key="cat.id" @click="handleCategoryChange(cat.id)" :class="selectedCategory === cat.id
           ? 'bg-yellow-400 text-white'
           : 'bg-white text-gray-700 hover:bg-yellow-200'" class="px-4 py-2 rounded-full font-semibold transition">
           {{ cat.name }}
@@ -36,7 +36,7 @@
           <p class="text-gray-600 mb-4">${{ Number(producto.price).toLocaleString() }}</p>
 
           <!-- Botón agregar al carrito -->
-          <UiButtons @click="addToCart(producto)"
+          <button @click="addToCart(producto)"
             class="bg-yellow-400 text-white px-4 py-2 rounded-lg font-semibold hover:brightness-105 transition">
             Agregar al carrito
           </button>

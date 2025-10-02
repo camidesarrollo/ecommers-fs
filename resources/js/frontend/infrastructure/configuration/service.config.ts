@@ -45,8 +45,8 @@ export const UserRequest: IBasicRequestEndpoints = {
   Modificar: "Update",
   Eliminar: "Delete",
   TraerTodo: "/",
-  Registro: "Register",
-  Login: "Login"
+  Registro: "register",
+  Login: "login"
 }
 
 // Configuración de Axios para categorías

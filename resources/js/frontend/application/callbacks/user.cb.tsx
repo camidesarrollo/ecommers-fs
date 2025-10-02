@@ -19,7 +19,13 @@ export function useUser() {
 
   // Callback para registro
   const callbackRegister = (response: IApiRespuesta) => {
-    registerResponse.value = response.data;
+    if(response.data){
+      registerResponse.value = response.data;
+    }else{
+      response.data = response;
+      registerResponse.value = response.data;
+    }
+    console.log( registerResponse.value)
   };
 
   // Función para ejecutar login

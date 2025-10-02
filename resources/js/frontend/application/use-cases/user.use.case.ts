@@ -17,10 +17,18 @@ export const LoginUseCase = async (
 };
 
 export const RegisterUseCase = async (
-    param: IUserStoreRequest,
-    setState: SetStateFunction
+  param: IUserStoreRequest,
+  setState: SetStateFunction
 ) => {
-  RegisterService(param).then((response: AxiosResponse<IConfigType>) => {
-    setState(procesarRespuesta(response));
-  });
+  const result = await RegisterService(param);
+
+  if (result.success) {
+    setState(procesarRespuesta(result.data));
+  } else {
+    
+    setState({
+      ...result.data,
+      isError: true,
+    });
+  }
 };

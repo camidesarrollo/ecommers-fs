@@ -35,6 +35,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
 
     public function findByEmail(string $email): ?User;
 
-    public function login(string $email, string $password, ?string $deviceName = null): ?array
+    public function login(string $email, string $password, ?string $deviceName = null): ?array;
     
 }

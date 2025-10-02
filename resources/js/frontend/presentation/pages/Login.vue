@@ -1,13 +1,8 @@
 <template>
   <div class="min-h-screen bg-pattern relative overflow-hidden">
 
-    <!-- Decorative floating nuts -->
-    <div v-for="(nut, index) in floatingNuts" :key="index" class="nut-decoration"
-      :style="{ left: nut.left, animationDelay: nut.delay }">
-      {{ nut.emoji }}
-    </div>
+    <NutDecoration />
 
-    <!-- Background gradient overlay -->
     <div class="absolute inset-0 bg-gradient-to-br from-beige via-transparent to-mint-green opacity-30"></div>
 
     <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
@@ -16,57 +11,31 @@
         <!-- Logo y título -->
         <div class="text-center mb-8 slide-in">
           <div class="inline-flex items-center gap-3 mb-4">
-            <div class="w-16 h-16 rounded-full bg-gradient-nuts flex items-center justify-center floating pulse-warm">
+            <!-- <div class="w-16 h-16 rounded-full bg-gradient-nuts flex items-center justify-center floating pulse-warm">
               <font-awesome-icon :icon="['fas', 'seedling']" class="text-2xl text-white" />
+            </div> -->
+            <div
+              class="rounded-full p-2 bg-gradient-to-br from-yellow-700 to-yellow-500 text-white text-xl animate-bounce">
+              <img src="/public/img/fbe92c76-59d0-4525-a1fe-8e06a4c98dbd2.PNG" alt="" class="w-10 h-10" />
             </div>
           </div>
-          <h1 class="text-3xl font-bold text-dark-chocolate mb-2">¡Bienvenido de vuelta!</h1>
+         <h1 class="text-3xl font-bold text-dark-chocolate mb-2">¡Bienvenido de vuelta!</h1>
           <p class="text-gray-dark">Ingresa a tu cuenta de Secos y Saludables JPJ</p>
         </div>
-
         <!-- Formulario de login -->
         <div class="glass-effect rounded-2xl p-8 shadow-2xl slide-in delay-200">
           <form @submit.prevent="handleLogin" class="space-y-6">
 
-            <!-- Campo Email -->
-            <div class="space-y-2">
-              <label for="email" class="block text-sm font-semibold text-dark-chocolate">
-                <font-awesome-icon :icon="['fas', 'envelope']" class="text-olive-green mr-2" />
-                Correo Electrónico
-              </label>
-              <input v-model="form.email" type="email" id="email" required :class="[
-                'w-full px-4 py-3 rounded-lg input-focus bg-white text-dark-chocolate placeholder-gray-400',
-                errors.email ? 'border-burgundy-red' : ''
-              ]" placeholder="tu@email.com" @blur="validateEmail">
-              <p v-if="errors.email" class="text-burgundy-red text-sm mt-1">
-                <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                {{ errors.email }}
-              </p>
-            </div>
+            <!-- Email -->
+            <UiInput id="email" v-model="form.email" type="email" label="Correo Electrónico" placeholder="tu@email.com"
+              :icon="['fas', 'envelope']" :error="errors.email" required />
 
-            <!-- Campo Password -->
-            <div class="space-y-2">
-              <label for="password" class="block text-sm font-semibold text-dark-chocolate">
-                <font-awesome-icon :icon="['fas', 'lock']" class="text-olive-green mr-2" />
-                Contraseña
-              </label>
-              <div class="relative">
-                <input v-model="form.password" :type="showPassword ? 'text' : 'password'" id="password" required :class="[
-                  'w-full px-4 py-3 rounded-lg input-focus bg-white text-dark-chocolate placeholder-gray-400 pr-12',
-                  errors.password ? 'border-burgundy-red' : ''
-                ]" placeholder="••••••••" @blur="validatePassword">
-                <button type="button" @click="togglePassword"
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-dark hover:text-olive-green transition-colors">
-                  <font-awesome-icon :icon="['fas', showPassword ? 'eye-slash' : 'eye']" />
-                </button>
-              </div>
-              <p v-if="errors.password" class="text-burgundy-red text-sm mt-1">
-                <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="mr-1" />
-                {{ errors.password }}
-              </p>
-            </div>
+            <!-- Password -->
+            <UiInput id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" label="Contraseña"
+              placeholder="••••••••" :show-password-toggle="true" :icon="['fas', 'lock']" :error="errors.password"
+              @toggle-password="togglePassword" required />
 
-            <!-- Recordar y Olvidé contraseña -->
+            <!-- Recordarme y olvidar contraseña -->
             <div class="flex items-center justify-between">
               <label class="flex items-center cursor-pointer">
                 <input v-model="form.remember" type="checkbox"
@@ -79,16 +48,9 @@
               </router-link>
             </div>
 
-            <!-- Botón de login -->
+            <!-- Botón login -->
             <UiButtons tipo="agregar" :accion="handleLogin" :label="isLoading ? 'Ingresando...' : 'Iniciar Sesión'"
-              class="w-full flex items-center justify-center">
-              <template v-if="!isLoading">
-                <font-awesome-icon :icon="['fas', 'sign-in-alt']" class="mr-2" />
-              </template>
-              <template v-else>
-                <font-awesome-icon :icon="['fas', 'spinner']" class="mr-2 fa-spin" />
-              </template>
-            </UiButtons>
+              :loading="isLoading" :isFormValid="isFormValid" icono="sign-in-alt" />
           </form>
 
           <!-- Separador -->
@@ -103,12 +65,12 @@
             <button @click="loginWithGoogle"
               class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <font-awesome-icon :icon="['fab', 'google']" class="text-burgundy-red mr-2" />
-              <span class="text-sm text-dark-chocolate">Google</span>
+              Google
             </button>
             <button @click="loginWithFacebook"
               class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <font-awesome-icon :icon="['fab', 'facebook-f']" class="text-blue-600 mr-2" />
-              <span class="text-sm text-dark-chocolate">Facebook</span>
+              Facebook
             </button>
           </div>
 
@@ -121,6 +83,7 @@
               </router-link>
             </p>
           </div>
+
         </div>
 
         <!-- Enlaces adicionales -->
@@ -130,32 +93,13 @@
             Volver a la tienda
           </router-link>
         </div>
+
       </div>
     </div>
 
-    <!-- Toast de notificación -->
-    <Transition name="toast" appear>
-      <div v-if="toast.show" class="fixed top-4 right-4 z-50 max-w-sm">
-        <div class="bg-white border-l-4 rounded-lg shadow-lg p-4" :class="toastBorderClass">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <font-awesome-icon :icon="toastIcon" :class="toastIconClass" />
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-dark-chocolate">
-                {{ toast.message }}
-              </p>
-            </div>
-            <button @click="hideToast" class="ml-auto text-gray-400 hover:text-gray-600">
-              <font-awesome-icon :icon="['fas', 'times']" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
+    <ToastNotification :show="toast.show" :type="toast.type" :message="toast.message" @close="toast.show = false" />
   </div>
 </template>
-
 <script>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -175,8 +119,10 @@ import {
   faSeedling
 } from '@fortawesome/free-solid-svg-icons'
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons'
-import UiButtons from '../components/Buttons/UiButtons.vue';
-
+import NutDecoration from '../components/NutDecoration/NutDecoration.vue'
+import UiButtons from '../components/Buttons/UiButtons.vue'
+import UiInput from '../components/Input/UiInput.vue'
+import ToastNotification from '../components/Toast/ToastNotification.vue'
 // Agregar iconos a la librería
 library.add(
   faEnvelope,
@@ -198,7 +144,10 @@ export default {
   name: 'LoginPage',
   components: {
     FontAwesomeIcon,
-    UiButtons
+    UiButtons,
+    ToastNotification,
+    UiInput,
+    NutDecoration
   },
   setup() {
     const router = useRouter()

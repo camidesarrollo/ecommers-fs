@@ -12,10 +12,6 @@ Route::get('/{any}', function () {
     return view('welcome'); // tu vista principal con <div id="app"></div>
 })->where('any', '.*');
 
-// Rutas públicas
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
 
 Route::prefix('api/v1')->group(function () {
 

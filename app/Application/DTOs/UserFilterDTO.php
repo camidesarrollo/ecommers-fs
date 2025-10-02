@@ -44,4 +44,18 @@ class UserFilterDTO
             'page'       => $this->page,
         ];
     }
+    public static function fromArray(array $data): self
+    {
+        return new self([
+            'name'       => $data['name'] ?? null,
+            'apellido'   => $data['apellido'] ?? null,
+            'email'      => $data['email'] ?? null,
+            'rut'        => $data['rut'] ?? null,
+            'pasaporte'  => $data['pasaporte'] ?? null,
+            'role'       => $data['role'] ?? null,
+            'status'     => $data['status'] ?? null,
+            'per_page'   => $data['per_page'] ?? 15,
+            'page'       => $data['page'] ?? 1,
+        ]);
+    }
 }
