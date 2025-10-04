@@ -9,6 +9,7 @@ export interface IUserStoreRequest {
   apellido?: string;
   email: string;
   password: string;
+  password_confirmation?: string;
   phone?: string;
   rut?: string;
   pasaporte?: string;

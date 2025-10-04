@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+    /**
+     * Guard usado por Spatie Permission
+     */
+    protected string $guard_name = 'web';
+
     protected $fillable = [
         'name',
         'email',
@@ -58,7 +63,7 @@ class User extends Authenticatable
 
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return $this->status;
     }
 
     // Para respuestas API

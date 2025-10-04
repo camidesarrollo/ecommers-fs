@@ -24,7 +24,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'status' => 'active',
+            'status' => false,
         ]);
 
         // Asignar rol de cliente por defecto

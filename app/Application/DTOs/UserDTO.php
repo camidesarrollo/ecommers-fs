@@ -11,7 +11,7 @@ class UserDTO
     public ?string $apellido;
     public string $email;
     public ?string $phone;
-    public string $status;
+    public bool $status;
     public ?string $avatar;
     public ?string $password;
     public ?string $rut;
@@ -27,7 +27,7 @@ class UserDTO
         $this->email = $data['email'] ?? '';
         $this->password = $data['password'] ?? null;
         $this->phone = $data['phone'] ?? null;
-        $this->status = $data['status'] ?? 'active';
+        $this->status = $data['status'] ?? false;
         $this->avatar = $data['avatar'] ?? null;
         $this->rut = $data['rut'] ?? null;
         $this->pasaporte = $data['pasaporte'] ?? null;
@@ -62,7 +62,7 @@ class UserDTO
             'email' => $data['email'] ?? '',
             'password' => $data['password'] ?? null,
             'phone' => $data['phone'] ?? null,
-            'status' => $data['status'] ?? 'active',
+            'status' => $data['status'] ?? false,
             'avatar' => $data['avatar'] ?? null,
             'rut' => $data['rut'] ?? null,
             'pasaporte' => $data['pasaporte'] ?? null,

@@ -17,7 +17,7 @@ export const BasicRequestCategory: IBasicRequestEndpoints = {
   Modificar: "Update",
   Eliminar: "Delete",
   TraerTodo: "/",
-  Activas: "active", // endpoint extra específico de categorías
+  Activas: "active",
 };
 
 export const BasicRequestProduct: IBasicRequestEndpoints = {
@@ -49,22 +49,24 @@ export const UserRequest: IBasicRequestEndpoints = {
   Login: "login"
 }
 
-// Configuración de Axios para categorías
+// Configuración simplificada de Axios (sin CSRF)
 const config = (modulo: string): InternalAxiosRequestConfig => {
   return {
     baseURL: `${urlBase}/api/${apiVersion}/${modulo}/`,
-    xsrfCookieName: "XSRF-TOKEN",
-    xsrfHeaderName: "X-XSRF-TOKEN",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token") || ""}`,
+      "Accept": "application/json",
     } as AxiosRequestHeaders,
   };
 };
 
-// Interceptores genéricos
+// Interceptor simplificado - solo maneja el token Bearer
 const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  // Puedes agregar token, logs, etc.
+  const bearer = sessionStorage.getItem("token");
+  if (bearer) {
+    config.headers['Authorization'] = `Bearer ${bearer}`;
+  }
+  
   return config;
 };
 
@@ -85,7 +87,7 @@ export function setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance
   return axiosInstance;
 }
 
-// Instancia de Axios para categorías
+// Instancias de Axios
 export const CategoryInstance = setupInterceptorsTo(
   axios.create(config("categories"))
 );
@@ -93,7 +95,6 @@ export const CategoryInstance = setupInterceptorsTo(
 export const ProductInstance = setupInterceptorsTo(
   axios.create(config("products"))
 );
-
 
 export const ProductVariantPriceHistoryInstance = setupInterceptorsTo(
   axios.create(config("price-history"))

@@ -98,4 +98,9 @@ class UserService
     {
        return $this->userRepository->login($email,  $password, $deviceName);
     }
+
+    public function loginGoogle(array $data): array
+    {
+       return $this->userRepository->loginGoogle($data);
+    }
 }

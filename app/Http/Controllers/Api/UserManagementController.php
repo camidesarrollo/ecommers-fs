@@ -10,9 +10,11 @@ use App\Http\Requests\User\UserIndexRequest;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Requests\User\UserLoginGoogleRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
+
 
 class UserManagementController extends Controller
 {
@@ -120,8 +122,30 @@ class UserManagementController extends Controller
             );
 
             return $this->successResponse($login, 'Login exitoso');
+            return $this->resourceResponse(
+                new UserResource($login),
+                'Login exitoso',
+                201
+            );
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage(), 401);
+            return $this->handleException($e);
+        }
+    }
+
+    public function loginGoogle(UserLoginGoogleRequest $request): JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $login = $this->service->loginGoogle($data);
+
+            return $this->successResponse($login, 'Login exitoso');
+            return $this->resourceResponse(
+                new UserResource($login),
+                'Login exitoso',
+                201
+            );
+        } catch (\Exception $e) {
+            return $this->handleException($e);
         }
     }
 

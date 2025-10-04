@@ -37,7 +37,134 @@
   /* Textos principales */
   --color-white: #FFFFFF;
   /* Limpieza visual y resaltar contenido */
+
+  /* Colores adicionales para resaltar */
+  --color-lime-yellow: #DFFF00; /* Amarillo claro / lima */
+  --color-magenta-strong: #FF00FF; /* Magenta / Rosa fuerte */
+
+
+  /* Primarios */
+  --color-olive-green-500: oklch(48.5% 0.173 120.0);
+  --color-olive-green-400: oklch(53.0% 0.160 120.0);
+  --color-olive-green-300: oklch(57.0% 0.140 120.0);
+  --color-olive-green-200: oklch(62.0% 0.120 120.0);
+  --color-olive-green-100: oklch(67.0% 0.100 120.0);
+  --color-olive-green-600: oklch(41.5% 0.168 120.0);
+  --color-olive-green-700: oklch(35.0% 0.160 120.0);
+  --color-olive-green-800: oklch(28.0% 0.155 120.0);
+  --color-olive-green-900: oklch(22.0% 0.150 120.0);
+  --color-olive-green-1000: oklch(15.0% 0.145 120.0);
+
+  /* Nut Brown */
+  --color-nut-brown-100: oklch(59.0% 0.130 29.0);
+  --color-nut-brown-200: oklch(54.0% 0.145 29.0);
+  --color-nut-brown-300: oklch(49.0% 0.160 29.0);
+  --color-nut-brown-400: oklch(44.0% 0.170 29.0);
+  --color-nut-brown-500: oklch(39.5% 0.185 29.0);
+  --color-nut-brown-600: oklch(33.0% 0.180 29.0);
+  --color-nut-brown-700: oklch(28.0% 0.175 29.0);
+  --color-nut-brown-800: oklch(23.0% 0.170 29.0);
+  --color-nut-brown-900: oklch(18.0% 0.165 29.0);
+  --color-nut-brown-1000: oklch(13.0% 0.160 29.0);
+
+  /* Golden Yellow */
+  --color-golden-yellow-100: oklch(96.0% 0.095 102.3);
+  --color-golden-yellow-200: oklch(94.0% 0.105 102.3);
+  --color-golden-yellow-300: oklch(92.0% 0.115 102.3);
+  --color-golden-yellow-400: oklch(90.0% 0.125 102.3);
+  --color-golden-yellow-500: oklch(87.2% 0.134 102.3);
+  --color-golden-yellow-600: oklch(78.0% 0.147 102.3);
+  --color-golden-yellow-700: oklch(68.0% 0.130 102.3);
+  --color-golden-yellow-800: oklch(60.0% 0.120 102.3);
+  --color-golden-yellow-900: oklch(50.0% 0.110 102.3);
+  --color-golden-yellow-1000: oklch(40.0% 0.100 102.3);
+
+  /* Burgundy Red */
+  --color-burgundy-red-100: oklch(40.0% 0.180 29.0);
+  --color-burgundy-red-200: oklch(36.0% 0.185 29.0);
+  --color-burgundy-red-300: oklch(34.0% 0.190 29.0);
+  --color-burgundy-red-400: oklch(30.0% 0.195 29.0);
+  --color-burgundy-red-500: oklch(32.0% 0.197 29.0);
+  --color-burgundy-red-600: oklch(25.0% 0.200 29.0);
+  --color-burgundy-red-700: oklch(18.0% 0.190 29.0);
+  --color-burgundy-red-800: oklch(12.0% 0.180 29.0);
+  --color-burgundy-red-900: oklch(8.0% 0.170 29.0);
+  --color-burgundy-red-1000: oklch(4.0% 0.160 29.0);
+
+  /* Beige */
+  --color-beige-100: oklch(97.0% 0.035 99.0);
+  --color-beige-200: oklch(96.0% 0.037 99.0);
+  --color-beige-300: oklch(95.0% 0.038 99.0);
+  --color-beige-400: oklch(92.0% 0.039 99.0);
+  --color-beige-500: oklch(94.0% 0.039 99.0);
+  --color-beige-600: oklch(90.0% 0.045 99.0);
+  --color-beige-700: oklch(85.0% 0.040 99.0);
+  --color-beige-800: oklch(80.0% 0.038 99.0);
+  --color-beige-900: oklch(75.0% 0.035 99.0);
+  --color-beige-1000: oklch(70.0% 0.030 99.0);
+
+  /* Mint Green */
+  --color-mint-green-100: oklch(98.0% 0.100 136.0);
+  --color-mint-green-200: oklch(96.0% 0.105 136.0);
+  --color-mint-green-300: oklch(94.0% 0.110 136.0);
+  --color-mint-green-400: oklch(90.0% 0.115 136.0);
+  --color-mint-green-500: oklch(93.0% 0.120 136.0);
+  --color-mint-green-600: oklch(87.0% 0.115 136.0);
+  --color-mint-green-700: oklch(80.0% 0.110 136.0);
+  --color-mint-green-800: oklch(73.0% 0.105 136.0);
+  --color-mint-green-900: oklch(65.0% 0.100 136.0);
+  --color-mint-green-1000: oklch(55.0% 0.095 136.0);
+
+  /* Dark Chocolate */
+  --color-dark-chocolate-100: oklch(25.0% 0.090 29.0);
+  --color-dark-chocolate-200: oklch(22.0% 0.085 29.0);
+  --color-dark-chocolate-300: oklch(20.0% 0.100 29.0);
+  --color-dark-chocolate-400: oklch(18.0% 0.095 29.0);
+  --color-dark-chocolate-500: oklch(20.0% 0.100 29.0);
+  --color-dark-chocolate-600: oklch(15.0% 0.090 29.0);
+  --color-dark-chocolate-700: oklch(10.0% 0.080 29.0);
+  --color-dark-chocolate-800: oklch(7.0% 0.075 29.0);
+  --color-dark-chocolate-900: oklch(4.0% 0.070 29.0);
+  --color-dark-chocolate-1000: oklch(2.0% 0.065 29.0);
+
+  /* Orange Warm */
+  --color-orange-warm-100: oklch(78.0% 0.210 74.0);
+  --color-orange-warm-200: oklch(75.0% 0.205 74.0);
+  --color-orange-warm-300: oklch(72.0% 0.200 74.0);
+  --color-orange-warm-400: oklch(70.0% 0.225 74.0);
+  --color-orange-warm-500: oklch(70.0% 0.225 74.0);
+  --color-orange-warm-600: oklch(61.0% 0.210 74.0);
+  --color-orange-warm-700: oklch(52.0% 0.195 74.0);
+  --color-orange-warm-800: oklch(45.0% 0.180 74.0);
+  --color-orange-warm-900: oklch(38.0% 0.165 74.0);
+  --color-orange-warm-1000: oklch(32.0% 0.150 74.0);
+
+  /* Lime Yellow */
+  --color-lime-yellow-100: oklch(99.0% 0.080 100.0);
+  --color-lime-yellow-200: oklch(97.0% 0.100 100.0);
+  --color-lime-yellow-300: oklch(95.0% 0.120 100.0);
+  --color-lime-yellow-400: oklch(93.0% 0.140 100.0);
+  --color-lime-yellow-500: oklch(95.0% 0.180 100.0);
+  --color-lime-yellow-600: oklch(85.0% 0.160 100.0);
+  --color-lime-yellow-700: oklch(75.0% 0.140 100.0);
+  --color-lime-yellow-800: oklch(65.0% 0.120 100.0);
+  --color-lime-yellow-900: oklch(55.0% 0.100 100.0);
+  --color-lime-yellow-1000: oklch(45.0% 0.080 100.0);
+
+  /* Magenta Strong */
+  --color-magenta-strong-100: oklch(0.973% 0.270 330.0);
+  --color-magenta-strong-200: oklch(65.0% 0.280 330.0);
+  --color-magenta-strong-300: oklch(63.0% 0.290 330.0);
+  --color-magenta-strong-400: oklch(61.0% 0.310 330.0);
+  --color-magenta-strong-500: oklch(60.0% 0.350 330.0);
+  --color-magenta-strong-600: oklch(55.0% 0.330 330.0);
+  --color-magenta-strong-700: oklch(50.0% 0.310 330.0);
+  --color-magenta-strong-800: oklch(45.0% 0.290 330.0);
+  --color-magenta-strong-900: oklch(40.0% 0.270 330.0);
+  --color-magenta-strong-1000: oklch(35.0% 0.250 330.0);
+ 
 }
+
 
 /* =========================
    CLASES PRINCIPALES DE FONDO
@@ -310,6 +437,40 @@
 
 .bg-gradient-to-br.from-gray-light.to-gray-dark {
   background: linear-gradient(to bottom right, var(--color-gray-light), var(--color-gray-dark));
+}
+
+/* Gradientes nuevos con colores de resalte */
+.bg-gradient-to-br.from-lime-yellow.to-magenta-strong {
+  background: linear-gradient(to bottom right, var(--color-lime-yellow), var(--color-magenta-strong));
+}
+
+.bg-gradient-to-br.from-lime-yellow.to-olive-green {
+  background: linear-gradient(to bottom right, var(--color-lime-yellow), var(--color-olive-green));
+}
+
+.bg-gradient-to-br.from-lime-yellow.to-nut-brown {
+  background: linear-gradient(to bottom right, var(--color-lime-yellow), var(--color-nut-brown));
+}
+
+.bg-gradient-to-br.from-magenta-strong.to-golden-yellow {
+  background: linear-gradient(to bottom right, var(--color-magenta-strong), var(--color-golden-yellow));
+}
+
+.bg-gradient-to-br.from-magenta-strong.to-burgundy-red {
+  background: linear-gradient(to bottom right, var(--color-magenta-strong), var(--color-burgundy-red));
+}
+
+.bg-gradient-to-br.from-magenta-strong.to-mint-green {
+  background: linear-gradient(to bottom right, var(--color-magenta-strong), var(--color-mint-green));
+}
+
+/* Combinaciones suaves / balanceadas */
+.bg-gradient-to-br.from-lime-yellow.to-beige {
+  background: linear-gradient(to bottom right, var(--color-lime-yellow), var(--color-beige));
+}
+
+.bg-gradient-to-br.from-magenta-strong.to-beige {
+  background: linear-gradient(to bottom right, var(--color-magenta-strong), var(--color-beige));
 }
 
 /* =========================

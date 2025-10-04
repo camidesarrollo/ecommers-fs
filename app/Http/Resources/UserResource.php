@@ -29,7 +29,7 @@ class UserResource extends JsonResource
             'isAdmin' => $this->hasRole(['admin', 'super-admin']),
             'isVendor' => $this->hasRole('vendor'),
             'isCustomer' => $this->hasRole('customer'),
-            'isActive' => $this->status === 'active',
+            'isActive' => $this->status === false,
             'createdAt' => $this->created_at?->toDateTimeString(),
             'updatedAt' => $this->updated_at?->toDateTimeString(),
         ];

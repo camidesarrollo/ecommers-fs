@@ -1,19 +1,13 @@
 <template>
   <div class="min-h-screen bg-pattern relative overflow-hidden">
-    <!-- Componente de decoración de frutos secos -->
     <NutDecoration />
 
-    <!-- Background gradient overlay -->
     <div class="absolute inset-0 bg-gradient-to-br from-beige via-transparent to-mint-green opacity-30"></div>
 
     <div class="relative z-10 min-h-screen flex items-center justify-center p-4 py-12">
       <div class="w-full max-w-2xl">
-        <!-- Logo y título -->
         <div class="text-center mb-8 slide-in">
           <div class="inline-flex items-center gap-3 mb-4">
-            <!-- <div class="w-16 h-16 rounded-full bg-gradient-nuts flex items-center justify-center floating pulse-warm">
-              <font-awesome-icon :icon="['fas', 'seedling']" class="text-2xl text-white" />
-            </div> -->
             <div
               class="rounded-full p-2 bg-gradient-to-br from-yellow-700 to-yellow-500 text-white text-xl animate-bounce">
               <img src="/public/img/fbe92c76-59d0-4525-a1fe-8e06a4c98dbd2.PNG" alt="" class="w-10 h-10" />
@@ -23,7 +17,6 @@
           <p class="text-gray-dark">Crea tu cuenta en Secos y Saludables JPJ</p>
         </div>
 
-        <!-- Formulario de registro -->
         <div class="glass-effect rounded-2xl p-8 shadow-2xl slide-in delay-200">
           <form @submit.prevent="handleRegister" class="space-y-8">
 
@@ -36,16 +29,14 @@
                 </h2>
               </div>
 
-              <!-- Email con UiInput -->
               <UiInput id="email" v-model="form.email" type="email" label="Correo electrónico"
                 placeholder="correo@ejemplo.com" :icon="['fas', 'envelope']" :prefix-icon="['fas', 'at']"
                 :error="errors.email" required />
 
-              <!-- Teléfono con UiInput -->
               <UiInput id="phone" v-model="form.phone" type="tel" label="Teléfono" placeholder="+56 9 1234 5678"
                 :icon="['fas', 'phone']" :prefix-icon="['fas', 'mobile-alt']" :error="errors.phone"
                 helper-text="Usaremos estos datos para verificar tu identidad y enviar información sobre tus compras."
-                required />
+                @update:modelValue="formatPhone" required />
             </div>
 
             <!-- Información personal -->
@@ -58,11 +49,9 @@
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Nombre -->
                 <UiInput id="name" v-model="form.name" type="text" label="Nombre" placeholder="Tu nombre"
                   :error="errors.name" required />
 
-                <!-- Apellido -->
                 <UiInput id="apellido" v-model="form.apellido" type="text" label="Apellido" placeholder="Tu apellido"
                   :error="errors.apellido" required />
               </div>
@@ -77,11 +66,10 @@
                 </h2>
               </div>
 
-              <!-- RUT con formato automático -->
               <UiInput id="rut" v-model="form.rut" type="text" label="RUT" placeholder="12.345.678-9"
                 :icon="['fas', 'id-card']" :prefix-icon="['fas', 'id-badge']" :error="errors.rut"
                 helper-text="Verifica que el RUT/Pasaporte sea el tuyo y que tus datos coincidan con el documento."
-                @input="formatRut" required />
+                @update:modelValue="formatRut" required />
             </div>
 
             <!-- Contraseña -->
@@ -94,11 +82,9 @@
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Contraseña -->
                 <UiInput id="password" v-model="form.password" type="password" label="Contraseña" placeholder="••••••••"
                   :error="errors.password" :show-password-toggle="true" required />
 
-                <!-- Confirmar contraseña -->
                 <UiInput id="confirmPassword" v-model="form.confirmPassword" type="password"
                   label="Confirma la contraseña" placeholder="••••••••" :error="errors.confirmPassword"
                   :show-password-toggle="true" required />
@@ -140,10 +126,9 @@
             </div>
 
             <!-- Botón de registro -->
-            <UiButtons tipo="agregar" :label="'Crear cuenta'" :accion="crearCuenta" :loading="loading"
+            <UiButtons tipo="agregar" :label="'Crear cuenta'" :accion="handleRegister" :loading="loading"
               :isFormValid="isFormValid" icono="user-plus" loadingText="Creando cuenta..." />
           </form>
-
 
           <!-- Ya tienes cuenta -->
           <div class="mt-8 text-center">
@@ -191,7 +176,8 @@ import {
   faExclamationCircle,
   faTimes,
   faSeedling,
-  faAddressBook
+  faAddressBook,
+  faAt, faMobileAlt, faIdBadge
 } from '@fortawesome/free-solid-svg-icons'
 import { useUser } from "../../application/callbacks/user.cb"
 import { registerUserSchema } from "../../domain/schema/user.shema"
@@ -199,6 +185,7 @@ import NutDecoration from '../components/NutDecoration/NutDecoration.vue'
 import UiButtons from '../components/Buttons/UiButtons.vue'
 import UiInput from '../components/Input/UiInput.vue'
 import ToastNotification from '../components/Toast/ToastNotification.vue'
+
 library.add(
   faEnvelope,
   faPhone,
@@ -214,7 +201,10 @@ library.add(
   faExclamationCircle,
   faTimes,
   faSeedling,
-  faAddressBook
+  faAddressBook,
+  faAt, 
+  faMobileAlt, 
+  faIdBadge
 )
 
 export default {
@@ -252,19 +242,11 @@ export default {
       acceptTerms: ''
     })
 
-    const showPassword = ref(false)
-    const showConfirmPassword = ref(false)
-
     const toast = reactive({
       show: false,
       message: '',
       type: 'success'
     })
-
-    const inputClass = (field) => {
-      const baseClass = 'w-full px-4 py-3 rounded-lg input-focus bg-white text-dark-chocolate placeholder-gray-400 border-2'
-      return `${baseClass} ${errors[field] ? 'border-burgundy-red' : 'border-gray-200'}`
-    }
 
     const isFormValid = computed(() => {
       return Object.values(errors).every(e => e === '') &&
@@ -277,30 +259,6 @@ export default {
         form.phone &&
         form.acceptTerms
     })
-
-    const toastBorderClass = computed(() =>
-      toast.type === 'error' ? 'border-burgundy-red' : 'border-olive-green'
-    )
-
-    const toastIcon = computed(() =>
-      toast.type === 'error' ? ['fas', 'exclamation-circle'] : ['fas', 'check-circle']
-    )
-
-    const toastIconClass = computed(() =>
-      toast.type === 'error' ? 'text-burgundy-red' : 'text-olive-green'
-    )
-
-    const togglePassword = () => {
-      showPassword.value = !showPassword.value
-    }
-
-    const toggleConfirmPassword = () => {
-      showConfirmPassword.value = !showConfirmPassword.value
-    }
-
-    const hideToast = () => {
-      toast.show = false
-    }
 
     const showToast = (msg, type = 'success') => {
       toast.message = msg
@@ -331,33 +289,68 @@ export default {
           name: form.name,
           apellido: form.apellido,
           rut: form.rut,
-          password: form.password
+          password: form.password,
+          password_confirmation: form.confirmPassword,
+          roles: ['comprador']
         }
 
         // Llamar al servicio de registro
-        let registro = await register(payload)
+        const registro = await register(payload)
 
-        console.log(registro);
-        // Si llegó aquí, el registro fue exitoso
-        showToast('¡Cuenta creada exitosamente!', 'success')
+        console.log('Respuesta del registro:', registro)
 
-        // Redirigir al login después de 2 segundos
-        // setTimeout(() => {
-        //   router.push('/login')
-        // }, 2000)
+        // Verificar si es un error (tiene la propiedad isError)
+        if (registro && registro.isError) {
+          // Es un error del backend
+          console.error('Error del servidor:', registro)
+
+          // Manejar errores de validación del backend
+          if (registro.errors) {
+            Object.keys(registro.errors).forEach(field => {
+              if (errors.hasOwnProperty(field)) {
+                // Obtener el primer error del array
+                errors[field] = Array.isArray(registro.errors[field])
+                  ? registro.errors[field][0]
+                  : registro.errors[field]
+              }
+            })
+          }
+
+          // Mostrar mensaje de error general
+          showToast(registro.message || 'Error al crear la cuenta', 'error')
+        }
+        else if (registro && registro.id) {
+          // Registro exitoso - tiene un id
+          console.log('Usuario registrado exitosamente:', registro)
+
+          showToast(
+            `¡Bienvenido ${registro.name}! Tu cuenta ha sido creada exitosamente`,
+            'success'
+          )
+
+          // Opcional: Guardar datos en sessionStorage
+          sessionStorage.setItem('userId', registro.id.toString())
+          sessionStorage.setItem('userName', registro.name)
+
+          // Redirigir al login después de 2 segundos
+          setTimeout(() => {
+            router.push('/login')
+          }, 2000)
+        }
+        else {
+          // Respuesta inesperada
+          throw new Error('Respuesta inesperada del servidor')
+        }
+
       } catch (err) {
         console.error('Error en registro:', err)
 
-        // Manejar errores de validación del schema
+        // Manejar errores de validación del schema de Yup
         if (err.inner) {
           err.inner.forEach(e => {
             errors[e.path] = e.message
           })
           showToast('Por favor, corrige los errores en el formulario', 'error')
-        }
-        // Manejar errores del API
-        else if (userError.value) {
-          showToast(userError.value, 'error')
         }
         // Manejar otros errores
         else {
@@ -366,17 +359,18 @@ export default {
       }
     }
 
-    const formatRut = (e) => {
-      let value = e.target.value.replace(/[^0-9kK]/g, '')
-      if (value.length > 1) {
-        const body = value.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-        const dv = value.slice(-1)
+    const formatRut = (value) => {
+      // limpiar caracteres que no sean números o k/K
+      let clean = value.replace(/[^0-9kK]/g, '')
+
+      if (clean.length > 1) {
+        const body = clean.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+        const dv = clean.slice(-1)
         form.rut = `${body}-${dv}`
       } else {
-        form.rut = value
+        form.rut = clean
       }
     }
-
     const getPasswordStrength = () => {
       const password = form.password
       if (!password) return 0
@@ -416,27 +410,35 @@ export default {
       return texts[getPasswordStrength()] || 'Muy débil'
     })
 
+    const formatPhone = (value) => {
+      // Eliminar todo excepto números
+      let numbers = value.replace(/\D/g, '')
+
+      // Si no empieza con 569, agregarlo
+      if (!numbers.startsWith('569')) {
+        numbers = '569' + numbers
+      }
+
+      // Limitar a máximo 11 dígitos (569 + 8 dígitos)
+      numbers = numbers.slice(0, 11)
+
+      // Formatear como +569XXXXXXXX
+      form.phone = numbers
+    }
+
     return {
       form,
       errors,
       loading,
-      showPassword,
-      showConfirmPassword,
       toast,
-      inputClass,
       isFormValid,
-      toastBorderClass,
-      toastIcon,
-      toastIconClass,
-      togglePassword,
-      toggleConfirmPassword,
-      hideToast,
       showToast,
       handleRegister,
       formatRut,
       getPasswordStrengthClass,
       getPasswordStrengthTextClass,
-      passwordStrengthText
+      passwordStrengthText,
+      formatPhone
     }
   }
 }

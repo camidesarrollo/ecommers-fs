@@ -13,15 +13,19 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Contacto
-            $table->string('telefono', 20)->nullable()->after('email');
+            $table->string('phone', 20)->nullable()->after('email');
 
             // Identificación
-            $table->string('rut', 20)->nullable()->after('telefono'); 
+            $table->string('rut', 20)->nullable()->after('phone');
+            $table->string('avatar', 20)->nullable()->after('rut');
             $table->string('pasaporte', 50)->nullable()->after('rut');
 
             // Datos personales
-            $table->string('apellido')->nullable()->after('nombre');
+            $table->string('apellido')->nullable()->after('name');
 
+            // Estado activo/inactivo
+            $table->boolean('status')->default(true)->after('apellido'); // booleano, default true
+            
         });
     }
 
@@ -31,7 +35,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['telefono', 'rut', 'pasaporte', 'apellido']);
+            $table->dropColumn(['phone', 'rut', 'pasaporte', 'apellido', 'status']);
         });
     }
 };

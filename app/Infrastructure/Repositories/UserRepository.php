@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Google_Client;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -47,7 +48,7 @@ class UserRepository implements UserRepositoryInterface
         }
 
         if (isset($filters['status'])) {
-            $query->where('status', $filters['status'] ? 'active' : 'inactive');
+            $query->where('status', $filters['status'] ? true : false);
         }
 
         $perPage = $filters['perPage'] ?? $perPage;
@@ -68,7 +69,7 @@ class UserRepository implements UserRepositoryInterface
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->phone = $data['phone'] ?? null;
-        $user->status = $data['status'] ?? 'active';
+        $user->status = $data['status'] ?? false;
         $user->avatar = $data['avatar'] ?? null;
         if (!empty($data['password'])) {
             $user->password = bcrypt($data['password']);
@@ -156,10 +157,10 @@ class UserRepository implements UserRepositoryInterface
      */
     public function all(): Collection
     {
-        return User::where('status', 'active')->get();
+        return User::where('status', true)->get();
     }
 
-        /**
+    /**
      * Paginación genérica
      */
     public function paginate($modelo, $perPage): LengthAwarePaginator
@@ -185,7 +186,7 @@ class UserRepository implements UserRepositoryInterface
         return User::where('email', $email)->first();
     }
 
-     public function register(array|UserDTO $data): User
+    public function register(array|UserDTO $data): User
     {
         // Convertir a DTO si viene como array
         if (is_array($data)) {
@@ -240,6 +241,53 @@ class UserRepository implements UserRepositoryInterface
         return [
             'user' => new UserResource($user), // Usa el resource para ocultar campos sensibles
             'token' => $token,
+        ];
+    }
+
+    public function loginGoogle(array $data): array
+    {
+        $token = $data['token'] ?? null;
+        $deviceName = $data['device_name'] ?? 'default_device';
+
+        if (!$token) {
+            throw new \Exception("Token de Google requerido.");
+        }
+
+        $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+        $payload = $client->verifyIdToken($token);
+
+        if (!$payload) {
+            throw new \Exception("Token de Google inválido.");
+        }
+
+        $email = $payload['email'];
+        $name = $payload['name'];
+
+        // Buscar usuario
+        $user = self::findByEmail($email);
+
+        $isNewUser = false;
+
+        if (!$user) {
+            // Crear usuario con DTO
+            $dto = new \App\Application\DTOs\UserDTO([
+                'name' => $name,
+                'email' => $email,
+                'password' => \Illuminate\Support\Str::random(16),
+                'status' => true
+            ]);
+
+            $user = self::register($dto);
+            $isNewUser = true;
+        }
+
+        // Generar token Sanctum
+        $token = $user->createToken($deviceName)->plainTextToken;
+
+        return [
+            'user' => \App\Application\DTOs\UserDTO::fromModel($user),
+            'token' => $token,
+            'isNewUser' => $isNewUser
         ];
     }
 }
