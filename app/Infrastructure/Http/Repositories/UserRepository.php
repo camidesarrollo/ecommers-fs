@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Repositories;
+namespace App\Infrastructure\Http\Repositories;
 
+use App\Application\Services\MailService;
 use App\Domain\Models\User;
 use App\Domain\RepositoriesInterface\UserRepositoryInterface;
 use App\Application\DTOs\UserDTO;
 use App\Application\DTOs\UserFilterDTO;
+use App\Application\DTOs\EmailPreferenceDTO;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
@@ -188,23 +190,44 @@ class UserRepository implements UserRepositoryInterface
 
     public function register(array|UserDTO $data): User
     {
-        // Convertir a DTO si viene como array
+        // 1️⃣ Convertir a DTO si viene como array
         if (is_array($data)) {
             $data = UserDTO::fromArray($data);
         }
 
-        // Crear el usuario usando el repositorio
+        // 2️⃣ Crear el usuario
         $user = $this->create($data);
 
-        // Asignar roles si existen
+        // 3️⃣ Asignar roles
         if (!empty($data->roles)) {
             $user->syncRoles($data->roles);
         }
 
-        // Asignar permisos directos si existen
+        // 4️⃣ Asignar permisos directos
         if (!empty($data->permissions)) {
             $user->syncPermissions($data->permissions);
         }
+
+        // 5️⃣ Crear automáticamente EmailPreference
+        $emailPreferenceRepository = new EmailPreferenceRepository();
+
+        $emailPreferenceDTO = new EmailPreferenceDTO([
+            'user_id'          => $user->id,
+            'unsubscribe_token' => null, // se generará automáticamente en el modelo
+            'marketing_emails' => true,
+            'order_emails'     => true,
+            'newsletter'       => true,
+            'promotions'       => true,
+            'product_updates'  => true,
+            'is_unsubscribed'  => false,
+            'unsubscribed_at'  => null,
+        ]);
+
+        $emailPreferenceRepository->create($emailPreferenceDTO);
+
+        // 6️⃣ Enviar correo de bienvenida
+        $mailService = new MailService();
+        $mailService->sendWelcomeEmail($data->email, $data->name, "BIENVENIDO15");
 
         return $user;
     }

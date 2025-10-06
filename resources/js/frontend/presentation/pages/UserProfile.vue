@@ -99,21 +99,55 @@
           </button>
         </div>
 
+        <!-- Email Preferences -->
+        <div v-if="activeTab === 'Email Preferences'" class="space-y-4">
+          <h2 class="text-xl font-semibold text-gray-800">Preferencias de Email</h2>
+          <p class="text-gray-500">Selecciona los tipos de notificaciones que deseas recibir:</p>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-400" v-model="preferences.promociones" />
+              Promociones y ofertas
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-400" v-model="preferences.novedades" />
+              Novedades del sitio
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-400" v-model="preferences.historial" />
+              Resumen de historial de compras
+            </label>
+          </div>
+          <button class="bg-yellow-400 text-white px-6 py-2 rounded-lg font-semibold hover:brightness-105 transition" @click="savePreferences">
+            Guardar preferencias
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 export default {
   name: "UserProfile",
   setup() {
-    const tabs = ['Información Personal', 'Direcciones', 'Historial de Compras', 'Favoritos', 'Métodos de Pago'];
+    const tabs = ['Información Personal', 'Direcciones', 'Historial de Compras', 'Favoritos', 'Métodos de Pago', 'Email Preferences'];
     const activeTab = ref('Información Personal');
 
-    return { tabs, activeTab };
+    const preferences = reactive({
+      promociones: true,
+      novedades: false,
+      historial: true
+    });
+
+    const savePreferences = () => {
+      console.log("Preferencias guardadas:", preferences);
+      alert("Preferencias guardadas correctamente");
+    };
+
+    return { tabs, activeTab, preferences, savePreferences };
   }
 }
 </script>

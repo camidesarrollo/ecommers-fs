@@ -29,7 +29,7 @@ class CategoryResource extends JsonResource
                 ? Carbon::parse($this->created_at)->gt(now()->subMonths(3))
                 : false,
             'parentId' => $this->parent_id,
-            'productCount' => $this->product_count ?? 0, // cantidad de productos
+            'productCount' => $this->products_count ?? 0, // cantidad de productos
 
             'parent' => $this->whenLoaded('parent', function () {
                 return [

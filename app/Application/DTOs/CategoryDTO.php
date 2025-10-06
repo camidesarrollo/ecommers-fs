@@ -19,7 +19,7 @@ class CategoryDTO
         $this->id = $data['id'] ?? null;
         $this->name = $data['name'];
         $this->slug = $data['slug'];
-        $this->bgClass = $data['bgClass'] ?? null;
+        $this->bgClass = $data['bg_class'] ?? null;
         $this->description = $data['description'] ?? null;
         $this->image = $data['image'] ?? null;
         $this->sort_order = $data['sort_order'] ?? 0;
@@ -36,7 +36,7 @@ class CategoryDTO
             'id'          => $data['id'] ?? null,
             'name'        => $data['name'],
             'slug'        => $data['slug'],
-            'bgClass'     => $data['bg_class'] ?? $data['bgClass'] ?? null,
+            'bgClass'     => $data['bg_class'] ?? $data['bg_class'] ?? null,
             'description' => $data['description'] ?? null,
             'image'       => $data['image'] ?? null,
             'sort_order'  => $data['sort_order'] ?? 0,

@@ -5,6 +5,7 @@ namespace App\Application\Services;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Message;
 use Exception;
+use App\Domain\Models\StoreSetting;
 
 class MailService
 {
@@ -167,23 +168,29 @@ class MailService
     public function sendWelcomeEmail(
         string $email,
         string $name,
-        ?string $discountCode = 'BIENVENIDO15'
+        ?string $discountCode = null
     ): bool {
+
+        // Obtener el código de descuento de la tabla si no se pasó
+        $discountCode = $discountCode ?? StoreSetting::getValue('discount_welcome_code', 'BIENVENIDO15');
+
         $data = [
             'name' => $name,
             'shopUrl' => url('/tienda'),
             'discountCode' => $discountCode,
-            'facebookUrl' => config('social.facebook', '#'),
-            'instagramUrl' => config('social.instagram', '#'),
-            'whatsappUrl' => config('social.whatsapp', '#'),
+            'facebookUrl' => StoreSetting::getValue('facebook_url', '#'),
+            'instagramUrl' => StoreSetting::getValue('instagram_url', '#'),
+            'whatsappUrl' => StoreSetting::getValue('whatsapp', '#'),
             'unsubscribeUrl' => url('/unsubscribe'),
             'preferencesUrl' => url('/email-preferences'),
-            'address' => config('company.address', 'Santiago, Chile'),
+            'address' => StoreSetting::getValue('address', 'Santiago, Chile'),
+            'storeName' => StoreSetting::getValue('store_name', config('app.name')),
+            'storeSlogan' => StoreSetting::getValue('store_slogan', ''),
         ];
 
         return $this->sendWithTemplate(
             to: $email,
-            subject: '🌿 ¡Bienvenido a ' . config('app.name') . '!',
+            subject: '🌿 ¡Bienvenido a ' . $data['storeName'] . '!',
             view: 'emails.welcome',
             data: $data
         );

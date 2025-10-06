@@ -8,7 +8,7 @@
           <div
             :class="[
               'relative flex flex-col items-center justify-center rounded-2xl p-6 cursor-pointer transform transition-all shadow-lg border border-white/30 hover:shadow-2xl hover:scale-105',
-              getCategoryColor(cat.name)
+              cat.bgClass
             ]"
           >
             <!-- Badge de cantidad -->
@@ -62,30 +62,4 @@ const breakpoints = {
   
 };
 
-// Función para asignar color representativo según categoría usando los colores del negocio
-const getCategoryColor = (name: string) => {
-  const colorMap: Record<string, string> = {
-    "Aceitunas y Olivas": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Café, Té y Especias": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Cereales y Legumbres": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Chocolates y Dulces": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Conservas y Vegetales": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Frutas Deshidratadas": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Frutos Secos": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Harinas y Preparación": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    "Snacks y Otros": "bg-gradient-to-br.from-lime-yellow.to-magenta-strong",
-    
-    // Categorías adicionales manteniendo coherencia con los colores del negocio
-    // "Semillas y Granos": "bg-gradient-to-br from-golden-yellow to-nut-brown",
-    // "Condimentos y Salsas": "bg-gradient-to-br from-burgundy-red to-olive-green",
-    // "Productos Orgánicos": "bg-gradient-to-br from-mint-green to-olive-green",
-    // "Bebidas Naturales": "bg-gradient-to-br from-mint-green to-beige",
-    // "Superfoods": "bg-gradient-to-br from-burgundy-red to-golden-yellow",
-    // "Productos Sin Gluten": "bg-gradient-to-br from-beige to-mint-green",
-    // "Endulzantes Naturales": "bg-gradient-to-br from-golden-yellow to-orange-warm",
-    // "Aceites y Vinagres": "bg-gradient-to-br from-olive-green to-golden-yellow",
-  };
-  
-  return colorMap[name] ?? "bg-gradient-to-br from-gray-light to-gray-dark"; // Color default
-};
 </script>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Repositories;
+namespace App\Infrastructure\Http\Repositories;
 
 use App\Domain\Models\Category;
 use App\Domain\RepositoriesInterface\CategoryRepositoryInterface;
@@ -25,12 +25,12 @@ class CategoryRepository implements CategoryRepositoryInterface
                 'slug',
                 'description',
                 'short_description',
+                'bg_class',
                 'image',
                 'bg_class as bgClass',
                 'sort_order as sortOrder',
                 'is_active as isActive',
                 'parent_id as parentId',
-                'is_new'
             );
 
         // Si los filtros vienen como DTO, convertir a array
@@ -130,7 +130,10 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function allActive(): Collection
     {
-        return Category::where('is_active', true)
+        return Category::query()
+            ->withCount('products') // genera campo "products_count"
+
+            ->where('is_active', true)
             ->orderBy('name')
             ->get();
     }

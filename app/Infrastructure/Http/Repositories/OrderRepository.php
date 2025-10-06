@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Repositories;
+namespace App\Infrastructure\Http\Repositories;
 
 use App\Domain\Models\Order;
 use App\Domain\RepositoriesInterface\OrderRepositoryInterface;

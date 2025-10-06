@@ -4,7 +4,7 @@ import LoginPage from '../presentation/pages/Login.vue'
 import RegisterPage from '../presentation/pages/Register.vue'
 // import ForgotPasswordPage from '../presentation/pages/ForgotPasswordPage.vue'
 import HomePage from '../presentation/pages/Home.vue'
-// import ProductsPage from '../presentation/pages/ProductsPage.vue'
+import ProductoList from '../presentation/pages/ProductoList.vue'
 
 const routes = [
   // Rutas SIN layout (páginas de autenticación)
@@ -50,16 +50,16 @@ const routes = [
       title: 'Inicio - Secos y Saludables JPJ'
     }
   },
-  // {
-  //   path: '/productos',
-  //   name: 'Products',
-  //   component: ProductsPage,
-  //   meta: { 
-  //     layout: 'public', // Con PublicLayout
-  //     requiresAuth: false,
-  //     title: 'Productos'
-  //   }
-  // },
+  {
+    path: '/productos',
+    name: 'Products',
+    component: ProductoList,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Productos'
+    }
+  },
   // {
   //   path: '/dashboard',
   //   name: 'Dashboard',

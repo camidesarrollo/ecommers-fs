@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¡Bienvenido!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -157,6 +158,10 @@
             color: #F4C430;
             text-decoration: none;
             font-size: 24px;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #FFD700;
         }
         @media only screen and (max-width: 600px) {
             .product-item {
@@ -174,7 +179,7 @@
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <h1>🌿 ¡Bienvenido a Secos y saludables JPJ! 🌿</h1>
+            <h1>🌿 ¡Bienvenido a Secos y Saludables JPJ! 🌿</h1>
         </div>
 
         <!-- Content -->
@@ -187,7 +192,7 @@
                 ¡Estamos encantados de tenerte con nosotros! Has tomado una excelente decisión al unirte a nuestra comunidad de amantes de los productos naturales y saludables.
             </p>
 
-            <!-- Benefits Section
+            <!-- Benefits Section -->
             <div class="benefits">
                 <h2>🎁 Beneficios de ser miembro:</h2>
                 <ul>
@@ -198,14 +203,14 @@
                     <li>Puntos de recompensa en cada compra</li>
                 </ul>
             </div>
- -->
-            <!-- Discount Banner 
+
+            <!-- Discount Banner -->
             <div class="discount-banner">
                 <h2 style="margin: 0 0 10px 0; font-size: 22px;">🎉 Regalo de Bienvenida 🎉</h2>
                 <p style="margin: 10px 0; font-size: 16px;">Usa este código en tu primera compra:</p>
                 <div class="discount-code">BIENVENIDO15</div>
                 <p style="margin: 10px 0; font-size: 14px;">15% de descuento en tu primer pedido</p>
-            </div>-->
+            </div>
 
             <!-- Products Preview -->
             <h2 style="color: #8B5E3C; text-align: center; margin: 40px 0 20px;">Nuestros Productos Destacados</h2>
@@ -242,9 +247,9 @@
         <!-- Footer -->
         <div class="footer">
             <div class="social-links">
-                <a href="{{ $facebookUrl ?? '#' }}">📘</a>
-                <a href="{{ $instagramUrl ?? '#' }}">📷</a>
-                <a href="{{ $whatsappUrl ?? '#' }}">💬</a>
+                <a href="{{ $facebookUrl ?? '#' }}"><i class="icon/icons8-facebook-nuevo.svg"></i></a>
+                <a href="{{ $instagramUrl ?? '#' }}"><i class="icon/icons8-instagram.svg"></i></a>
+                <a href="{{ $whatsappUrl ?? '#' }}"><i class="icon/icons8-whatsapp-96.png"></i></a>
             </div>
             
             <p style="margin: 10px 0;">

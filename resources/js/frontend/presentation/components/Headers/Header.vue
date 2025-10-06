@@ -182,7 +182,7 @@ export default {
       console.log("Redirigir a login");
       // Aquí podrías redirigir a tu página de login
       window.location.href = '/login';
-      // userOpen.value = false;
+      userOpen.value = false;
       
       // // Para demostración, simular login después de 1 segundo
       // setTimeout(() => {
@@ -193,7 +193,7 @@ export default {
     const register = () => {
       console.log("Redirigir a registro");
       // Aquí podrías redirigir a tu página de registro
-      // window.location.href = '/register';
+      window.location.href = '/register';
       userOpen.value = false;
     };
 

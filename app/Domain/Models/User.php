@@ -76,4 +76,20 @@ class User extends Authenticatable
     {
         return $this->getRoleNames()->toArray();
     }
+
+    // En la clase User, agregar:
+    public function emailPreference()
+    {
+        return $this->hasOne(EmailPreference::class);
+    }
+
+    /**
+     * Obtener o crear preferencias de email
+     */
+    public function getOrCreateEmailPreference(): EmailPreference
+    {
+        return $this->emailPreference ?? $this->emailPreference()->create([
+            'unsubscribe_token' => \Illuminate\Support\Str::random(64),
+        ]);
+    }
 }

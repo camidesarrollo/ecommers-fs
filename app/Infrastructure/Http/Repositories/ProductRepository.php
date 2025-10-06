@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Repositories;
+namespace App\Infrastructure\Http\Repositories;
 
 use App\Domain\Models\Product;
 use App\Domain\Models\ListaProducto;

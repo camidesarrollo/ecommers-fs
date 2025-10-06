@@ -6,6 +6,7 @@ export interface ITraerCategoryDtoOutput {
   description?: string;
   shortDescription?: string;
   productCount?: string;
+  bg_class?: string;
   isNew?: boolean; 
   image?: string;
   bgClass?: string;

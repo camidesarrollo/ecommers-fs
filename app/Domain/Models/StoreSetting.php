@@ -5,7 +5,7 @@
  * =============================================================================
  */
 
-namespace App\Models;
+namespace App\Domain\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +40,14 @@ class StoreSetting extends Model
             return $setting?->value ?? $default;
         });
     }
+
+    // Método helper para obtener settings activos por key
+    public static function getValue(string $key, $default = null)
+    {
+        $setting = self::where('key', $key)->where('is_active', true)->first();
+        return $setting ? $setting->value : $default;
+    }
+
 
     /**
      * Establecer una configuración

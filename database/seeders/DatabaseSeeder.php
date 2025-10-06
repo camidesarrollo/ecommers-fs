@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
             StoreSettingsSeeder::class,
             StoreSettingsSeeder::class,
             UserRolePermissionSeeder::class,
+            MasterAttributesSeeder::class,
+            AttributeValuesSeeder::class,
+            ProductsSeeder::class,
+            ProductVariantsSeeder::class,
+            ProductVariantAttributesSeeder::class
             // 👇 agrega aquí todos los demás seeders que tengas
             // Ejemplo:
             // OrdersSeeder::class,

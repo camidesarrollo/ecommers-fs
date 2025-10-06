@@ -15,14 +15,14 @@ class CategoriesSeeder extends Seeder
     {
         $categories = [
             "Aceitunas y Olivas" => "bg-gradient-to-br from-lime-yellow to-magenta-strong",
-            "Café, Té y Especias" => "bg-gradient-to-br from-dark-chocolate to-nut-brown",
-            "Cereales y Legumbres" => "bg-gradient-to-br from-golden-yellow to-beige",
-            "Chocolates y Dulces" => "bg-gradient-to-br from-nut-brown to-dark-chocolate",
-            "Conservas y Vegetales" => "bg-gradient-to-br from-olive-green to-mint-green",
-            "Frutas Deshidratadas" => "bg-gradient-to-br from-burgundy-red to-orange-warm",
+            "Café, Té y Especias" => "bg-gradient-to-br from-golden-yellow to-nut-brown",
+            "Cereales y Legumbres" => "bg-gradient-to-br from-beige to-mint-green",
+            "Chocolates y Dulces" => "bg-gradient-to-br from-golden-yellow to-nut-brown",
+            "Conservas y Vegetales" => "bg-gradient-to-br from-beige to-mint-green",
+            "Frutas Deshidratadas" => "bg-gradient-to-br from-beige to-golden-yellow",
             "Frutos Secos" => "bg-gradient-to-br from-nut-brown to-golden-yellow",
             "Harinas y Preparación" => "bg-gradient-to-br from-beige to-golden-yellow",
-            "Snacks y Otros" => "bg-gradient-to-br from-orange-warm to-burgundy-red",
+            "Snacks y Otros" => "bg-gradient-to-br from-beige to-golden-yellow",
             // "Semillas y Granos" => "bg-gradient-to-br from-golden-yellow to-nut-brown",
             // "Condimentos y Salsas" => "bg-gradient-to-br from-burgundy-red to-olive-green",
             // "Productos Orgánicos" => "bg-gradient-to-br from-mint-green to-olive-green",
@@ -41,7 +41,7 @@ class CategoriesSeeder extends Seeder
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-                'image' => 'img\\Categorias\\' . $name . '.JPG'
+                'image' => 'img\\Categorias\\' . $name . '.PNG'
             ]);
         }
     }
