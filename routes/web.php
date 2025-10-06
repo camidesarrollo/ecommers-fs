@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserManagementController;
-use App\Http\Controllers\Api\RolePermissionController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\ProductVariantPriceHistoryController;
+use App\Infrastructure\Http\Controllers\Api\AuthController;
+use App\Infrastructure\Http\Controllers\Api\UserManagementController;
+use App\Infrastructure\Http\Controllers\Api\RolePermissionController;
+use App\Infrastructure\Http\Controllers\Api\CategoryController;
+use App\Infrastructure\Http\Controllers\Api\ProductController;
+use App\Infrastructure\Http\Controllers\Api\ProductVariantPriceHistoryController;
 
 // Ruta principal
 Route::get('/', function () {

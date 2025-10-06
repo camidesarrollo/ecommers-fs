@@ -7,7 +7,7 @@ use App\Application\DTOs\UserDTO;
 use App\Application\DTOs\UserFilterDTO;
 use App\Domain\RepositoriesInterface\UserRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Http\Resources\UserResource;
+use App\Infrastructure\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 
 class UserService

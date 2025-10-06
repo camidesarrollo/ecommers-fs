@@ -41,7 +41,7 @@ class CategoriesSeeder extends Seeder
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-                'img' => 'img\\Categorias\\' . $name . '.JPG'
+                'image' => 'img\\Categorias\\' . $name . '.JPG'
             ]);
         }
     }
