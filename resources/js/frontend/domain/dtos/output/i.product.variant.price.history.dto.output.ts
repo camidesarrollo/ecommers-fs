@@ -1,6 +1,6 @@
 // i.product.variant.price.history.dto.output.ts
 
-export interface IProductVariantPriceHistoryDtoOutput {
+export interface IProductVariantPriceHistoryResources {
   id: number;
   product_variant_id: number;
   sku?: string;                  // SKU de la variante (si se hace join con product_variants)

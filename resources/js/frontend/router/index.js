@@ -2,10 +2,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginPage from '../presentation/pages/Login.vue'
 import RegisterPage from '../presentation/pages/Register.vue'
-// import ForgotPasswordPage from '../presentation/pages/ForgotPasswordPage.vue'
+import ForgotPassword from '../presentation/pages/ForgotPassword.vue'
 import HomePage from '../presentation/pages/Home.vue'
 import ProductoList from '../presentation/pages/ProductoList.vue'
-
+import Producto from '../presentation/pages/DetalleProducto.vue'
+import About from '../presentation/pages/About.vue'
+import PreguntasFrecuentes from '../presentation/pages/PreguntasFrecuentes.vue'
+import Contact from '../presentation/pages/Contact.vue'
+import UserProfile from '../presentation/pages/UserProfile.vue'
 const routes = [
   // Rutas SIN layout (páginas de autenticación)
   {
@@ -28,16 +32,16 @@ const routes = [
       title: 'Registrarse'
     }
   },
-  // {
-  //   path: '/forgot-password',
-  //   name: 'ForgotPassword',
-  //   component: ForgotPasswordPage,
-  //   meta: { 
-  //     layout: 'none', // Sin layout
-  //     requiresAuth: false,
-  //     title: 'Recuperar Contraseña'
-  //   }
-  // },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
+    meta: { 
+      layout: 'none', // Sin layout
+      requiresAuth: false,
+      title: 'Recuperar Contraseña'
+    }
+  },
 
   // Rutas CON layout público (páginas principales)
   {
@@ -60,6 +64,63 @@ const routes = [
       title: 'Productos'
     }
   },
+  {
+    path: '/producto',
+    name: 'Product',
+    component: Producto,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Producto'
+    }
+    
+  },
+  
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Sobre Nosotros'
+    }
+    
+  },
+  {
+    path: '/paq',
+    name: 'PreguntasFrecuentes',
+    component: PreguntasFrecuentes,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Preguntas Frecuentes'
+    }
+    
+  },
+    {
+    path: '/contacto',
+    name: 'Contacto',
+    component: Contact,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Contacto'
+    }
+    
+  },
+  {
+    path: '/perfil',
+    name: 'UserProfile',
+    component: UserProfile,
+    meta: { 
+      layout: 'public', // Con PublicLayout
+      requiresAuth: false,
+      title: 'Mi perfil'
+    }
+    
+  }
+  
   // {
   //   path: '/dashboard',
   //   name: 'Dashboard',

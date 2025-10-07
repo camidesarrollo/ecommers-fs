@@ -12,6 +12,7 @@ use App\Infrastructure\Http\Requests\Product\ProductStoreRequest;
 use App\Infrastructure\Http\Requests\Product\ProductUpdateRequest;
 use App\Infrastructure\Http\Requests\Product\ProductSearchRequest;
 use App\Infrastructure\Http\Resources\ProductResource;
+use App\Infrastructure\Http\Resources\ProductDetailResource;
 use App\Infrastructure\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 
@@ -34,7 +35,7 @@ class ProductController extends Controller
               // Si el servicio retorna un paginador
             if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator) {
                 return $this->paginatedResponse(
-                    $products->through(fn($history) => new ProductResource($history)),
+                    $products->through(fn($history) => new ProductDetailResource($history)),
                     'Productos obtenidos exitosamente'
                 );
             }
@@ -130,7 +131,7 @@ class ProductController extends Controller
             $products = $this->productService->search($filterDTO);
 
             return $this->collectionResponse(
-                ProductResource::collection($products),
+                ProductDetailResource::collection($products),
                 'Búsqueda de productos completada exitosamente'
             );
 

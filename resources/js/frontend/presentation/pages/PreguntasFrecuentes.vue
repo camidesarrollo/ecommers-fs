@@ -19,7 +19,7 @@
         <h2 class="text-3xl font-bold mb-8 text-center">Respuestas rápidas a tus preguntas</h2>
         
         <div v-for="(item, index) in faqs" :key="index" class="mb-4 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-          <UiButtons @click="toggle(index)" 
+          <button @click="toggle(index)" 
                   class="w-full text-left px-6 py-4 bg-white flex justify-between items-center hover:bg-gray-50 transition">
             <span class="font-semibold text-lg">{{ item.question }}</span>
             <svg v-if="activeIndex === index" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,7 +39,7 @@
     <!-- CTA -->
     <section class="py-16 bg-gradient-to-r from-yellow-400 to-pink-400 text-center text-white">
       <h2 class="text-3xl md:text-4xl font-bold mb-6">¿No encontraste tu respuesta?</h2>
-      <router-link to="/contact" 
+      <router-link to="/contacto" 
         class="bg-white text-yellow-600 font-bold px-8 py-3 rounded-full shadow-md hover:brightness-105 transition">
         Contáctanos
       </router-link>

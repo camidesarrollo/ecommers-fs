@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Repositories;
 
 use App\Domain\Models\Product;
-use App\Domain\Models\ListaProducto;
+use App\Domain\Models\ProductDetail;
 use App\Domain\RepositoriesInterface\ProductRepositoryInterface;
 use App\Application\DTOs\ProductDTO;
 use App\Application\DTOs\ProductFilterDTO;
@@ -18,7 +18,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function list(array|ProductFilterDTO $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = ListaProducto::query();
+        $query = ProductDetail::query();
 
         // Convertir DTO a array si viene como DTO
         if ($filters instanceof ProductFilterDTO) {
@@ -36,7 +36,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findById(int $id): ?Product
     {
-        return Product::with(['category', 'variants'])->find($id);
+        return ProductDetail::with(['category', 'variants'])->find($id);
     }
 
     /**
@@ -147,7 +147,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findByCategory(int $categoryId, bool $activeOnly = true): Collection
     {
-        $query = Product::with(['category', 'variants'])
+        $query = ProductDetail::with(['category', 'variants'])
             ->where('category_id', $categoryId);
 
         if ($activeOnly) {
@@ -162,7 +162,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getFeatured(int $limit = null): Collection
     {
-        $query = Product::with(['category', 'variants'])
+        $query = ProductDetail::with(['category', 'variants'])
             ->where('is_featured', true)
             ->where('is_active', true)
             ->orderBy('created_at', 'desc');
@@ -179,7 +179,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findBySku(string $sku): ?Product
     {
-        return Product::with(['category', 'variants'])
+        return ProductDetail::with(['category', 'variants'])
             ->whereHas('variants', function ($query) use ($sku) {
                 $query->where('sku', $sku);
             })
@@ -191,7 +191,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getLowStock(int $threshold = 10): Collection
     {
-        return Product::with(['category', 'variants'])
+        return ProductDetail::with(['category', 'variants'])
             ->whereHas('variants', function ($query) use ($threshold) {
                 $query->where('stock', '<=', $threshold);
             })
@@ -204,7 +204,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function all(): Collection
     {
-        return Product::with(['category', 'variants'])->get();
+        return ProductDetail::with(['category', 'variants'])->get();
     }
 
     /**
@@ -212,7 +212,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function allActive(): Collection
     {
-        return Product::with(['category', 'variants'])
+        return ProductDetail::with(['category', 'variants'])
             ->where('is_active', true)
             ->orderBy('name')
             ->get();
@@ -232,9 +232,8 @@ class ProductRepository implements ProductRepositoryInterface
         }
         // Por defecto usamos Category::query()
         else {
-            $query = Product::with(['category', 'variants']);
+            $query = ProductDetail::query();
         }
-
         return $query->paginate($perPage);
     }
 
@@ -297,6 +296,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     private function applyFilters(Builder $query, array $filters): void
     {
+      
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
@@ -350,7 +350,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function search(ProductFilterDTO $filters): LengthAwarePaginator
     {
-        $query = Product::query();
+        $query = ProductDetail::query();
 
         if ($filters->search) $query->where('name', 'like', "%{$filters->search}%");
         if ($filters->search) $query->where('slug', 'like', "%{$filters->search}%");
@@ -377,7 +377,7 @@ class ProductRepository implements ProductRepositoryInterface
     //  */
     // public function create(ProductDTO $dto): Product
     // {
-    //     return Product::create($dto->toArray());
+    //     return ProductDetail::create($dto->toArray());
     // }
 
     // /**
@@ -402,7 +402,7 @@ class ProductRepository implements ProductRepositoryInterface
     //  */
     // public function restore(int $id): ?Product
     // {
-    //     $product = Product::withTrashed()->find($id);
+    //     $product = ProductDetail::withTrashed()->find($id);
 
     //     if ($product && $product->trashed()) {
     //         $product->restore();
@@ -417,7 +417,7 @@ class ProductRepository implements ProductRepositoryInterface
     //  */
     // public function getFeatured(): Collection
     // {
-    //     return Product::where('is_active', true)
+    //     return ProductDetail::where('is_active', true)
     //         ->where('is_featured', true)
     //         ->get();
     // }

@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             AttributeValuesSeeder::class,
             ProductsSeeder::class,
             ProductVariantsSeeder::class,
-            ProductVariantAttributesSeeder::class
+            ProductVariantAttributesSeeder::class,
+            ProductImagesSeeder::class
             // 👇 agrega aquí todos los demás seeders que tengas
             // Ejemplo:
             // OrdersSeeder::class,

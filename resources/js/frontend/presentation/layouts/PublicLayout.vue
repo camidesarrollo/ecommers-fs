@@ -2,12 +2,14 @@
 <template>
   <div class="bg-yellow-100 min-h-screen">
     <HeaderPublic />
+    <NavarPublic />
     <main><slot /></main>
     <FooterPublic />
   </div>
 </template>
 <script>
 import HeaderPublic from '../components/Headers/Header.vue';
+import NavarPublic from '../components/Navbar/UiNavbar.vue';
 import FooterPublic from '../components/Footers/Footer.vue';
-export default { components: { HeaderPublic, FooterPublic } };
+export default { components: { HeaderPublic, NavarPublic, FooterPublic } };
 </script>

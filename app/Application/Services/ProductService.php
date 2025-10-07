@@ -61,9 +61,7 @@ class ProductService
 
      public function search(ProductFilterDTO $filter): LengthAwarePaginator
     {
-        return $this->ProductRepository->paginate(null,
-            $filter->perPage
-        );
+        return $this->ProductRepository->list($filter);
     }
 
      public function list(ProductFilterDTO $filter): LengthAwarePaginator

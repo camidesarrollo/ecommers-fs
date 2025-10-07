@@ -4,7 +4,7 @@
       <!-- Encabezado -->
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Productos en Oferta / Flash</h2>
-        <a class="text-blue-500 font-semibold" href="/productoList">Ver todos</a>
+        <a class="text-blue-500 font-semibold" href="/productos">Ver todos</a>
       </div>
 
       <!-- Carrusel -->
@@ -54,7 +54,7 @@ import ProductCard from './ProductCard.vue';
 import UiButtons from '../components/Buttons/UiButtons.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useProductVariantPriceHistory } from '../../application/callbacks/product.variant.price.history.cb';
-import type { IProductVariantPriceHistoryDtoOutput } from "../../domain/dtos/output/i.product.variant.price.history.dto.output";
+import type { IProductVariantPriceHistoryResources } from "../../domain/dtos/output/i.product.variant.price.history.dto.output";
 
 const breakpoints = {
   640: { slidesPerView: 1 },
@@ -96,7 +96,7 @@ function computeDiscount(price: number, salePrice?: number) {
 }
 
 // Determina si el producto es "Solo hoy" (vigencia termina hoy)
-function isSoloHoy(history: IProductVariantPriceHistoryDtoOutput) {
+function isSoloHoy(history: IProductVariantPriceHistoryResources) {
   if (!history.end_date) return false;
   const hoy = new Date();
   const endDate = new Date(history.end_date);
@@ -104,7 +104,7 @@ function isSoloHoy(history: IProductVariantPriceHistoryDtoOutput) {
 }
 
 // Simulación agregar al carrito
-function addToCart(history: IProductVariantPriceHistoryDtoOutput) {
+function addToCart(history: IProductVariantPriceHistoryResources) {
   console.log('Agregar al carrito:', history);
 }
 </script>

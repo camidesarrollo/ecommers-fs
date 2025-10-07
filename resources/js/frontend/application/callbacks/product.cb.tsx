@@ -1,12 +1,12 @@
 // src/application/callbacks/product.cb.ts
 import { ref, Ref } from "vue";
 import { traerTodoProductUseCase, buscarProductUseCase, listarProductUseCase } from "../use-cases/product.use.case";
-import type { ITraerProductDtoOutput, IListaProductosDTOOutput } from "../../domain/dtos/output/i.product.dto.output";
+import type { ITraerProductResources, IListaProductosResources, IProductDetailResources } from "../../domain/dtos/output/i.product.dto.output";
 import type { ISearchProductRequest } from "../../domain/dtos/input/i.product.dto.input";
 import { IApiRespuesta } from "../../domain/interfaces/i.apiRespuesta";
 
-export function useProduct(): { productos: Ref<ITraerProductDtoOutput[]>, traerProduct: () => void } {
-    const productos = ref<ITraerProductDtoOutput[]>([]);
+export function useProduct(): { productos: Ref<IProductDetailResources[]>, traerProduct: () => void } {
+    const productos = ref<IProductDetailResources[]>([]);
 
     const CallBackFunctionObtenerproductos = (response: IApiRespuesta) => {
         productos.value = response.data ?? [];
@@ -20,10 +20,10 @@ export function useProduct(): { productos: Ref<ITraerProductDtoOutput[]>, traerP
 }
 
 export function useProductSearch() {
-  const productos = ref<ITraerProductDtoOutput[]>([]);
+  const productos = ref<IProductDetailResources[]>([]);
 
   const buscarProduct = (filtros: ISearchProductRequest) => {
-    return new Promise<ITraerProductDtoOutput[]>((resolve, reject) => {
+    return new Promise<IProductDetailResources[]>((resolve, reject) => {
       // Llamamos al use case y le pasamos el callback
       buscarProductUseCase(filtros, (response: any) => {
         try {
@@ -43,12 +43,12 @@ export function useProductSearch() {
  * Nuevo: listar productos con filtros
  */
 export function useProductList(): {
-  productos: Ref<IListaProductosDTOOutput[]>,
+  productos: Ref<IListaProductosResources[]>,
   listarProductos: () => void,
   loading: Ref<boolean>,
   error: Ref<string | null>
 } {
-  const productos = ref<IListaProductosDTOOutput[]>([]);
+  const productos = ref<IListaProductosResources[]>([]);
   const loading = ref<boolean>(false);
   const error = ref<string | null>(null);
 
@@ -107,10 +107,10 @@ export function useProductList(): {
 
 // Versión alternativa más simple si solo necesitas los productos básicos
 export function useProductListSimple(): {
-  productos: Ref<IListaProductosDTOOutput[]>,
+  productos: Ref<IListaProductosResources[]>,
   listarProductos: () => void
 } {
-  const productos = ref<IListaProductosDTOOutput[]>([]);
+  const productos = ref<IListaProductosResources[]>([]);
 
   const CallBackFunctionObtenerProductos = (apiResponse: IApiRespuesta) => {
     console.log('API Response:', apiResponse);

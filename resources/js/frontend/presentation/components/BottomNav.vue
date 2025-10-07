@@ -2,7 +2,7 @@
   <nav class="fixed bottom-0 w-full bg-white shadow-t border-t">
     <div class="flex justify-around">
       <NavItem to="/" :icon="['house']" label="Inicio" :active="active === 'home'" @update:active="updateActive" />
-      <NavItem to="/productoList" :icon="['th']" label="Productos" :active="active === 'productoList'"
+      <NavItem to="/productos" :icon="['th']" label="Productos" :active="active === 'productoList'"
         @update:active="updateActive" />
       <NavItem to="/favorites" :icon="['heart']" label="Favoritos" :active="active === 'favorites'"
         @update:active="updateActive" />

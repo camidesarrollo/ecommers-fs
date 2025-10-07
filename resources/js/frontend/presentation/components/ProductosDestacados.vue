@@ -1,33 +1,56 @@
-<!---
-Mayor crecimiento en ventas (productos cuya venta aumentó más que el mes anterior).
-
-Productos con alta conversión reciente (muchos clicks/añadidos al carrito vs visitas).
-
-Margen de ganancia alto (estratégico para promoción).
-
-Stock limitado (urgencia: “aprovecha antes que se acabe”).
-
-Popularidad reciente (top N productos en últimos 7 días).
-
--->
-
 <template>
-  <section class="py-10 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <section :class="containerClass">
+    <div :class="isVertical ? '' : 'container mx-auto px-4 sm:px-6 lg:px-8'">
+      
       <!-- Encabezado -->
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Productos Destacados</h2>
-        <a class="text-blue-500 font-semibold" href="/productoList">Ver todos</a>
+      <div :class="headerClass">
+        <h2 :class="isVertical ? 'text-lg font-bold text-gray-800' : 'text-2xl font-bold text-gray-800'">
+          Productos Destacados
+        </h2>
+        <a v-if="!isVertical" class="text-blue-500 font-semibold text-sm hover:underline" href="/productos">
+          Ver todos
+        </a>
       </div>
 
-      <!-- Carrusel -->
+      <!-- Layout Vertical -->
+      <div v-if="isVertical" class="space-y-4">
+        <a
+          v-for="(producto, index) in productosLimitados"
+          :key="index"
+          :href="`/producto/${producto.id}`"
+          class="block bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden"
+        >
+          <div class="flex gap-3 p-3">
+            <div :class="`${producto.bgClass} rounded-lg flex items-center justify-center flex-shrink-0`" style="width: 80px; height: 80px;">
+              <span class="text-3xl">{{ producto.emoji }}</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm text-gray-800 mb-1 line-clamp-2">{{ producto.title }}</h3>
+              <p class="text-xs text-gray-500 mb-2">{{ producto.subtitle }}</p>
+              <div class="flex items-baseline gap-2">
+                <span class="text-base font-bold text-yellow-600">${{ producto.price }}</span>
+                <span v-if="producto.oldPrice" class="text-xs text-gray-400 line-through">${{ producto.oldPrice }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a 
+          href="/productos"
+          class="block text-center text-sm text-blue-500 hover:underline font-medium py-2"
+        >
+          Ver todos →
+        </a>
+      </div>
+
+      <!-- Layout Horizontal (Carrusel) -->
       <Swiper
+        v-else
         :slides-per-view="1"
         :space-between="20"
         :breakpoints="breakpoints"
-        :navigation="productos.length > 4 ? navigationOptions : false"
+        :navigation="productos.length > 4"
         pagination
-        class="pb-6"
+        class="pb-8"
       >
         <SwiperSlide v-for="(producto, index) in productos" :key="index">
           <ProductCard
@@ -47,22 +70,41 @@ Popularidad reciente (top N productos en últimos 7 días).
 </template>
 
 <script setup>
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { computed } from 'vue';
 
-import ProductCard from './ProductCard.vue';
+const props = defineProps({
+  orientation: {
+    type: String,
+    default: 'horizontal',
+    validator: (value) => ['horizontal', 'vertical'].includes(value)
+  },
+  limite: {
+    type: Number,
+    default: 4
+  }
+});
+
+const isVertical = computed(() => props.orientation === 'vertical');
+
+const containerClass = computed(() => 
+  isVertical.value ? '' : 'py-10 bg-white'
+);
+
+const headerClass = computed(() => 
+  isVertical.value 
+    ? 'flex justify-between items-center mb-4' 
+    : 'flex justify-between items-center mb-6'
+);
 
 const breakpoints = {
-  640: { slidesPerView: 1 },   // Móviles
-  768: { slidesPerView: 2 },   // Tablets
-  1024: { slidesPerView: 4 },  // Escritorio
+  640: { slidesPerView: 1 },
+  768: { slidesPerView: 2 },
+  1024: { slidesPerView: 4 },
 };
 
-// Lista de productos
 const productos = [
   {
+    id: 1,
     title: "Almendras Tostadas Premium",
     subtitle: "500g - Origen California",
     price: 12.99,
@@ -73,6 +115,7 @@ const productos = [
     buttonType: "agregar"
   },
   {
+    id: 2,
     title: "Mix de Nueces Deluxe",
     subtitle: "300g - Selección especial",
     price: 18.50,
@@ -81,6 +124,7 @@ const productos = [
     buttonType: "agregar"
   },
   {
+    id: 3,
     title: "Pistachos Salados",
     subtitle: "250g - Origen Turquía",
     price: 22.00,
@@ -89,14 +133,16 @@ const productos = [
     buttonType: "agregar"
   },
   {
+    id: 4,
     title: "Nueces de Brasil",
-    subtitle: "400g - Selección premium",
+    subtitle: "400g - Premium",
     price: 25.00,
     emoji: "🌰",
     bgClass: "bg-pink-100",
     buttonType: "agregar"
   },
   {
+    id: 5,
     title: "Castañas de Cajú",
     subtitle: "350g - Orgánico",
     price: 20.00,
@@ -106,10 +152,17 @@ const productos = [
   }
 ];
 
-// Opciones de navegación personalizadas
-const navigationOptions = {
-  nextEl: '.swiper-button-next-custom',
-  prevEl: '.swiper-button-prev-custom'
-};
+const productosLimitados = computed(() => 
+  productos.slice(0, props.limite)
+);
 </script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
 

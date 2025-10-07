@@ -1,5 +1,6 @@
 <template>
   <div class="relative rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+    
     <!-- Badge de descuento -->
     <span v-if="discount"
       class="absolute top-4 left-4 bg-red-500 text-white font-bold px-2 py-1 rounded-lg animate-pulse">
@@ -16,15 +17,20 @@
     <div class="p-4">
       <h5 class="font-bold text-lg text-gray-800">{{ title }}</h5>
       <p class="text-sm text-gray-500 mb-3">{{ subtitle }}</p>
-      <div class="justify-between items-center">
+
+      <div class=""> 
         <div class="mb-4">
           <span class="text-green-600 font-bold text-lg">${{ price }}</span>
           <span v-if="oldPrice" class="text-gray-400 line-through ml-2">${{ oldPrice }}</span>
         </div>
 
-        <!-- Botón corregido -->
-        <UiButtons :tipo="buttonType" :label="buttonText" :accion="handleAddToCart" :icono="buttonIcon" :loading="false"
-          :isFormValid="true" />
+        <!-- Botón usando UiButtons flex justify-between items-center -->
+        <UiButtons 
+          :tipo="buttonType" 
+          :label="buttonText" 
+          :accion="handleAddToCart" 
+          :icono="buttonIcon" 
+        />
       </div>
     </div>
   </div>
@@ -33,10 +39,11 @@
 <script>
 import UiButtons from './Buttons/UiButtons.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCartPlus  } from '@fortawesome/free-solid-svg-icons';
-library.add(faCartPlus );
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons'
+library.add(faCartPlus)
 
 export default {
+  name: 'ProductoCard',
   components: { UiButtons },
   props: {
     title: String,
@@ -67,3 +74,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.animate-pulse-slow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+</style>

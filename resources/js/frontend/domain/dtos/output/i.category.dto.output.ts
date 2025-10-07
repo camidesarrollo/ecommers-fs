@@ -1,5 +1,5 @@
 // Output de categoría (lo que retorna el use-case)
-export interface ITraerCategoryDtoOutput {
+export interface ITraerCategoryResources {
   id: number;
   name: string;
   slug: string;

@@ -96,9 +96,9 @@
     <!-- CTA -->
     <section class="py-16 bg-gradient-to-r from-yellow-400 to-pink-400 text-center text-white">
       <h2 class="text-3xl md:text-4xl font-bold mb-6">Descubre el sabor de lo natural</h2>
-      <UiButtons class="bg-white text-yellow-600 font-bold px-8 py-3 rounded-full shadow-md hover:brightness-105 transition">
+      <a  href="/productos" class="bg-white text-yellow-600 font-bold px-8 py-3 rounded-full shadow-md hover:brightness-105 transition">
         Explorar Productos
-      </button>
+      </a>
     </section>
   </div>
 </template>

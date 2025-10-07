@@ -8,7 +8,7 @@
     @click="handleClick"
   >
     <span v-if="!loading">
-      <font-awesome-icon v-if="icono" :icon="['fas', icono]" class="mr-2" />
+      <font-awesome-icon v-if="icono" :icon="[iconFamily, icono]" class="mr-2" />
       {{ label }}
     </span>
     <span v-else>
@@ -40,6 +40,10 @@ export default {
       type: String,
       default: 'user-plus'
     },
+    iconFamily: {
+      type: String,
+      default: 'fas' // por defecto 'solid', pero ahora puedes usar 'fab' para WhatsApp
+    },
     loading: {
       type: Boolean,
       default: false
@@ -62,7 +66,9 @@ export default {
       editar: { color: 'bg-golden-yellow text-dark-chocolate hover:bg-golden-yellow-dark focus:ring-golden-yellow' },
       mas: { color: 'bg-mint-green text-dark-chocolate hover:bg-mint-green-dark focus:ring-mint-green' },
       menos: { color: 'bg-orange-warm text-white hover:bg-orange-warm-dark focus:ring-orange-warm' },
-      default: { color: 'bg-gray-light text-gray-dark hover:bg-gray-light-dark focus:ring-gray-light' }
+      default: { color: 'bg-gray-light text-gray-dark hover:bg-gray-light-dark focus:ring-gray-light' },
+      informacion: { color: 'bg-white hover:bg-gray-50 border-2 border-yellow-400 text-yellow-600' },
+      whatsapp: { color: 'bg-white hover:bg-gray-50 border-2 border-yellow-400 text-yellow-600' } // color WhatsApp
     }
 
     const tipoColor = computed(() => tipoMap[tipo.value]?.color || tipoMap.default.color)

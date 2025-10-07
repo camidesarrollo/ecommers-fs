@@ -88,10 +88,10 @@ const sucursales = ref([
 
 const enlaces = ref([
     // { text: "Frutos secos por mayor", url: "#" },
-    { text: "Preguntas Frecuentes", url: "/preguntasFrecuentes" },
+    { text: "Preguntas Frecuentes", url: "/paq" },
     // { text: "Política de devoluciones y reembolsos", url: "#" },
     { text: "Quiénes Somos", url: "/about" },
-    { text: "Contacto", url: "/contact" }
+    { text: "Contacto", url: "/contacto" }
 ])
 
 // Redes sociales con FontAwesome

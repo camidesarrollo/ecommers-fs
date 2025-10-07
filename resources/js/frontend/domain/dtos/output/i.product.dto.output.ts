@@ -1,6 +1,6 @@
 
 // Output de producto (lo que retorna el use-case)
-export interface ITraerProductDtoOutput {
+export interface ITraerProductResources {
   id: number;
   name: string;
   slug: string;
@@ -26,7 +26,7 @@ export interface ITraerProductDtoOutput {
   effectivePrice: number; // viene de la lógica sale_price ?? price
 }
 
-export interface IListaProductosDTOOutput {
+export interface IListaProductosResources {
   id: number | null;
   name: string;
   slug: string;
@@ -46,4 +46,23 @@ export interface IListaProductosDTOOutput {
   is_featured: boolean | number; // según cómo lo guardes en DB
   created_at: string;
   updated_at: string | null;
+}
+
+export interface IProductDetailResources {
+  product_variant_id: number;
+  type_product: string;
+  name: string;
+  variant: string;
+  slug: string;
+  sku: string;
+  category_id: string,
+  category_name: string;
+  price: number;
+  atributos: string | null;
+  is_active: boolean;
+  is_featured: boolean;
+  stock_status: string;
+  is_in_stock: boolean;
+  imagen: string | null;
+  created_at: string;
 }
